@@ -4,11 +4,11 @@
 
 ## Group Members
 
-| Student Id | Name                |
-|------------|---------------------|
-| 21426749   | Ahmed Şamil BÜLBÜL  |
-| 21328447   | Halil İbrahim ŞENER |
-| 21580841   | Naciye GÜZEL        |
+| Student Id | Name                | Roles                                                                    | Current Role     |
+|------------|---------------------|--------------------------------------------------------------------------|------------------|
+| 21426749   | Ahmed Şamil BÜLBÜL  |Project Manager, Software Analyst, Software Architect, Software Developer | Software Analyst |
+| 21328447   | Halil İbrahim ŞENER |Project Manager, Software Architect, Software Developer, Tester           |Software Architect|
+| 21580841   | Naciye GÜZEL        |Project Manager, Software Analyst, Software Developer, Tester             |  Project Manager |
 
 ## Contributing
 
