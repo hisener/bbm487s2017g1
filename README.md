@@ -1,6 +1,10 @@
 # BBM487 Spring 2017 Group 1
 
 ### Library Book Loan System
+[![Build Status][travis-image]][travis-url]
+
+[travis-image]: https://travis-ci.org/hisener/bbm487s2017g1.svg?branch=master
+[travis-url]: https://travis-ci.org/hisener/bbm487s2017g1
 
 ## Group Members
 
