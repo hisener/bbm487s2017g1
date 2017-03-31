@@ -12,25 +12,11 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.TitledBorder;
-import javax.swing.JScrollPane;
 import java.awt.Color;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
-import javax.swing.JTextField;
-import javax.swing.JTabbedPane;
-import java.awt.SystemColor;
 
-public class MainLibrarianWindow {
-
-	private JFrame frame;
-
-	public JFrame getFrame() {
-		return frame;
-	}
-
-	public void setFrame(JFrame frame) {
-		this.frame = frame;
-	}
+public class MainLibrarianWindow extends MainWindow {
 
 	/**
 	 * Launch the application.
@@ -39,7 +25,7 @@ public class MainLibrarianWindow {
 		
 		try {
 			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-		}catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
           java.util.logging.Logger.getLogger(LoginWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
           JOptionPane.showMessageDialog(null, ex.getMessage());
 		}

@@ -24,5 +24,6 @@ hs_err_pid*
 # build output folder
 target/
 
-# IntelliJ IDEA folder
+# IntelliJ IDEA folder and files
 .idea/
+*.iml
