@@ -16,7 +16,7 @@
 
 ## Contributing
 
-Please read and follow the steps of [this guide](https://guides.github.com/activities/contributing-to-open-source/#contributing) to contribute.
+Please follow [these steps](CONTRIBUTING.md) to contribute.
 
 ## Academic Integrity
 
