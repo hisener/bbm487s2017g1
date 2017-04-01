@@ -41,7 +41,7 @@ public class MySQL {
         }
     }
 
-    private boolean connect() {
+    private void connect() {
         this.loadProperties();
         // verifyServerCertificate is set false for suppressing the warning.
         String url = "jdbc:mysql://" + this.host + ":" + this.port + "/" +
@@ -51,10 +51,7 @@ public class MySQL {
             connection = DriverManager.getConnection(url, this.username, this.password);
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
         }
-
-        return connection != null;
     }
 
     private void loadProperties() {

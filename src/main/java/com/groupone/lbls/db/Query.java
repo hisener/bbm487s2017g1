@@ -8,10 +8,10 @@ import java.sql.ResultSet;
 
 public class Query {
 
-    private static String userTable = "user";
+    private static final String userTable = "user";
 
     public static User getUser(String username, String password) {
-        PreparedStatement statement = null;
+        PreparedStatement statement;
         String query = String.format("SELECT * FROM %s WHERE username=? AND password=?", userTable);
 
         try {
