@@ -4,7 +4,7 @@ import com.groupone.lbls.model.User;
 
 import javax.swing.JFrame;
 
-public class MainWindow {
+public abstract class MainWindow {
 
     protected JFrame frame;
     private User user;
