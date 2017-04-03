@@ -156,6 +156,9 @@ public class LoginWindow {
                             e.getMessage(),
                             "Authentication Error",
                             JOptionPane.WARNING_MESSAGE);
+                    usernameField.setText("");
+                    passwordField.setText("");
+                    usernameField.requestFocus();
                     return;
                 }
                 frmLibraryBookLoan.dispose();
