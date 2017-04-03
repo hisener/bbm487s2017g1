@@ -17,38 +17,41 @@ public class GearDialog {
 
         JPanel gearPanel = new JPanel();
 
-        JPanel otherSettingsPanel = new JPanel();
-        otherSettingsPanel.setBorder(new TitledBorder(null, "Settings",
-                TitledBorder.LEADING, TitledBorder.TOP, null, null));
-        otherSettingsPanel.setPreferredSize(new Dimension(390, 100));
-
         JPanel logoutPanel = new JPanel();
+        logoutPanel.setBounds(10, 47, 324, 163);
         logoutPanel.setBorder(new TitledBorder(null, "Logout",
                 TitledBorder.LEADING, TitledBorder.TOP, null, null));
         logoutPanel.setPreferredSize(new Dimension(390, 80));
-
-        JButton logoutButton = new JButton("Logout");
-        logoutPanel.add(logoutButton);
-
-        gearPanel.add(otherSettingsPanel);
+        logoutPanel.setLayout(null);
+        gearPanel.setLayout(null);
         gearPanel.add(logoutPanel);
-
+        
+        JButton logoutButton = new JButton("Logout");
+        logoutButton.setBounds(130, 24, 65, 23);
+        logoutPanel.add(logoutButton);
+               
         logoutButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                dialog.dispose();
-                frame.dispose();
-
-                LoginWindow.main(null);
-            }
+	        @Override
+	        public void actionPerformed(ActionEvent actionEvent) {
+	        dialog.dispose();
+	        frame.dispose();
+	        
+	        LoginWindow.main(null);
+	        }
         });
 
-        dialog.setTitle("Options");
-        dialog.setSize(new Dimension(400, 250));
+        dialog.setTitle("Settings");
+        dialog.setSize(new Dimension(350, 250));
         dialog.setResizable(false);
         dialog.setModal(true);
         dialog.setLocationRelativeTo(frame);
-        dialog.add(gearPanel);
+        dialog.getContentPane().add(gearPanel);
+        
+        JLabel lblSettings = new JLabel("Settings");
+        lblSettings.setHorizontalAlignment(SwingConstants.CENTER);
+        lblSettings.setFont(new Font("Segoe UI Light", Font.PLAIN, 18));
+        lblSettings.setBounds(10, 11, 324, 25);
+        gearPanel.add(lblSettings);
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         dialog.setVisible(true);
     }
