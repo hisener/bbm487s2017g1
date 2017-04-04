@@ -11,11 +11,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.border.TitledBorder;
 import java.awt.Color;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class LoginWindow {
 
     private JFrame frmLibraryBookLoan;
-    private JTextField textField;
+    private JTextField usernameField;
     private JPasswordField passwordField;
 
     /**
@@ -83,23 +85,42 @@ public class LoginWindow {
         label_1.setBounds(53, 58, 60, 14);
         panel_1.add(label_1);
         
-        textField = new JTextField();
-        textField.setColumns(10);
-        textField.setBounds(145, 27, 224, 20);
-        panel_1.add(textField);
-        
-        passwordField = new JPasswordField();
-        passwordField.setColumns(10);
-        passwordField.setBounds(145, 55, 224, 20);
-        panel_1.add(passwordField);
-        
-        JButton btnNewButton = new JButton("Login");
-        btnNewButton.setBounds(269, 86, 100, 24);
-        panel_1.add(btnNewButton);
+        final JButton btnLoginButton = new JButton("Login");
+        btnLoginButton.setBounds(269, 86, 100, 24);
+        panel_1.add(btnLoginButton);
         
         JButton btnForgotPassword = new JButton("Forgot Password");
         btnForgotPassword.setBounds(145, 87, 114, 23);
         panel_1.add(btnForgotPassword);
+        
+        usernameField = new JTextField();
+        usernameField.addKeyListener(new KeyAdapter() {
+        	@Override
+        	public void keyPressed(KeyEvent arg0) {
+        		if(arg0.getKeyCode() == KeyEvent.VK_ENTER)
+        		{
+        			passwordField.requestFocus();
+        		}
+        	}
+        });
+        usernameField.setColumns(10);
+        usernameField.setBounds(145, 27, 224, 20);
+        panel_1.add(usernameField);
+        
+        passwordField = new JPasswordField();
+        passwordField.addKeyListener(new KeyAdapter() {
+        	@Override
+        	public void keyPressed(KeyEvent arg0) {
+        		if(arg0.getKeyCode() == KeyEvent.VK_ENTER)
+        		{
+        			btnLoginButton.doClick();
+        		}
+        	}
+        });
+        passwordField.setColumns(10);
+        passwordField.setBounds(145, 55, 224, 20);
+        panel_1.add(passwordField);
+       
         
         JPanel panel_2 = new JPanel();
         panel_2.setLayout(null);
@@ -110,9 +131,9 @@ public class LoginWindow {
         JButton button = new JButton("Search Books");
         button.setBounds(155, 25, 115, 23);
         panel_2.add(button);
-        btnNewButton.addActionListener(new ActionListener() {
+        btnLoginButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                String username = textField.getText();
+                String username = usernameField.getText();
                 String password = String.valueOf(passwordField.getPassword());
                 // TODO: validate username and password. ie: is empty etc.
 
@@ -135,6 +156,9 @@ public class LoginWindow {
                             e.getMessage(),
                             "Authentication Error",
                             JOptionPane.WARNING_MESSAGE);
+                    usernameField.setText("");
+                    passwordField.setText("");
+                    usernameField.requestFocus();
                     return;
                 }
                 frmLibraryBookLoan.dispose();
