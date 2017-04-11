@@ -16,7 +16,7 @@ public class UserController {
         return instance;
     }
 
-    public User authenticate(String username, String password) throws Error {
+    public User authenticate(String username, String password) throws Exception {
 
         String encodedPassword;
         try {
@@ -26,13 +26,13 @@ public class UserController {
 
             encodedPassword = String.format("%064x", new java.math.BigInteger(1, digest));
         } catch (Exception e) {
-            throw new Error("Internal error.");
+            throw new Exception("Internal error.");
         }
 
         User user = Query.getUser(username, encodedPassword);
 
         if (user == null) {
-            throw new Error("Username/password is wrong.");
+            throw new Exception("Username/password is wrong.");
         }
 
         return user;
