@@ -149,9 +149,9 @@ public class LoginWindow {
                             mainWindow = new MainCustomerWindow();
                             break;
                         default:
-                            throw new Error("Username/password is wrong.");
+                            throw new Exception("Username/password is wrong.");
                     }
-                } catch (Error e) {
+                } catch (Exception e) {
                     JOptionPane.showMessageDialog(frmLibraryBookLoan,
                             e.getMessage(),
                             "Authentication Error",
