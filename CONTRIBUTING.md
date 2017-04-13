@@ -55,3 +55,10 @@ java -jar target/lbls-1.0-SNAPSHOT-jar-with-dependencies.jar # Change "1.0-SNAPS
 ```shell
 mvn test
 ```
+
+## Release
+
+```shell
+mvn release:prepare # You need to enter release and development version and release tag.
+mvn release:perform -Darguments="-Dmaven.deploy.skip=true"
+```
