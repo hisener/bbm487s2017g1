@@ -49,6 +49,12 @@ public class MainCustomerWindow extends MainWindow {
         panel_1.setLayout(null);
         
         JButton btnSearchBooks = new JButton("Search Books");
+        btnSearchBooks.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent actionEvent) {
+        		SearchBooksWindow searchWindow = new SearchBooksWindow();
+        		searchWindow.getFrame().setVisible(true);
+        	}
+        });
         btnSearchBooks.setBounds(10, 24, 138, 23);
         panel_1.add(btnSearchBooks);
         
