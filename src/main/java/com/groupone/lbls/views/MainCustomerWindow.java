@@ -1,5 +1,7 @@
 package com.groupone.lbls.views;
 
+import com.groupone.lbls.model.User;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -8,35 +10,11 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 
 public class MainCustomerWindow extends MainWindow {
-
-    /**
-     * Launch the application.
-     */
-    public static void main(String[] args) {
-        
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-          java.util.logging.Logger.getLogger(LoginWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-          JOptionPane.showMessageDialog(null, ex.getMessage());
-        }
-        
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    MainCustomerWindow window = new MainCustomerWindow();
-                    window.frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
     /**
      * Create the application.
      */
-    public MainCustomerWindow() {
+    public MainCustomerWindow(User user) {
+        this.setUser(user);
         initialize();
     }
 

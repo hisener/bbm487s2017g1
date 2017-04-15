@@ -1,320 +1,490 @@
 package com.groupone.lbls.views;
-import java.awt.EventQueue;
 
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.JPanel;
-import java.awt.BorderLayout;
-import javax.swing.JLabel;
-import java.awt.Font;
-import javax.swing.SwingConstants;
+import com.groupone.lbls.controller.UserController;
+import com.groupone.lbls.model.User;
+import com.groupone.lbls.model.UserRole;
+import com.groupone.lbls.utils.Validation;
+
+import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
+import java.awt.BorderLayout;
+import java.awt.Font;
 import java.awt.Color;
-import javax.swing.JTabbedPane;
-import java.awt.SystemColor;
-import java.util.ArrayList;
-import java.util.List;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import javax.swing.JTextField;
-import javax.swing.RowSorter;
-import javax.swing.SortOrder;
-import javax.swing.JButton;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class LibrarianUserOperations {
 
-	private JFrame frame;
-	private JTextField txtExampledomaimedutr;
-	private JTable table;
-	private JTable table_1;
-	private JTextField textField_8;
-	private JTextField textField_9;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
-	private JTextField textField_5;
-	private JTextField textField_6;
-	private JTextField textField_7;
+    private JFrame frame;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		}catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-          java.util.logging.Logger.getLogger(LoginWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-          JOptionPane.showMessageDialog(null, ex.getMessage());
-		}
-		
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					LibrarianUserOperations window = new LibrarianUserOperations();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+    /**
+     * Create the application.
+     */
+    public LibrarianUserOperations(String username) {
+        initialize(username);
+    }
 
-	/**
-	 * Create the application.
-	 */
-	public LibrarianUserOperations() {
-		initialize();
-	}
+    /**
+     * Initialize the contents of the frame.
+     */
+    private void initialize(String username) {
+        frame = new JFrame("Library Book Loan System - Librarian: " + username);
+        frame.setBounds(100, 100, 550, 500);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        
+        JPanel panel = new JPanel();
+        frame.getContentPane().add(panel, BorderLayout.CENTER);
+        panel.setLayout(null);
+        
+        JLabel label = new JLabel("Library Book Loan System");
+        label.setHorizontalAlignment(SwingConstants.CENTER);
+        label.setFont(new Font("Segoe UI Light", Font.PLAIN, 18));
+        label.setBounds(10, 11, 514, 25);
+        panel.add(label);
+        
+        JLabel lblBookOperations = new JLabel("User Operations");
+        lblBookOperations.setHorizontalAlignment(SwingConstants.CENTER);
+        lblBookOperations.setFont(new Font("Segoe UI Light", Font.PLAIN, 14));
+        lblBookOperations.setBounds(10, 40, 514, 22);
+        panel.add(lblBookOperations);
+        
+        JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+        tabbedPane.setBackground(Color.LIGHT_GRAY);
+        tabbedPane.setBounds(10, 73, 514, 377);
+        panel.add(tabbedPane);
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
-		frame = new JFrame("Library Book Loan System - Librarian: %username% ");
-		frame.setBounds(100, 100, 550, 500);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		JPanel panel = new JPanel();
-		frame.getContentPane().add(panel, BorderLayout.CENTER);
-		panel.setLayout(null);
-		
-		JLabel label = new JLabel("Library Book Loan System");
-		label.setHorizontalAlignment(SwingConstants.CENTER);
-		label.setFont(new Font("Segoe UI Light", Font.PLAIN, 18));
-		label.setBounds(10, 11, 514, 25);
-		panel.add(label);
-		
-		JLabel lblBookOperations = new JLabel("User Operations");
-		lblBookOperations.setHorizontalAlignment(SwingConstants.CENTER);
-		lblBookOperations.setFont(new Font("Segoe UI Light", Font.PLAIN, 14));
-		lblBookOperations.setBounds(10, 40, 514, 22);
-		panel.add(lblBookOperations);
-		
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBackground(Color.LIGHT_GRAY);
-		tabbedPane.setBounds(10, 73, 514, 377);
-		panel.add(tabbedPane);
-		
-		JPanel panel_1 = new JPanel();
-		tabbedPane.addTab("Create", null, panel_1, null);
-		panel_1.setLayout(null);
-		panel_1.setBackground(SystemColor.menu);
-		
-		JLabel label_7 = new JLabel("Username:");
-		label_7.setBounds(41, 32, 100, 14);
-		panel_1.add(label_7);
-		
-		textField = new JTextField();
-		textField.setColumns(10);
-		textField.setBounds(151, 29, 321, 20);
-		panel_1.add(textField);
-		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(151, 57, 321, 20);
-		panel_1.add(textField_1);
-		
-		JLabel label_8 = new JLabel("E-mail:");
-		label_8.setBounds(41, 60, 100, 14);
-		panel_1.add(label_8);
-		
-		JLabel label_9 = new JLabel("Password:");
-		label_9.setBounds(41, 88, 100, 14);
-		panel_1.add(label_9);
-		
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
-		textField_2.setBounds(151, 85, 321, 20);
-		panel_1.add(textField_2);
-		
-		textField_3 = new JTextField();
-		textField_3.setColumns(10);
-		textField_3.setBounds(151, 113, 321, 20);
-		panel_1.add(textField_3);
-		
-		JLabel label_10 = new JLabel("Confirm Password:");
-		label_10.setBounds(41, 116, 100, 14);
-		panel_1.add(label_10);
-		
-		JButton button = new JButton("Add User");
-		button.setBounds(151, 159, 100, 23);
-		panel_1.add(button);
-		
-		JButton button_1 = new JButton("Reset Fields");
-		button_1.setBounds(261, 159, 100, 23);
-		panel_1.add(button_1);
-		
-		JPanel panel_2 = new JPanel();
-		panel_2.setLayout(null);
-		tabbedPane.addTab("Update", null, panel_2, null);
-		
-		JButton btnUpdateUser = new JButton("Update User");
-		btnUpdateUser.setBounds(261, 159, 100, 23);
-		panel_2.add(btnUpdateUser);
-		
-		JButton btnGetUser = new JButton("Get User");
-		btnGetUser.setBounds(151, 159, 100, 23);
-		panel_2.add(btnGetUser);
-		
-		JLabel label_1 = new JLabel("Username:");
-		label_1.setBounds(41, 32, 100, 14);
-		panel_2.add(label_1);
-		
-		textField_4 = new JTextField();
-		textField_4.setColumns(10);
-		textField_4.setBounds(151, 29, 321, 20);
-		panel_2.add(textField_4);
-		
-		textField_5 = new JTextField();
-		textField_5.setColumns(10);
-		textField_5.setBounds(151, 57, 321, 20);
-		panel_2.add(textField_5);
-		
-		JLabel label_2 = new JLabel("E-mail:");
-		label_2.setBounds(41, 60, 100, 14);
-		panel_2.add(label_2);
-		
-		JLabel label_3 = new JLabel("Password:");
-		label_3.setBounds(41, 88, 100, 14);
-		panel_2.add(label_3);
-		
-		textField_6 = new JTextField();
-		textField_6.setColumns(10);
-		textField_6.setBounds(151, 85, 321, 20);
-		panel_2.add(textField_6);
-		
-		textField_7 = new JTextField();
-		textField_7.setColumns(10);
-		textField_7.setBounds(151, 113, 321, 20);
-		panel_2.add(textField_7);
-		
-		JLabel label_4 = new JLabel("Confirm Password:");
-		label_4.setBounds(41, 116, 100, 14);
-		panel_2.add(label_4);
-		
-		JPanel panel_4 = new JPanel();
-		panel_4.setLayout(null);
-		tabbedPane.addTab("Delete", null, panel_4, null);
-		
-		JLabel lblEmail_1 = new JLabel("Email:");
-		lblEmail_1.setBounds(10, 14, 33, 14);
-		panel_4.add(lblEmail_1);
-		
-		txtExampledomaimedutr = new JTextField();
-		txtExampledomaimedutr.setText("example@domaim.edu.tr");
-		txtExampledomaimedutr.setColumns(10);
-		txtExampledomaimedutr.setBounds(125, 11, 374, 20);
-		panel_4.add(txtExampledomaimedutr);
-		
-		JButton btnGetBook = new JButton("Get User");
-		btnGetBook.setBounds(126, 128, 89, 23);
-		panel_4.add(btnGetBook);
-		
-		JButton btnDeleteBook = new JButton("Delete User");
-		btnDeleteBook.setBounds(303, 128, 89, 23);
-		panel_4.add(btnDeleteBook);
-		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 57, 489, 43);
-		panel_4.add(scrollPane);
-		
-		Object columnNames[] = { "Username", "Email"};
-		Object rowData[][] = { {"Example Username", "example@domain.edu.tr"} };
-		
-		table = new JTable(rowData, columnNames)
-		{
-			@Override
-		    public boolean isCellEditable(int row, int column) {
-		        return false;
-		    }
-		};
-		
-		table.getTableHeader().setReorderingAllowed(false);
-		TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(table.getModel());
-		table.setRowSorter(sorter);
+        initCreateTab(tabbedPane);
+        initUpdateTab(tabbedPane);
+        initDeleteTab(tabbedPane);
+        initViewTab(tabbedPane);
+    }
 
-		List<RowSorter.SortKey> sortKeys = new ArrayList<>(25);
-		sortKeys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
-		sorter.setSortKeys(sortKeys);
-		scrollPane.setViewportView(table);
-		
-		JPanel panel_3 = new JPanel();
-		tabbedPane.addTab("View", null, panel_3, null);
-		panel_3.setLayout(null);
-		
-		Object columnNames_1[] = { "Title", "ISBN", "Author", "Genre"};
-		Object rowData_1[][] = { {"Example Book One", "111", "Writer 1", "Sci-fi"}, {"Example Book Two", "222", "Writer 2", "History"},
-				{"Example Book Three", "333", "Writer 3", "Crime"}};
+    private void initCreateTab(JTabbedPane tabbedPane) {
+        JPanel createTabPanel = new JPanel();
+        final JTextField usernameField, emailField;
+        final JPasswordField passwordField, confirmPasswordField;
 
-		List<RowSorter.SortKey> sortKeys_2 = new ArrayList<>(25);
-		sortKeys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
-		sorter.setSortKeys(sortKeys_2);
-		
-		JPanel panel_5 = new JPanel();
-		panel_5.setBorder(new TitledBorder(null, "User", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_5.setBounds(10, 11, 489, 125);
-		panel_3.add(panel_5);
-		panel_5.setLayout(null);
-		
-		JLabel label_5 = new JLabel("E-mail:");
-		label_5.setBounds(34, 54, 100, 14);
-		panel_5.add(label_5);
-		
-		textField_8 = new JTextField();
-		textField_8.setColumns(10);
-		textField_8.setBounds(144, 51, 314, 20);
-		panel_5.add(textField_8);
-		
-		JLabel label_6 = new JLabel("Username:");
-		label_6.setBounds(34, 26, 100, 14);
-		panel_5.add(label_6);
-		
-		textField_9 = new JTextField();
-		textField_9.setColumns(10);
-		textField_9.setBounds(144, 23, 314, 20);
-		panel_5.add(textField_9);
-		
-		JButton btnGetUser_1 = new JButton("Get User");
-		btnGetUser_1.setBounds(369, 82, 89, 23);
-		panel_5.add(btnGetUser_1);
-		
-		JPanel panel_6 = new JPanel();
-		panel_6.setLayout(null);
-		panel_6.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Books", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panel_6.setBounds(10, 148, 489, 190);
-		panel_3.add(panel_6);
-		
-		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(10, 25, 469, 134);
-		panel_6.add(scrollPane_1);
-		
-		table_1 = new JTable(rowData_1, columnNames_1)
-		{
-			@Override
-		    public boolean isCellEditable(int row, int column) {
-		        return false;
-		    }
-		};
-		
-		table_1.getTableHeader().setReorderingAllowed(false);
-		TableRowSorter<TableModel> sorter_2 = new TableRowSorter<TableModel>(table_1.getModel());
-		table_1.setRowSorter(sorter_2);
+        tabbedPane.addTab("Create", null, createTabPanel, null);
+        createTabPanel.setLayout(null);
 
-		
-		scrollPane_1.setViewportView(table_1);
-		
-		JLabel lblNewLabel = new JLabel("3 Book(s)");
-		lblNewLabel.setBounds(433, 165, 46, 14);
-		panel_6.add(lblNewLabel);
-		
-		
-	}
+        JLabel label_7 = new JLabel("Username:");
+        label_7.setBounds(41, 32, 100, 14);
+        createTabPanel.add(label_7);
+
+        usernameField = new JTextField();
+        usernameField.setColumns(10);
+        usernameField.setBounds(151, 29, 321, 20);
+        createTabPanel.add(usernameField);
+
+        JLabel label_8 = new JLabel("E-mail:");
+        label_8.setBounds(41, 60, 100, 14);
+        createTabPanel.add(label_8);
+
+        emailField = new JTextField();
+        emailField.setColumns(10);
+        emailField.setBounds(151, 57, 321, 20);
+        createTabPanel.add(emailField);
+
+        JLabel label_9 = new JLabel("Password:");
+        label_9.setBounds(41, 88, 100, 14);
+        createTabPanel.add(label_9);
+
+        passwordField = new JPasswordField();
+        passwordField.setColumns(10);
+        passwordField.setBounds(151, 85, 321, 20);
+        createTabPanel.add(passwordField);
+
+        JLabel label_10 = new JLabel("Confirm Password:");
+        label_10.setBounds(41, 116, 100, 14);
+        createTabPanel.add(label_10);
+
+        confirmPasswordField = new JPasswordField();
+        confirmPasswordField.setColumns(10);
+        confirmPasswordField.setBounds(151, 113, 321, 20);
+        createTabPanel.add(confirmPasswordField);
+
+        JLabel label_11 = new JLabel("User Role:");
+        label_11.setBounds(41, 144, 100, 14);
+        createTabPanel.add(label_11);
+
+        String[] userRoleStrings = { "Librarian", "Customer" };
+        final JComboBox<String> userRoleList = new JComboBox<>(userRoleStrings);
+        userRoleList.setBounds(151, 141, 321, 20);
+        userRoleList.setSelectedIndex(0);
+        createTabPanel.add(userRoleList);
+
+        JButton addUserButton = new JButton("Add User");
+        addUserButton.setBounds(151, 187, 100, 23);
+        createTabPanel.add(addUserButton);
+
+        final JButton resetButton = new JButton("Reset Fields");
+        resetButton.setBounds(261, 187, 100, 23);
+        createTabPanel.add(resetButton);
+
+        addUserButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                if (emailField.getText().isEmpty() || usernameField.getText().isEmpty()
+                        || passwordField.getPassword().length == 0
+                        || confirmPasswordField.getPassword().length == 0) {
+                    JOptionPane.showMessageDialog(getFrame(), "The fields are mandatory.",
+                            "Error", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+
+                if(!Validation.isEmailValid(emailField.getText())) {
+                    JOptionPane.showMessageDialog(getFrame(), "The email is not valid.",
+                            "Error", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+
+                if (!Arrays.equals(passwordField.getPassword(), confirmPasswordField.getPassword())) {
+                    JOptionPane.showMessageDialog(getFrame(),
+                            "The password and confirmation password do not match.",
+                            "Error", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+                
+                UserRole userRole = UserRole.fromInt(userRoleList.getSelectedIndex() + 1);
+                boolean result = UserController.getInstance().addUser(emailField.getText(),
+                        usernameField.getText(),
+                        String.valueOf(passwordField.getPassword()),
+                        userRole);
+
+                if (result) {
+                    resetButton.doClick();
+                    JOptionPane.showMessageDialog(getFrame(), "User was added.",
+                            "Success", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(getFrame(), "The user could not be added.",
+                            "Error", JOptionPane.WARNING_MESSAGE);
+                }
+            }
+        });
+
+        resetButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                usernameField.setText("");
+                emailField.setText("");
+                passwordField.setText("");
+                confirmPasswordField.setText("");
+                userRoleList.setSelectedIndex(0);
+            }
+        });
+    }
+
+    private void initUpdateTab(JTabbedPane tabbedPane) {
+        JPanel updateTabPanel = new JPanel();
+        final JTextField usernameField, emailField;
+        final JPasswordField passwordField, confirmPasswordField;
+
+        updateTabPanel.setLayout(null);
+        tabbedPane.addTab("Update", null, updateTabPanel, null);
+
+        JLabel label_7 = new JLabel("Username:");
+        label_7.setBounds(41, 32, 100, 14);
+        updateTabPanel.add(label_7);
+
+        usernameField = new JTextField();
+        usernameField.setColumns(10);
+        usernameField.setBounds(151, 29, 321, 20);
+        updateTabPanel.add(usernameField);
+
+        JLabel label_8 = new JLabel("E-mail:");
+        label_8.setBounds(41, 60, 100, 14);
+        updateTabPanel.add(label_8);
+
+        emailField = new JTextField();
+        emailField.setColumns(10);
+        emailField.setBounds(151, 57, 321, 20);
+        updateTabPanel.add(emailField);
+
+        JLabel label_9 = new JLabel("Password:");
+        label_9.setBounds(41, 88, 100, 14);
+        updateTabPanel.add(label_9);
+
+        passwordField = new JPasswordField();
+        passwordField.setColumns(10);
+        passwordField.setBounds(151, 85, 321, 20);
+        updateTabPanel.add(passwordField);
+
+        JLabel label_10 = new JLabel("Confirm Password:");
+        label_10.setBounds(41, 116, 100, 14);
+        updateTabPanel.add(label_10);
+
+        confirmPasswordField = new JPasswordField();
+        confirmPasswordField.setColumns(10);
+        confirmPasswordField.setBounds(151, 113, 321, 20);
+        updateTabPanel.add(confirmPasswordField);
+
+        JLabel label_11 = new JLabel("User Role:");
+        label_11.setBounds(41, 144, 100, 14);
+        updateTabPanel.add(label_11);
+
+        String[] userRoleStrings = { "Librarian", "Customer" };
+        final JComboBox<String> userRoleList = new JComboBox<>(userRoleStrings);
+        userRoleList.setBounds(151, 141, 321, 20);
+        userRoleList.setSelectedIndex(0);
+        updateTabPanel.add(userRoleList);
+
+        JButton getUserButton = new JButton("Get User");
+        getUserButton.setBounds(151, 187, 100, 23);
+        updateTabPanel.add(getUserButton);
+
+        final JButton updateButton = new JButton("Update User");
+        updateButton.setBounds(261, 187, 100, 23);
+        updateButton.setEnabled(false);
+        updateTabPanel.add(updateButton);
+
+        getUserButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                if (usernameField.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(frame, "You should fill the username.",
+                            "Error", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+
+                User user = UserController.getInstance().getUser(usernameField.getText());
+                if (user == null) {
+                    JOptionPane.showMessageDialog(frame, "The user could not find.",
+                            "Error", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+
+                usernameField.setText(user.getUsername());
+                emailField.setText(user.getEmail());
+                updateButton.putClientProperty("id", user.getId());
+                updateButton.setEnabled(true);
+                userRoleList.setSelectedIndex(user.getRole().ordinal() - 1);
+            }
+        });
+
+        updateButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                if(!emailField.getText().isEmpty() && !Validation.isEmailValid(emailField.getText())) {
+                    JOptionPane.showMessageDialog(frame, "The email is not valid.",
+                            "Error", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+
+                if (!Arrays.equals(passwordField.getPassword(), confirmPasswordField.getPassword())) {
+                    JOptionPane.showMessageDialog(frame,
+                            "The password and confirmation password do not match.",
+                            "Error", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+
+                boolean result = UserController.getInstance().updateUser(
+                        String.valueOf(updateButton.getClientProperty("id")),
+                        emailField.getText(), usernameField.getText(),
+                        String.valueOf(passwordField.getPassword()),
+                        UserRole.fromInt(userRoleList.getSelectedIndex() + 1));
+
+                if (result) {
+                    JOptionPane.showMessageDialog(frame, "User was updated.",
+                            "Success", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(frame, "The user could not be updated.",
+                            "Error", JOptionPane.WARNING_MESSAGE);
+                }
+            }
+        });
+    }
+
+    private void initDeleteTab(JTabbedPane tabbedPane) {
+        JPanel deleteTabPanel = new JPanel();
+        final JTextField usernameField;
+        final JTable table;
+
+        deleteTabPanel.setLayout(null);
+        tabbedPane.addTab("Delete", null, deleteTabPanel, null);
+
+        JLabel usernameLabel = new JLabel("Username:");
+        usernameLabel.setBounds(10, 14, 33, 14);
+        deleteTabPanel.add(usernameLabel);
+
+        usernameField = new JTextField();
+        usernameField.setColumns(10);
+        usernameField.setBounds(125, 11, 374, 20);
+        deleteTabPanel.add(usernameField);
+
+        JButton getUserButton = new JButton("Get User");
+        getUserButton.setBounds(126, 128, 89, 23);
+        deleteTabPanel.add(getUserButton);
+
+        final JButton deleteUserButton = new JButton("Delete User");
+        deleteUserButton.setBounds(303, 128, 89, 23);
+        deleteUserButton.setEnabled(false);
+        deleteTabPanel.add(deleteUserButton);
+
+        JScrollPane scrollPane = new JScrollPane();
+        scrollPane.setBounds(10, 57, 489, 43);
+        deleteTabPanel.add(scrollPane);
+
+        String[] columnNames = { "Username", "Email" };
+        DefaultTableModel model = new DefaultTableModel(1, columnNames.length) ;
+        model.setColumnIdentifiers(columnNames);
+        table = new JTable(model) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
+        scrollPane.setViewportView(table);
+
+        getUserButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                if (usernameField.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(getFrame(), "You should fill the username.",
+                            "Error", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+
+                User user = UserController.getInstance().getUser(usernameField.getText());
+                if (user == null) {
+                    JOptionPane.showMessageDialog(getFrame(), "The user could not find.",
+                            "Error", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+
+                ((DefaultTableModel) table.getModel()).removeRow(0);
+                ((DefaultTableModel) table.getModel()).addRow(
+                        new Object[]{ user.getUsername(), user.getEmail() });
+
+                deleteUserButton.putClientProperty("id", user.getId());
+                deleteUserButton.setEnabled(true);
+            }
+        });
+
+        deleteUserButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                boolean result = UserController.getInstance().deleteUser(
+                        String.valueOf(deleteUserButton.getClientProperty("id")));
+
+                if (result) {
+                    JOptionPane.showMessageDialog(getFrame(), "User was deleted.",
+                            "Success", JOptionPane.INFORMATION_MESSAGE);
+                    usernameField.setText("");
+                    ((DefaultTableModel) table.getModel()).removeRow(0);
+                    deleteUserButton.setEnabled(false);
+                } else {
+                    JOptionPane.showMessageDialog(getFrame(), "The user could not be deleted.",
+                            "Error", JOptionPane.WARNING_MESSAGE);
+                }
+            }
+        });
+    }
+
+    private void initViewTab(JTabbedPane tabbedPane) {
+        JPanel viewTabPanel = new JPanel();
+        final JTable booksTable;
+        final JTextField usernameField;
+
+        tabbedPane.addTab("View", null, viewTabPanel, null);
+        viewTabPanel.setLayout(null);
+
+        JPanel userPanel = new JPanel();
+        userPanel.setBorder(new TitledBorder(null, "User", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+        userPanel.setBounds(10, 11, 489, 125);
+        viewTabPanel.add(userPanel);
+        userPanel.setLayout(null);
+
+        JLabel label_6 = new JLabel("Username:");
+        label_6.setBounds(34, 26, 100, 14);
+        userPanel.add(label_6);
+
+        usernameField = new JTextField();
+        usernameField.setColumns(10);
+        usernameField.setBounds(144, 23, 314, 20);
+        userPanel.add(usernameField);
+
+        JButton getUserButton = new JButton("Get User");
+        getUserButton.setBounds(369, 82, 89, 23);
+        userPanel.add(getUserButton);
+
+        JPanel booksPanel = new JPanel();
+        booksPanel.setLayout(null);
+        booksPanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"),
+                "Books", TitledBorder.LEADING, TitledBorder.TOP,
+                null, new Color(0, 0, 0)));
+        booksPanel.setBounds(10, 148, 489, 190);
+        viewTabPanel.add(booksPanel);
+
+        JScrollPane scrollPane = new JScrollPane();
+        scrollPane.setBounds(10, 25, 469, 134);
+        booksPanel.add(scrollPane);
+
+        String[] columnNames = { "Title", "ISBN", "Author", "Genre" };
+        DefaultTableModel model = new DefaultTableModel(0, columnNames.length) ;
+        model.setColumnIdentifiers(columnNames);
+
+        booksTable = new JTable(model) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
+        booksTable.getTableHeader().setReorderingAllowed(false);
+        TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(booksTable.getModel());
+        booksTable.setRowSorter(sorter);
+
+        List<RowSorter.SortKey> sortKeys = new ArrayList<>(25);
+        sortKeys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
+        sorter.setSortKeys(sortKeys);
+
+        scrollPane.setViewportView(booksTable);
+
+        final JLabel bookCountLabel = new JLabel("0 Book(s)");
+        bookCountLabel.setBounds(433, 165, 46, 14);
+        booksPanel.add(bookCountLabel);
+
+        getUserButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                if (usernameField.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(getFrame(), "You should fill the username.",
+                            "Error", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+
+                User user = UserController.getInstance().getUser(usernameField.getText());
+                if (user == null) {
+                    JOptionPane.showMessageDialog(getFrame(), "The user could not find.",
+                            "Error", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+
+                // just for update something
+                DefaultTableModel tableModel = (DefaultTableModel) booksTable.getModel();
+                for (int i = 0; i < tableModel.getRowCount(); ++i) {
+                    tableModel.removeRow(i);
+                }
+
+                ((DefaultTableModel) booksTable.getModel()).addRow(
+                        new Object[]{ "Harry Potter", "123456", "JKR", "Fantasy Fiction" });
+                bookCountLabel.setText("1 Book(s)");
+
+                // TODO: get books of the user
+            }
+        });
+    }
+
+    public JFrame getFrame() {
+        return frame;
+    }
 }

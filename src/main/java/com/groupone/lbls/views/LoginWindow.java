@@ -132,10 +132,15 @@ public class LoginWindow {
         button.setBounds(155, 25, 115, 23);
         panel_2.add(button);
         btnLoginButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
+            public void actionPerformed(ActionEvent actionEvent) {
                 String username = usernameField.getText();
                 String password = String.valueOf(passwordField.getPassword());
-                // TODO: validate username and password. ie: is empty etc.
+                if (username.isEmpty() || password.isEmpty()) {
+                    JOptionPane.showMessageDialog(frmLibraryBookLoan,
+                            "The fields are mandatory.",
+                            "Error", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
 
                 User user;
                 MainWindow mainWindow;
@@ -143,18 +148,18 @@ public class LoginWindow {
                     user = UserController.getInstance().authenticate(username, password);
                     switch (user.getRole()) {
                         case LIBRARIAN:
-                            mainWindow = new MainLibrarianWindow();
+                            mainWindow = new MainLibrarianWindow(user);
                             break;
                         case CUSTOMER:
-                            mainWindow = new MainCustomerWindow();
+                            mainWindow = new MainCustomerWindow(user);
                             break;
                         default:
-                            throw new Exception("Username/password is wrong.");
+                            throw new Exception("Wrong user role.");
                     }
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(frmLibraryBookLoan,
                             e.getMessage(),
-                            "Authentication Error",
+                            "Error",
                             JOptionPane.WARNING_MESSAGE);
                     usernameField.setText("");
                     passwordField.setText("");
@@ -162,7 +167,6 @@ public class LoginWindow {
                     return;
                 }
                 frmLibraryBookLoan.dispose();
-                mainWindow.setUser(user);
                 mainWindow.getFrame().setVisible(true);
             }
         });
