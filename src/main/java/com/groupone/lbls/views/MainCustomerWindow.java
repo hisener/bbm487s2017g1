@@ -9,6 +9,7 @@ import javax.swing.border.TitledBorder;
 
 public class MainCustomerWindow extends MainWindow {
 
+	//private JFrame frame;
     /**
      * Launch the application.
      */
@@ -71,6 +72,16 @@ public class MainCustomerWindow extends MainWindow {
         panel_1.setLayout(null);
         
         JButton btnSearchBooks = new JButton("Search Books");
+        btnSearchBooks.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent arg0) {
+        		
+        		/* Needs to know where is Search Window is opened */
+        		SearchBooksWindow searchWindow = new SearchBooksWindow(2);
+        		searchWindow.getFrame().setVisible(true);
+        		
+        		frame.dispose();
+        	}
+        });
         btnSearchBooks.setBounds(10, 24, 138, 23);
         panel_1.add(btnSearchBooks);
         

@@ -9,14 +9,24 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
 import java.awt.Font;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+import javax.swing.text.TableView.TableRow;
+
+import com.groupone.lbls.db.BookDOA;
+import com.groupone.lbls.model.UserRole;
+
 import javax.swing.JTable;
 import javax.swing.RowSorter;
 import javax.swing.SortOrder;
@@ -24,18 +34,39 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class SearchBooksWindow {
-
+	
+	public enum OwnerWindows{
+		NULL, LOGIN_WINDOW, CUSTOMER_WINDOW;
+		
+		public static OwnerWindows fromInt(int i) {
+	        switch (i) {
+	            case 1:
+	                return LOGIN_WINDOW;
+	            case 2:
+	                return CUSTOMER_WINDOW;
+	        }
+	        return NULL;
+	    }
+	}
+	
+	private int owner;
 	private JFrame frame;
 	private JTable table;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
-	private JTextField textField_5;
-
+	private JTextField textField_ISBN;
+	private JTextField textField_Title;
+	private JTextField textField_Author;
+	private JTextField textField_Publisher;
+	private JTextField textField_Genre;
+	private JTextField textField_Keywords;
+	
+	private JScrollPane scrollPane;
+	
+	private Object columnNames[] = { "ISBN", "Title", "Author", "Publisher", "Genre", "Keywords"};
+	private Object rowData[][]; // = { {"", "", "", "", "", ""} };
 	/**
 	 * Launch the application.
 	 */
@@ -65,6 +96,12 @@ public class SearchBooksWindow {
 	public SearchBooksWindow() {
 		initialize();
 	}
+	
+	public SearchBooksWindow(int owner)
+	{
+		this.owner = owner;
+		initialize();
+	}
 
 	/**
 	 * Initialize the contents of the frame.
@@ -87,33 +124,51 @@ public class SearchBooksWindow {
 		lblSearchBooks.setBounds(10, 42, 556, 22);
 		frame.getContentPane().add(lblSearchBooks);
 		
-		JScrollPane scrollPane = new JScrollPane();
+		scrollPane = new JScrollPane();
 		scrollPane.setBounds(39, 238, 499, 145);
 		frame.getContentPane().add(scrollPane);
-		
-		Object columnNames[] = { "Title", "ISBN", "Author", "Genre"};
-		Object rowData[][] = { {"Example Book One", "111", "Writer 1", "Sci-fi"}, {"Example Book Two", "222", "Writer 2", "Action"}};
-		
-		table = new JTable(rowData, columnNames)
-		{
-			@Override
-		    public boolean isCellEditable(int row, int column) {
-		        return false;//super.isCellEditable(row, column); //To change body of generated methods, choose Tools | Templates.
-		    }
-		};
-		
-		table.getTableHeader().setReorderingAllowed(false);
-		TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(table.getModel());
-		table.setRowSorter(sorter);
-
-		List<RowSorter.SortKey> sortKeys = new ArrayList<>(25);
-		sortKeys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
-		sorter.setSortKeys(sortKeys);
-
-
-		scrollPane.setViewportView(table);
-		
+			
 		JButton btnSearch = new JButton("Search");
+		btnSearch.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent arg0) {
+				
+				BookDOA bookSearcher = new BookDOA();
+				
+				bookSearcher.getListOfBooks(textField_ISBN.getText(), textField_Title.getText(), textField_Author.getText(),
+						textField_Publisher.getText(), textField_Genre.getText(), textField_Keywords.getText());
+						
+				rowData = bookSearcher.getRowData();
+				
+				if(rowData == null)
+				{		
+					DefaultTableModel dm = new DefaultTableModel(columnNames, 0);					
+					table = new JTable(dm);
+				}
+				else
+				{
+					table = new JTable(rowData, columnNames)
+					{
+						@Override
+					    public boolean isCellEditable(int row, int column) {
+					        return false;
+					    }
+					};
+				}
+
+				table.getTableHeader().setReorderingAllowed(false);
+				TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(table.getModel());
+				table.setRowSorter(sorter);
+
+				List<RowSorter.SortKey> sortKeys = new ArrayList<>(25);
+				sortKeys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
+				sorter.setSortKeys(sortKeys);
+				scrollPane.setViewportView(table);
+				
+				table.repaint();				
+			}
+			
+		});
 		btnSearch.setBounds(240, 196, 89, 23);
 		frame.getContentPane().add(btnSearch);
 		
@@ -121,24 +176,9 @@ public class SearchBooksWindow {
 		label_1.setBounds(57, 95, 46, 14);
 		frame.getContentPane().add(label_1);
 		
-		textField = new JTextField();
-		textField.setColumns(10);
-		textField.setBounds(113, 92, 150, 20);
-		frame.getContentPane().add(textField);
-		
 		JLabel label_2 = new JLabel("Title:");
 		label_2.setBounds(57, 125, 46, 14);
 		frame.getContentPane().add(label_2);
-		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(113, 122, 150, 20);
-		frame.getContentPane().add(textField_1);
-		
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
-		textField_2.setBounds(113, 153, 150, 20);
-		frame.getContentPane().add(textField_2);
 		
 		JLabel label_3 = new JLabel("Author");
 		label_3.setBounds(57, 156, 46, 14);
@@ -156,20 +196,56 @@ public class SearchBooksWindow {
 		label_6.setBounds(285, 156, 61, 14);
 		frame.getContentPane().add(label_6);
 		
-		textField_3 = new JTextField();
-		textField_3.setColumns(10);
-		textField_3.setBounds(356, 92, 158, 20);
-		frame.getContentPane().add(textField_3);
+		textField_ISBN = new JTextField();
+		textField_ISBN.setColumns(10);
+		textField_ISBN.setBounds(113, 92, 150, 20);
+		frame.getContentPane().add(textField_ISBN);
 		
-		textField_4 = new JTextField();
-		textField_4.setColumns(10);
-		textField_4.setBounds(356, 122, 158, 20);
-		frame.getContentPane().add(textField_4);
+		textField_Title = new JTextField();
+		textField_Title.setColumns(10);
+		textField_Title.setBounds(113, 122, 150, 20);
+		frame.getContentPane().add(textField_Title);
 		
-		textField_5 = new JTextField();
-		textField_5.setColumns(10);
-		textField_5.setBounds(356, 153, 158, 20);
-		frame.getContentPane().add(textField_5);
+		textField_Author = new JTextField();
+		textField_Author.setColumns(10);
+		textField_Author.setBounds(113, 153, 150, 20);
+		frame.getContentPane().add(textField_Author);
+		
+		textField_Publisher = new JTextField();
+		textField_Publisher.setColumns(10);
+		textField_Publisher.setBounds(356, 92, 158, 20);
+		frame.getContentPane().add(textField_Publisher);
+		
+		textField_Genre = new JTextField();
+		textField_Genre.setColumns(10);
+		textField_Genre.setBounds(356, 122, 158, 20);
+		frame.getContentPane().add(textField_Genre);
+		
+		textField_Keywords = new JTextField();
+		textField_Keywords.setColumns(10);
+		textField_Keywords.setBounds(356, 153, 158, 20);
+		frame.getContentPane().add(textField_Keywords);
+		
+		this.frame.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent we)
+			{
+				
+				switch (OwnerWindows.fromInt(owner)) {
+				case LOGIN_WINDOW:
+					new LoginWindow().main(null);
+					break;
+					
+				case CUSTOMER_WINDOW:
+					new MainCustomerWindow().main(null);
+					break;
+					
+				default:
+					break;
+				}
+				
+				frame.dispose();
+			}
+		});
 		
 		
 		
@@ -204,4 +280,21 @@ public class SearchBooksWindow {
 		
 
 	}
+	
+	public JFrame getFrame() {
+		return frame;
+	}
+
+	public void setFrame(JFrame frame) {
+		this.frame = frame;
+	}
+	
+	public int getOwner() {
+		return owner;
+	}
+
+	public void setOwner(int owner) {
+		this.owner = owner;
+	}
+
 }

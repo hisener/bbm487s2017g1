@@ -28,8 +28,10 @@ target/
 .idea/
 *.iml
 
+# Form files
+*.form
+
 # Eclipse project files
 .settings/
 .project
 .classpath
-

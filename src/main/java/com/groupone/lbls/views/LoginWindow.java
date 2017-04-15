@@ -129,8 +129,20 @@ public class LoginWindow {
         panel.add(panel_2);
         
         JButton button = new JButton("Search Books");
+        button.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent arg0) {
+        		/* Needs to know where is Search Window is opened */
+        		SearchBooksWindow searchWindow = new SearchBooksWindow(1);
+        		searchWindow.getFrame().setVisible(true);
+        		
+        		frmLibraryBookLoan.dispose();
+        		
+        	}
+        });
         button.setBounds(155, 25, 115, 23);
         panel_2.add(button);
+        
+        
         btnLoginButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 String username = usernameField.getText();
