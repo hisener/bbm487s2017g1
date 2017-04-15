@@ -55,3 +55,53 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2017-03-31 12:00:00
+
+
+--
+-- Table structure for table `book`
+--
+DROP TABLE IF EXISTS `book`;
+
+CREATE TABLE `book` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `ISBN` varchar(100) NOT NULL,
+  `title` varchar(200) NOT NULL,
+  `author` varchar(200) NOT NULL,
+  `genre` varchar(100) NOT NULL,
+  `publisher` varchar(200) NOT NULL,
+  `publish_year` varchar(20) NOT NULL,
+  `quantity` int(10) NOT NULL,
+  `keywords` varchar(200) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  UNIQUE KEY `ISBN_UNIQUE` (`ISBN`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `book`
+--
+
+LOCK TABLES `book` WRITE;
+
+INSERT INTO `lbls`.`book`
+(`id`,
+`ISBN`,
+`title`,
+`author`,
+`genre`,
+`publisher`,
+`publish_year`,
+`quantity`,
+`keywords`)
+VALUES
+(1,
+'9750802942',
+'Harry Potter and the Philosopher\'s Stone',
+'J. K. Rowling',
+'Fantasy Fiction',
+'Bloomsbury',
+'2014',
+1,
+'Harry Potter');
+
+UNLOCK TABLES;
