@@ -1,4 +1,7 @@
 package com.groupone.lbls.views;
+import com.groupone.lbls.controller.BookController;
+import com.groupone.lbls.model.Book;
+
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -14,6 +17,7 @@ import java.util.List;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.JScrollPane;
@@ -84,33 +88,39 @@ public class LibrarianAllBooks {
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 73, 564, 257);
 		panel.add(scrollPane);
-		
-		Object columnNames[] = { "Title", "ISBN", "Author", "Genre"};
-		Object rowData[][] = { {"Example Book One", "111", "Writer 1", "Sci-fi"},
-				{"Example Book Two", "222", "Writer 2", "Sci-fi"},
-				{"Example Book Three", "333", "Writer 3", "Art"},
-				{"Example Book Four", "444", "Writer 4", "Crime"},};
-		
-		table = new JTable(rowData, columnNames)
+
+		String[] columnNames= { "Title", "ISBN", "Author", "Genre"};
+		DefaultTableModel model = new DefaultTableModel(1, columnNames.length) ;
+		model.setColumnIdentifiers(columnNames);
+
+		table = new JTable(model)
 		{
 			@Override
 		    public boolean isCellEditable(int row, int column) {
 		        return false;
 		    }
 		};
-		
-		table.getTableHeader().setReorderingAllowed(false);
-		TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(table.getModel());
-		table.setRowSorter(sorter);
 
-		List<RowSorter.SortKey> sortKeys = new ArrayList<>(25);
-		sortKeys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
-		sorter.setSortKeys(sortKeys);
 		scrollPane.setViewportView(table);
-		
-		JLabel lblBooks = new JLabel("4 Book(s)");
+
+		ArrayList<Book> books= BookController.getAllBooks();
+
+		((DefaultTableModel) table.getModel()).removeRow(0);
+
+		for (int i = 0; i < books.size(); i++) {
+			Book book = books.get(i);
+			((DefaultTableModel) table.getModel()).addRow(
+					new Object[]{book.getTitle(), book.getISBN(), book.getAuthor(),book.getGenre()});
+		}
+
+
+		JLabel lblBooks = new JLabel(books.size()+" Book(s)");
 		lblBooks.setBounds(528, 336, 46, 14);
 		panel.add(lblBooks);
+	}
+
+	public JFrame getFrame() {
+		return frame;
 	}
 
 }

@@ -13,6 +13,8 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.TitledBorder;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JButton;
@@ -55,6 +57,7 @@ public class MainLibrarianWindow extends MainWindow {
      * Initialize the contents of the frame.
      */
     private void initialize() {
+
         frame = new JFrame("Library Book Loan System - Librarian: %username%");
         frame.setBounds(100, 100, 441, 224);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -108,5 +111,18 @@ public class MainLibrarianWindow extends MainWindow {
         label.setFont(new Font("Segoe UI Light", Font.PLAIN, 18));
         label.setBounds(10, 11, 415, 25);
         panel.add(label);
+
+        btnBookOperations.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                new LibrarianBookOperations().getFrame().setVisible(true);
+            }
+        });
+        btnViewAllBooks.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new LibrarianAllBooks().getFrame().setVisible(true);
+            }
+        });
     }
 }

@@ -1,4 +1,7 @@
 package com.groupone.lbls.views;
+import com.groupone.lbls.controller.BookController;
+import com.groupone.lbls.model.Book;
+
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -11,18 +14,15 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
+import javax.swing.table.DefaultTableModel;
 
 import java.awt.Color;
 import javax.swing.JTabbedPane;
 import java.awt.SystemColor;
-import java.util.ArrayList;
-import java.util.List;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JTextField;
-import javax.swing.RowSorter;
-import javax.swing.SortOrder;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -30,24 +30,6 @@ import javax.swing.JTable;
 public class LibrarianBookOperations {
 
 	private JFrame frame;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
-	private JTextField textField_5;
-	private JTextField textField_6;
-	private JTextField textField_14;
-	private JTextField textField_7;
-	private JTextField textField_8;
-	private JTextField textField_9;
-	private JTextField textField_10;
-	private JTextField textField_11;
-	private JTextField textField_12;
-	private JTextField textField_13;
-	private JTable table;
-	private JTextField textField_16;
-	private JTable table_1;
 
 	/**
 	 * Launch the application.
@@ -83,6 +65,7 @@ public class LibrarianBookOperations {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+
 		frame = new JFrame("Library Book Loan System - Librarian: %username% ");
 		frame.setBounds(100, 100, 600, 418);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -107,260 +90,503 @@ public class LibrarianBookOperations {
 		tabbedPane.setBackground(Color.LIGHT_GRAY);
 		tabbedPane.setBounds(10, 73, 564, 295);
 		panel.add(tabbedPane);
-		
+
+
+		initCreateTab(tabbedPane);
+		initUpdateTab(tabbedPane);
+		initDeleteTab(tabbedPane);
+		initViewTab(tabbedPane);
+	}
+
+	private void initCreateTab(JTabbedPane tabbedPane) {
+
+		final JTextField ISBNfield, titleField, authorField, publisherField;
+		final JTextField genreField, keywordsField, quantityField;
+
 		JPanel panel_1 = new JPanel();
 		tabbedPane.addTab("Create", null, panel_1, null);
 		panel_1.setLayout(null);
 		panel_1.setBackground(SystemColor.menu);
-		
+
 		JLabel label_1 = new JLabel("ISBN:");
 		label_1.setBounds(10, 14, 46, 14);
 		panel_1.add(label_1);
-		
-		textField = new JTextField();
-		textField.setColumns(10);
-		textField.setBounds(66, 11, 181, 20);
-		panel_1.add(textField);
-		
+
+		ISBNfield = new JTextField();
+		ISBNfield.setColumns(10);
+		ISBNfield.setBounds(66, 11, 181, 20);
+		panel_1.add(ISBNfield);
+
 		JLabel label_2 = new JLabel("Title:");
 		label_2.setBounds(10, 44, 46, 14);
 		panel_1.add(label_2);
-		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(66, 41, 181, 20);
-		panel_1.add(textField_1);
-		
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
-		textField_2.setBounds(66, 72, 181, 20);
-		panel_1.add(textField_2);
-		
+
+		titleField = new JTextField();
+		titleField.setColumns(10);
+		titleField.setBounds(66, 41, 181, 20);
+		panel_1.add(titleField);
+
+		authorField = new JTextField();
+		authorField.setColumns(10);
+		authorField.setBounds(66, 72, 181, 20);
+		panel_1.add(authorField);
+
 		JLabel label_3 = new JLabel("Author:");
 		label_3.setBounds(10, 75, 46, 14);
 		panel_1.add(label_3);
-		
+
 		JLabel label_4 = new JLabel("Publisher:");
 		label_4.setBounds(274, 14, 60, 14);
 		panel_1.add(label_4);
-		
+
 		JLabel label_5 = new JLabel("Genre:");
 		label_5.setBounds(273, 44, 46, 14);
 		panel_1.add(label_5);
-		
+
 		JLabel label_6 = new JLabel("Keywords:");
 		label_6.setBounds(273, 75, 61, 14);
 		panel_1.add(label_6);
-		
-		textField_3 = new JTextField();
-		textField_3.setColumns(10);
-		textField_3.setBounds(344, 11, 194, 20);
-		panel_1.add(textField_3);
-		
-		textField_4 = new JTextField();
-		textField_4.setColumns(10);
-		textField_4.setBounds(344, 41, 194, 20);
-		panel_1.add(textField_4);
-		
-		textField_5 = new JTextField();
-		textField_5.setColumns(10);
-		textField_5.setBounds(344, 72, 194, 20);
-		panel_1.add(textField_5);
-		
-		JButton button = new JButton("Create Book");
-		button.setBounds(224, 144, 110, 23);
-		panel_1.add(button);
-		
+
+		publisherField = new JTextField();
+		publisherField.setColumns(10);
+		publisherField.setBounds(344, 11, 194, 20);
+		panel_1.add(publisherField);
+
+		genreField = new JTextField();
+		genreField.setColumns(10);
+		genreField.setBounds(344, 41, 194, 20);
+		panel_1.add(genreField);
+
+		keywordsField = new JTextField();
+		keywordsField.setColumns(10);
+		keywordsField.setBounds(344, 72, 194, 20);
+		panel_1.add(keywordsField);
+
+		JButton createBookButton = new JButton("Create Book");
+		createBookButton.setBounds(224, 144, 110, 23);
+		panel_1.add(createBookButton);
+
 		JLabel label_7 = new JLabel("Quantity:");
 		label_7.setBounds(10, 106, 46, 14);
 		panel_1.add(label_7);
-		
-		textField_6 = new JTextField();
-		textField_6.setColumns(10);
-		textField_6.setBounds(66, 103, 181, 20);
-		panel_1.add(textField_6);
-		
+
+		quantityField = new JTextField();
+		quantityField.setColumns(10);
+		quantityField.setBounds(66, 103, 181, 20);
+		panel_1.add(quantityField);
+
+		createBookButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent actionEvent) {
+
+				String ISBN=ISBNfield.getText().trim();
+				String title=titleField.getText().trim();
+				String author=authorField.getText().trim();
+				String publisher=publisherField.getText().trim();
+				String genre=genreField.getText().trim();
+				String keywords=keywordsField.getText().trim();
+				String quantity=quantityField.getText().trim();
+
+				try {
+					if(!(BookController.checkFields(ISBN, title, author, publisher,
+							genre, keywords, quantity)))
+						throw new Exception("You should fill the field(s).");
+
+					if(!(BookController.checkQuantityFormat(quantity)))
+						throw new Exception("Quantity is wrong format.");
+
+					if(BookController.getBook(ISBN)!=null)
+						throw new Exception("There is a book for this ISBN number.");
+
+					if(!(BookController.addBook(ISBN, title, author, publisher, genre, keywords, quantity)))
+						throw new Exception("The book could not be added.");
+					JOptionPane.showMessageDialog(frame,"Book was added.",
+							"Success",JOptionPane.INFORMATION_MESSAGE);
+					BookController.setDefaultFieldValues(ISBNfield,titleField,authorField,
+							publisherField,genreField, keywordsField, quantityField);
+
+				}catch (Exception e){
+					JOptionPane.showMessageDialog(frame,
+							e.getMessage(),
+							"Error",
+							JOptionPane.WARNING_MESSAGE);
+
+					BookController.setDefaultFieldValues(ISBNfield,titleField,authorField,
+							publisherField,genreField, keywordsField, quantityField);
+					return;
+				}
+			}
+		});
+	}
+	private void initUpdateTab(JTabbedPane tabbedPane) {
+
+		final JTextField ISBNfield, titleField, authorField;
+		final JTextField publisherField, genreField, keywordsField, quantityField;
+
 		JPanel panel_2 = new JPanel();
 		panel_2.setLayout(null);
 		tabbedPane.addTab("Update", null, panel_2, null);
-		
-		JButton button_1 = new JButton("Get Book");
-		button_1.setBounds(105, 134, 110, 23);
-		panel_2.add(button_1);
-		
-		JButton button_2 = new JButton("Update Book");
-		button_2.setBounds(386, 134, 110, 23);
-		panel_2.add(button_2);
-		
+
+		JButton getBookButton = new JButton("Get Book");
+		getBookButton.setBounds(105, 134, 110, 23);
+		panel_2.add(getBookButton);
+
+		final JButton updateBookButton = new JButton("Update Book");
+		updateBookButton.setBounds(386, 134, 110, 23);
+		panel_2.add(updateBookButton);
+
 		JPanel panel_3 = new JPanel();
 		panel_3.setLayout(null);
 		panel_3.setBorder(new TitledBorder(null, "Book Information", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panel_3.setBounds(10, 204, 539, 52);
 		panel_2.add(panel_3);
-		
+
 		JLabel label_14 = new JLabel("Book is not taken by any customer");
 		label_14.setBounds(10, 23, 449, 14);
 		panel_3.add(label_14);
-		
+
 		JLabel label_8 = new JLabel("ISBN:");
 		label_8.setBounds(10, 14, 46, 14);
 		panel_2.add(label_8);
-		
-		textField_7 = new JTextField();
-		textField_7.setColumns(10);
-		textField_7.setBounds(66, 11, 181, 20);
-		panel_2.add(textField_7);
-		
+
+		ISBNfield = new JTextField();
+		ISBNfield.setColumns(10);
+		ISBNfield.setBounds(66, 11, 181, 20);
+		panel_2.add(ISBNfield);
+
 		JLabel label_9 = new JLabel("Title:");
 		label_9.setBounds(10, 44, 46, 14);
 		panel_2.add(label_9);
-		
-		textField_8 = new JTextField();
-		textField_8.setColumns(10);
-		textField_8.setBounds(66, 41, 181, 20);
-		panel_2.add(textField_8);
-		
-		textField_9 = new JTextField();
-		textField_9.setColumns(10);
-		textField_9.setBounds(66, 72, 181, 20);
-		panel_2.add(textField_9);
-		
+
+		titleField = new JTextField();
+		titleField.setColumns(10);
+		titleField.setBounds(66, 41, 181, 20);
+		panel_2.add(titleField);
+
+		authorField = new JTextField();
+		authorField.setColumns(10);
+		authorField.setBounds(66, 72, 181, 20);
+		panel_2.add(authorField);
+
 		JLabel label_10 = new JLabel("Author:");
 		label_10.setBounds(10, 75, 46, 14);
 		panel_2.add(label_10);
-		
+
 		JLabel label_11 = new JLabel("Publisher:");
 		label_11.setBounds(274, 14, 60, 14);
 		panel_2.add(label_11);
-		
+
 		JLabel label_12 = new JLabel("Genre:");
 		label_12.setBounds(273, 44, 46, 14);
 		panel_2.add(label_12);
-		
+
 		JLabel label_13 = new JLabel("Keywords:");
 		label_13.setBounds(273, 75, 61, 14);
 		panel_2.add(label_13);
-		
-		textField_10 = new JTextField();
-		textField_10.setColumns(10);
-		textField_10.setBounds(344, 11, 194, 20);
-		panel_2.add(textField_10);
-		
-		textField_11 = new JTextField();
-		textField_11.setColumns(10);
-		textField_11.setBounds(344, 41, 194, 20);
-		panel_2.add(textField_11);
-		
-		textField_12 = new JTextField();
-		textField_12.setColumns(10);
-		textField_12.setBounds(344, 72, 194, 20);
-		panel_2.add(textField_12);
-		
+
+		publisherField = new JTextField();
+		publisherField.setColumns(10);
+		publisherField.setBounds(344, 11, 194, 20);
+		panel_2.add(publisherField);
+
+		genreField = new JTextField();
+		genreField.setColumns(10);
+		genreField.setBounds(344, 41, 194, 20);
+		panel_2.add(genreField);
+
+		keywordsField = new JTextField();
+		keywordsField.setColumns(10);
+		keywordsField.setBounds(344, 72, 194, 20);
+		panel_2.add(keywordsField);
+
 		JLabel label_15 = new JLabel("Quantity:");
 		label_15.setBounds(10, 106, 46, 14);
 		panel_2.add(label_15);
-		
-		textField_13 = new JTextField();
-		textField_13.setColumns(10);
-		textField_13.setBounds(66, 103, 181, 20);
-		panel_2.add(textField_13);
-		
+
+		quantityField = new JTextField();
+		quantityField.setColumns(10);
+		quantityField.setBounds(66, 103, 181, 20);
+		panel_2.add(quantityField);
+
+		updateBookButton.setEnabled(false);
+		getBookButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent actionEvent) {
+
+				String ISBN=ISBNfield.getText().trim();
+				//String title=titleField.getText();
+				//String author=authorField.getText();
+				//String quantity=quantityField.getText();
+
+				try {
+					if(ISBN.isEmpty())
+						throw new Exception("You should fill the ISBN field.");
+
+					Book book=BookController.getBook(ISBN);
+					if(book==null)
+						throw new Exception("The book could not find.");
+
+					titleField.setText(book.getTitle());
+					authorField.setText(book.getAuthor());
+					publisherField.setText(book.getPublisher());
+					genreField.setText(book.getGenre());
+					keywordsField.setText(book.getKeywords());
+					quantityField.setText(String.valueOf(book.getQuantity()));
+
+					updateBookButton.putClientProperty("id", book.getId());
+					updateBookButton.setEnabled(true);
+
+				}catch (Exception e2){
+					JOptionPane.showMessageDialog(frame,
+							e2.getMessage(),
+							"Error",
+							JOptionPane.WARNING_MESSAGE);
+
+					BookController.setDefaultFieldValues(ISBNfield,titleField,authorField,
+							publisherField,genreField, keywordsField, quantityField);
+					return;
+				}
+			}
+		});
+
+		updateBookButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent actionEvent) {
+
+				String ISBN=ISBNfield.getText().trim();
+				String title=titleField.getText().trim();
+				String author=authorField.getText().trim();
+				String publisher=publisherField.getText().trim();
+				String genre=genreField.getText().trim();
+				String keywords=keywordsField.getText().trim();
+				String quantity=quantityField.getText().trim();
+
+				try {
+					if(!(BookController.checkFields(ISBN, title, author, publisher,
+							genre, keywords, quantity)))
+						throw new Exception("You should fill the field(s).");
+
+					if(!(BookController.checkQuantityFormat(quantity)))
+						throw new Exception("Quantity is wrong format.");
+
+					if(!(BookController.updateBook((String.valueOf(updateBookButton.getClientProperty("id")))
+							,ISBN, title, author, publisher, genre, keywords, quantity)))
+						throw new Exception("The book could not be updated.");
+
+					JOptionPane.showMessageDialog(frame,"Book was updated.",
+							"Success",JOptionPane.INFORMATION_MESSAGE);
+
+					BookController.setDefaultFieldValues(ISBNfield,titleField,authorField,
+							publisherField,genreField, keywordsField, quantityField);
+
+				}catch (Exception e3){
+					JOptionPane.showMessageDialog(frame,
+							e3.getMessage(),
+							"Error",
+							JOptionPane.WARNING_MESSAGE);
+
+					BookController.setDefaultFieldValues(ISBNfield,titleField,authorField,
+							publisherField,genreField, keywordsField, quantityField);
+					return;
+				}
+			}
+		});
+
+	}
+	private void initDeleteTab(JTabbedPane tabbedPane) {
+
+		final JTable table;
+		final JTextField ISBNfield;
+
 		JPanel panel_4 = new JPanel();
 		panel_4.setLayout(null);
 		tabbedPane.addTab("Delete", null, panel_4, null);
-		
+
 		JLabel label_16 = new JLabel("ISBN:");
 		label_16.setBounds(164, 14, 33, 14);
 		panel_4.add(label_16);
-		
-		textField_14 = new JTextField();
-		textField_14.setColumns(10);
-		textField_14.setBounds(207, 11, 163, 20);
-		panel_4.add(textField_14);
-		
-		JButton btnGetBook = new JButton("Get Book");
-		btnGetBook.setBounds(164, 128, 89, 23);
-		panel_4.add(btnGetBook);
-		
-		JButton btnDeleteBook = new JButton("Delete Book");
-		btnDeleteBook.setBounds(281, 128, 89, 23);
-		panel_4.add(btnDeleteBook);
-		
+
+		ISBNfield = new JTextField();
+		ISBNfield.setColumns(10);
+		ISBNfield.setBounds(207, 11, 163, 20);
+		panel_4.add(ISBNfield);
+
+		JButton getBookButton = new JButton("Get Book");
+		getBookButton.setBounds(164, 128, 89, 23);
+		panel_4.add(getBookButton);
+
+		final JButton deleteBookButton = new JButton("Delete Book");
+		deleteBookButton.setBounds(281, 128, 89, 23);
+		panel_4.add(deleteBookButton);
+
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 57, 539, 43);
 		panel_4.add(scrollPane);
-		
-		Object columnNames[] = { "Title", "ISBN", "Author", "Genre"};
-		Object rowData[][] = { {"Example Book One", "111", "Writer 1", "Sci-fi"} };
-		
-		table = new JTable(rowData, columnNames)
+
+		String[] columnNames = { "Title", "ISBN", "Author", "Genre"};
+		DefaultTableModel model = new DefaultTableModel(1, columnNames.length) ;
+		model.setColumnIdentifiers(columnNames);
+
+		table = new JTable(model)
 		{
 			@Override
-		    public boolean isCellEditable(int row, int column) {
-		        return false;
-		    }
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
 		};
-		
-		table.getTableHeader().setReorderingAllowed(false);
-		TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(table.getModel());
-		table.setRowSorter(sorter);
 
-		List<RowSorter.SortKey> sortKeys = new ArrayList<>(25);
-		sortKeys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
-		sorter.setSortKeys(sortKeys);
 		scrollPane.setViewportView(table);
-		
+
+
+		deleteBookButton.setEnabled(false);
+		getBookButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent actionEvent) {
+
+				try{
+					String ISBN=ISBNfield.getText().trim();
+
+					if(ISBN.isEmpty())
+						throw new Exception("You should fill the ISBN.");
+
+					Book book=BookController.getBook(ISBN);
+					if(book==null)
+						throw new Exception("The book could not find.");
+
+					if(table.getModel().getRowCount()==1)
+						((DefaultTableModel) table.getModel()).removeRow(0);
+					((DefaultTableModel) table.getModel()).addRow(
+							new Object[]{book.getTitle(), book.getISBN(), book.getAuthor(), book.getGenre()});
+
+					deleteBookButton.putClientProperty("id", book.getId());
+					deleteBookButton.setEnabled(true);
+
+				}catch (Exception e1){
+					JOptionPane.showMessageDialog(frame,
+							e1.getMessage(),
+							"Error",
+							JOptionPane.WARNING_MESSAGE);
+
+					ISBNfield.setText("");
+					return;
+				}
+			}
+		});
+
+		deleteBookButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent actionEvent) {
+
+				try{
+					if(!(BookController.deleteBook(String.valueOf(deleteBookButton.getClientProperty("id")))))
+						throw new Exception("The book could not be deleted.");
+
+					JOptionPane.showMessageDialog(frame,"Book was deleted.",
+							"Success",JOptionPane.INFORMATION_MESSAGE);
+					ISBNfield.setText("");
+					((DefaultTableModel) table.getModel()).removeRow(0);
+					deleteBookButton.setEnabled(false);
+
+				}catch (Exception e){
+					JOptionPane.showMessageDialog(frame,
+							e.getMessage(),
+							"Error",
+							JOptionPane.WARNING_MESSAGE);
+
+					ISBNfield.setText("");
+					return;
+				}
+
+			}
+		});
+
+	}
+	private void initViewTab(JTabbedPane tabbedPane) {
+
+		final JTable table;
+		final JTextField ISBNfield;
+
 		JPanel panel_5 = new JPanel();
 		tabbedPane.addTab("View", null, panel_5, null);
 		panel_5.setLayout(null);
-		
+
 		JPanel panel_6 = new JPanel();
 		panel_6.setLayout(null);
 		panel_6.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Book", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panel_6.setBounds(10, 11, 539, 89);
 		panel_5.add(panel_6);
-		
+
 		JLabel lblIsbn = new JLabel("ISBN:");
 		lblIsbn.setBounds(34, 26, 100, 14);
 		panel_6.add(lblIsbn);
-		
-		textField_16 = new JTextField();
-		textField_16.setColumns(10);
-		textField_16.setBounds(144, 23, 314, 20);
-		panel_6.add(textField_16);
-		
-		JButton btnGetBook_1 = new JButton("Get Book");
-		btnGetBook_1.setBounds(369, 54, 89, 23);
-		panel_6.add(btnGetBook_1);
-		
+
+		ISBNfield = new JTextField();
+		ISBNfield.setColumns(10);
+		ISBNfield.setBounds(144, 23, 314, 20);
+		panel_6.add(ISBNfield);
+
+		JButton getBookButton = new JButton("Get Book");
+		getBookButton.setBounds(369, 54, 89, 23);
+		panel_6.add(getBookButton);
+
 		JPanel panel_7 = new JPanel();
 		panel_7.setLayout(null);
 		panel_7.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Information", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panel_7.setBounds(10, 111, 539, 145);
 		panel_5.add(panel_7);
-		
+
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBounds(10, 21, 519, 113);
 		panel_7.add(scrollPane_1);
-		
-		Object columnNames_1[] = { "Title", "Author", "Genre", "Owner Name", "Owner Email"};
-		Object rowData_1[][] = { {"Example Book One", "Writer 1", "Sci-fi", "Example User One", "example@domain.edu.tr"} };
-		
-		table_1 = new JTable(rowData_1, columnNames_1)
+
+		String[] columnNames_1 = { "Title", "Author", "Genre", "Owner Name", "Owner Email"};
+		DefaultTableModel model2 = new DefaultTableModel(1, columnNames_1.length) ;
+		model2.setColumnIdentifiers(columnNames_1);
+
+		table = new JTable(model2)
 		{
 			@Override
-		    public boolean isCellEditable(int row, int column) {
-		        return false;
-		    }
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
 		};
-		
-		table_1.getTableHeader().setReorderingAllowed(false);
-		TableRowSorter<TableModel> sorter_2 = new TableRowSorter<TableModel>(table_1.getModel());
-		table_1.setRowSorter(sorter_2);
 
-		
-		scrollPane_1.setViewportView(table_1);
-		
-		
+		scrollPane_1.setViewportView(table);
+
+
+		getBookButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent actionEvent) {
+
+				try{
+					String ISBN=ISBNfield.getText().trim();
+
+					if(ISBN.isEmpty())
+						throw new Exception("You should fill the ISBN.");
+
+					Book book=BookController.getBook(ISBN);
+					if(book==null)
+						throw new Exception("The book could not find.");
+
+					((DefaultTableModel) table.getModel()).removeRow(0);
+					((DefaultTableModel) table.getModel()).addRow(
+							new Object[]{book.getISBN(), book.getAuthor(), book.getQuantity(), book.getPublisher(),
+									book.getGenre(), book.getKeywords()});
+
+				}catch (Exception e1){
+					JOptionPane.showMessageDialog(frame,
+							e1.getMessage(),
+							"Error",
+							JOptionPane.WARNING_MESSAGE);
+
+					ISBNfield.setText("");
+					return;
+				}
+			}
+		});
+	}
+
+	public JFrame getFrame() {
+		return frame;
 	}
 }
