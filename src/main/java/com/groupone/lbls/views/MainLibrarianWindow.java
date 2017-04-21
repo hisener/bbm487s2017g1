@@ -93,5 +93,18 @@ public class MainLibrarianWindow extends MainWindow {
                 new LibrarianUserOperations(username).getFrame().setVisible(true);
             }
         });
+
+        btnBookOperations.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                new LibrarianBookOperations().getFrame().setVisible(true);
+            }
+        });
+        btnViewAllBooks.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new LibrarianAllBooks().getFrame().setVisible(true);
+            }
+        });
     }
 }
