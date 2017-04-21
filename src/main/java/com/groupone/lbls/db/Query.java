@@ -168,11 +168,10 @@ public class Query {
                 author=resultSet.getString("author");
                 quantity=resultSet.getInt("quantity");
                 publisher=resultSet.getString("publisher");
-                publisherYear=resultSet.getString("publisher_year");
 
                 genre=resultSet.getString("genre");
                 keywords=resultSet.getString("keywords");
-                book = new Book(id, ISBN, title, author, genre, publisher, publisherYear, quantity, keywords);
+                book = new Book(id, ISBN, title, author, quantity, publisher, genre, keywords);
 
                 books.add(book);
             }
@@ -206,11 +205,10 @@ public class Query {
             String author=resultSet.getString("author");
             int quantity=resultSet.getInt("quantity");
             String publisher=resultSet.getString("publisher");
-            String publisherYear=resultSet.getString("publisher_year");
             String genre=resultSet.getString("genre");
             String keywords=resultSet.getString("keywords");
 
-            return new Book(id, ISBN, title, author, genre, publisher, publisherYear, quantity, keywords);
+            return new Book(id, ISBN, title, author, quantity, publisher, genre, keywords);
 
         }catch (Exception e) {
             e.printStackTrace();

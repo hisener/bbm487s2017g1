@@ -35,9 +35,7 @@ public class BookController {
 
     public static boolean checkQuantityFormat(String quantity){
 
-        boolean check2=quantity.trim().matches("[0-9]+");
-
-        return check2;
+        return quantity.trim().matches("[0-9]+");
     }
 
     public static boolean checkFields(String ISBNfield, String titleField, String authorField,
