@@ -1,53 +1,27 @@
 package com.groupone.lbls.views;
-import java.awt.EventQueue;
+import com.groupone.lbls.model.User;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.TitledBorder;
 import java.awt.Color;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
 
 public class MainLibrarianWindow extends MainWindow {
 
     /**
-     * Launch the application.
-     */
-    public static void main(String[] args) {
-        
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-          java.util.logging.Logger.getLogger(LoginWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-          JOptionPane.showMessageDialog(null, ex.getMessage());
-        }
-        
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    MainLibrarianWindow window = new MainLibrarianWindow();
-                    window.frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    /**
      * Create the application.
      */
-    public MainLibrarianWindow() {
+    public MainLibrarianWindow(User user) {
+        this.setUser(user);
         initialize();
     }
 
@@ -55,7 +29,9 @@ public class MainLibrarianWindow extends MainWindow {
      * Initialize the contents of the frame.
      */
     private void initialize() {
-        frame = new JFrame("Library Book Loan System - Librarian: %username%");
+        final String username = this.getUser().getUsername();
+
+        frame = new JFrame("Library Book Loan System - Librarian: " + username);
         frame.setBounds(100, 100, 441, 224);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
@@ -75,14 +51,16 @@ public class MainLibrarianWindow extends MainWindow {
             }
         });
         
-        JLabel lblWelcomeusername = new JLabel("Welcome, %username%");
+        JLabel lblWelcomeusername = new JLabel("Welcome, " + username);
         lblWelcomeusername.setHorizontalAlignment(SwingConstants.CENTER);
         lblWelcomeusername.setFont(new Font("Segoe UI Light", Font.PLAIN, 14));
         lblWelcomeusername.setBounds(10, 40, 426, 22);
         panel.add(lblWelcomeusername);
         
         JPanel panel_1 = new JPanel();
-        panel_1.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Operations", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+        panel_1.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"),
+                "Operations", TitledBorder.LEADING, TitledBorder.TOP, null,
+                new Color(0, 0, 0)));
         panel_1.setBounds(10, 73, 405, 101);
         panel.add(panel_1);
         panel_1.setLayout(null);
@@ -108,5 +86,12 @@ public class MainLibrarianWindow extends MainWindow {
         label.setFont(new Font("Segoe UI Light", Font.PLAIN, 18));
         label.setBounds(10, 11, 415, 25);
         panel.add(label);
+
+        btnUserOperations.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                new LibrarianUserOperations(username).getFrame().setVisible(true);
+            }
+        });
     }
 }
