@@ -11,18 +11,15 @@ public class Book {
     private int quantity;
     private String keywords;
 
-	public Book(int id, String ISBN, String title, String author, String genre, String publisher, String publisherYear,
-			int quantity, String keywords) {
-		super();
-		this.id = id;
-		this.ISBN = ISBN;
-		this.title = title;
-		this.author = author;
-		this.genre = genre;
-		this.publisher = publisher;
-		this.publisherYear = publisherYear;
-		this.quantity = quantity;
-		this.keywords = keywords;
+	public Book(int id, String ISBN, String title, String author, int quantity, String publisher, String genre, String keywords){
+		this.id=id;
+		this.ISBN=ISBN;
+		this.title=title;
+		this.author=author;
+		this.quantity=quantity;
+		this.publisher=publisher;
+		this.genre=genre;
+		this.keywords=keywords;
 	}
 
 	public int getId() {
