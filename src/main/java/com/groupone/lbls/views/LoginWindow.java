@@ -95,13 +95,13 @@ public class LoginWindow {
         
         usernameField = new JTextField();
         usernameField.addKeyListener(new KeyAdapter() {
-        	@Override
-        	public void keyPressed(KeyEvent arg0) {
-        		if(arg0.getKeyCode() == KeyEvent.VK_ENTER)
-        		{
-        			passwordField.requestFocus();
-        		}
-        	}
+            @Override
+            public void keyPressed(KeyEvent arg0) {
+                if(arg0.getKeyCode() == KeyEvent.VK_ENTER)
+                {
+                    passwordField.requestFocus();
+                }
+            }
         });
         usernameField.setColumns(10);
         usernameField.setBounds(145, 27, 224, 20);
@@ -109,13 +109,13 @@ public class LoginWindow {
         
         passwordField = new JPasswordField();
         passwordField.addKeyListener(new KeyAdapter() {
-        	@Override
-        	public void keyPressed(KeyEvent arg0) {
-        		if(arg0.getKeyCode() == KeyEvent.VK_ENTER)
-        		{
-        			btnLoginButton.doClick();
-        		}
-        	}
+            @Override
+            public void keyPressed(KeyEvent keyEvent) {
+                if(keyEvent.getKeyCode() == KeyEvent.VK_ENTER)
+                {
+                    btnLoginButton.doClick();
+                }
+            }
         });
         passwordField.setColumns(10);
         passwordField.setBounds(145, 55, 224, 20);
@@ -129,8 +129,16 @@ public class LoginWindow {
         panel.add(panel_2);
         
         JButton button = new JButton("Search Books");
+        button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent actionEvent) {
+                SearchBooksWindow searchWindow = new SearchBooksWindow();
+                searchWindow.getFrame().setVisible(true);
+            }
+        });
         button.setBounds(155, 25, 115, 23);
         panel_2.add(button);
+        
+        
         btnLoginButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
                 String username = usernameField.getText();

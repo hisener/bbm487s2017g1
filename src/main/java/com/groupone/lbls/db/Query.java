@@ -157,7 +157,7 @@ public class Query {
             ResultSet resultSet = statement.executeQuery();
 
             int id, quantity;
-            String ISBN, title, author, publisher, genre, keywords;
+            String ISBN, title, author, publisher, publisherYear, genre, keywords;
             Book book;
             ArrayList<Book> books = new ArrayList<>();
 
@@ -168,9 +168,12 @@ public class Query {
                 author=resultSet.getString("author");
                 quantity=resultSet.getInt("quantity");
                 publisher=resultSet.getString("publisher");
+                publisherYear=resultSet.getString("publisher_year");
+
                 genre=resultSet.getString("genre");
                 keywords=resultSet.getString("keywords");
-                book=new Book(id, ISBN, title, author, quantity, publisher, genre, keywords);
+                book = new Book(id, ISBN, title, author, genre, publisher, publisherYear, quantity, keywords);
+
                 books.add(book);
             }
 
@@ -203,10 +206,11 @@ public class Query {
             String author=resultSet.getString("author");
             int quantity=resultSet.getInt("quantity");
             String publisher=resultSet.getString("publisher");
+            String publisherYear=resultSet.getString("publisher_year");
             String genre=resultSet.getString("genre");
             String keywords=resultSet.getString("keywords");
 
-            return new Book(id, ISBN, title, author, quantity, publisher, genre, keywords);
+            return new Book(id, ISBN, title, author, genre, publisher, publisherYear, quantity, keywords);
 
         }catch (Exception e) {
             e.printStackTrace();
