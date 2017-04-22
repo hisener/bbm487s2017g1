@@ -10,15 +10,15 @@ import java.util.ArrayList;
 public class BookController {
 
     public static boolean addBook(String ISBN, String title, String author,
-                        String publisher, String genre, String keywords, String quantity){
+                        String publisher, String genre, String keywords, String quantity,String publisherYear){
 
-        return Query.addBook(ISBN, title, author, publisher, genre, keywords, quantity);
+        return Query.addBook(ISBN, title, author, publisher, genre, keywords, quantity,publisherYear);
     }
 
     public static boolean updateBook(String id, String ISBN, String title, String author,
-                           String publisher, String genre, String keywords, String quantity){
+                           String publisher, String genre, String keywords, String quantity,String publisherYear){
 
-        return Query.updateBook(id, ISBN, title, author, publisher, genre, keywords, quantity);
+        return Query.updateBook(id, ISBN, title, author, publisher, genre, keywords, quantity,publisherYear);
     }
 
     public static  boolean deleteBook(String id){

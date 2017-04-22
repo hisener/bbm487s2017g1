@@ -11,7 +11,7 @@ public class Book {
     private int quantity;
     private String keywords;
 
-	public Book(int id, String ISBN, String title, String author, int quantity, String publisher, String genre, String keywords){
+	public Book(int id, String ISBN, String title, String author, int quantity, String publisher, String genre, String keywords,String publisherYear){
 		this.id=id;
 		this.ISBN=ISBN;
 		this.title=title;
@@ -20,6 +20,7 @@ public class Book {
 		this.publisher=publisher;
 		this.genre=genre;
 		this.keywords=keywords;
+		this.publisherYear=publisherYear;
 	}
 
 	public int getId() {

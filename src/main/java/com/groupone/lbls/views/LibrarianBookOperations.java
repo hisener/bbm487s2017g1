@@ -175,7 +175,7 @@ public class LibrarianBookOperations {
 					if(BookController.getBook(ISBN)!=null)
 						throw new Exception("There is a book for this ISBN number.");
 
-					if(!(BookController.addBook(ISBN, title, author, publisher, genre, keywords, quantity)))
+					if(!(BookController.addBook(ISBN, title, author, publisher, genre, keywords, quantity,"0")))
 						throw new Exception("The book could not be added.");
 					JOptionPane.showMessageDialog(frame,"Book was added.",
 							"Success",JOptionPane.INFORMATION_MESSAGE);
@@ -347,7 +347,7 @@ public class LibrarianBookOperations {
 						throw new Exception("Quantity is wrong format.");
 
 					if(!(BookController.updateBook((String.valueOf(updateBookButton.getClientProperty("id")))
-							,ISBN, title, author, publisher, genre, keywords, quantity)))
+							,ISBN, title, author, publisher, genre, keywords, quantity,"0")))
 						throw new Exception("The book could not be updated.");
 
 					JOptionPane.showMessageDialog(frame,"Book was updated.",
