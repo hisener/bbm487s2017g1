@@ -80,7 +80,7 @@ public class BookDOA {
             	String t_genre 		= resultSet.getString("genre");
             	String t_keywords 	= resultSet.getString("keywords");
             	
-                books.add(new Book(0, t_ISBN, t_title, t_author, t_genre, t_publisher, "0", 0, t_keywords));
+                books.add(new Book(0, t_ISBN, t_title, t_author, 0, t_publisher, t_genre, t_keywords,"0"));
             }
 
             if(!books.isEmpty())

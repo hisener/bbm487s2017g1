@@ -32,43 +32,20 @@ public class LibrarianBookOperations {
 	private JFrame frame;
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		}catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-          java.util.logging.Logger.getLogger(LoginWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-          JOptionPane.showMessageDialog(null, ex.getMessage());
-		}
-		
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					LibrarianBookOperations window = new LibrarianBookOperations();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
 	 * Create the application.
 	 */
-	public LibrarianBookOperations() {
-		initialize();
+	public LibrarianBookOperations(String username) {
+		initialize(username);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	private void initialize(String username) {
 
-		frame = new JFrame("Library Book Loan System - Librarian: %username% ");
+		frame = new JFrame("Library Book Loan System - Librarian: " + username);
 		frame.setBounds(100, 100, 600, 418);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
 		JPanel panel = new JPanel();
 		frame.getContentPane().add(panel, BorderLayout.CENTER);
@@ -198,7 +175,7 @@ public class LibrarianBookOperations {
 					if(BookController.getBook(ISBN)!=null)
 						throw new Exception("There is a book for this ISBN number.");
 
-					if(!(BookController.addBook(ISBN, title, author, publisher, genre, keywords, quantity)))
+					if(!(BookController.addBook(ISBN, title, author, publisher, genre, keywords, quantity,"0")))
 						throw new Exception("The book could not be added.");
 					JOptionPane.showMessageDialog(frame,"Book was added.",
 							"Success",JOptionPane.INFORMATION_MESSAGE);
@@ -370,7 +347,7 @@ public class LibrarianBookOperations {
 						throw new Exception("Quantity is wrong format.");
 
 					if(!(BookController.updateBook((String.valueOf(updateBookButton.getClientProperty("id")))
-							,ISBN, title, author, publisher, genre, keywords, quantity)))
+							,ISBN, title, author, publisher, genre, keywords, quantity,"0")))
 						throw new Exception("The book could not be updated.");
 
 					JOptionPane.showMessageDialog(frame,"Book was updated.",

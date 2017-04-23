@@ -67,7 +67,7 @@ public class Query {
     }
 
     public static boolean addBook(String ISBN, String title, String author,
-                               String publisher, String genre, String keywords, String quantity){
+                               String publisher, String genre, String keywords, String quantity,String publisherYear){
 
         PreparedStatement statement;
         String query = String.format("INSERT INTO %s " +
@@ -83,7 +83,7 @@ public class Query {
             statement.setString(5,genre);
             statement.setString(6,keywords);
             statement.setString(7,quantity);
-            statement.setString(8,"");
+            statement.setString(8,publisherYear);
 
             statement.execute();
             return true;
@@ -96,7 +96,7 @@ public class Query {
     }
 
     public static boolean updateBook(String id, String ISBN, String title, String author,
-                                  String publisher, String genre, String keywords, String quantity){
+                                  String publisher, String genre, String keywords, String quantity,String publisherYear){
 
         PreparedStatement statement;
         String query = String.format("UPDATE %s SET " +
@@ -168,11 +168,11 @@ public class Query {
                 author=resultSet.getString("author");
                 quantity=resultSet.getInt("quantity");
                 publisher=resultSet.getString("publisher");
-                publisherYear=resultSet.getString("publisher_year");
-
                 genre=resultSet.getString("genre");
                 keywords=resultSet.getString("keywords");
-                book = new Book(id, ISBN, title, author, genre, publisher, publisherYear, quantity, keywords);
+                publisherYear=resultSet.getString("publish_year");
+
+                book = new Book(id, ISBN, title, author, quantity, publisher, genre, keywords,publisherYear);
 
                 books.add(book);
             }
@@ -206,11 +206,11 @@ public class Query {
             String author=resultSet.getString("author");
             int quantity=resultSet.getInt("quantity");
             String publisher=resultSet.getString("publisher");
-            String publisherYear=resultSet.getString("publisher_year");
             String genre=resultSet.getString("genre");
             String keywords=resultSet.getString("keywords");
+            String publisherYear=resultSet.getString("publish_year");
 
-            return new Book(id, ISBN, title, author, genre, publisher, publisherYear, quantity, keywords);
+            return new Book(id, ISBN, title, author, quantity, publisher, genre, keywords,publisherYear);
 
         }catch (Exception e) {
             e.printStackTrace();
