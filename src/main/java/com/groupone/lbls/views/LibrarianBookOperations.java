@@ -1,6 +1,8 @@
 package com.groupone.lbls.views;
 import com.groupone.lbls.controller.BookController;
+import com.groupone.lbls.controller.UserController;
 import com.groupone.lbls.model.Book;
+import com.groupone.lbls.model.User;
 
 import java.awt.EventQueue;
 
@@ -545,10 +547,20 @@ public class LibrarianBookOperations {
 					if(book==null)
 						throw new Exception("The book could not find.");
 
-					((DefaultTableModel) table.getModel()).removeRow(0);
-					((DefaultTableModel) table.getModel()).addRow(
-							new Object[]{book.getISBN(), book.getAuthor(), book.getQuantity(), book.getPublisher(),
-									book.getGenre(), book.getKeywords()});
+					User user= UserController.getUser(book.getId());
+
+					if(user==null){
+						((DefaultTableModel) table.getModel()).removeRow(0);
+						((DefaultTableModel) table.getModel()).addRow(
+								new Object[]{book.getTitle(), book.getAuthor(), book.getGenre(),
+										"None", "None"});
+					}
+					else{
+						((DefaultTableModel) table.getModel()).removeRow(0);
+						((DefaultTableModel) table.getModel()).addRow(
+								new Object[]{book.getTitle(), book.getAuthor(), book.getGenre(),
+										user.getUsername(), user.getEmail()});
+					}
 
 				}catch (Exception e1){
 					JOptionPane.showMessageDialog(frame,
