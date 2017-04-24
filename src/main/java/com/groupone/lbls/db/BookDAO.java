@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import com.groupone.lbls.model.Book;
 
-public class BookDOA {
+public class BookDAO {
 	private ArrayList<Book> books = new ArrayList<>();
 	private Object[][] rowData;
 
@@ -31,41 +31,51 @@ public class BookDOA {
             
             if(title != null && !title.equals(""))
             {
-            	query += "AND title=? ";
+            	//query += "AND title=? ";
+            	query += "AND title LIKE ? ";
             	validAreas[1] = currentIndex++;
             }
             
             if(author != null && !author.equals(""))
             {
-            	query += "AND author=? ";
+            	//query += "AND author=? ";
+            	query += "AND author LIKE ? ";
             	validAreas[2] = currentIndex++;
             }
             
             if(publisher != null && !publisher.equals(""))
             {
-            	query += "AND publisher=? ";
+            	//query += "AND publisher=? ";
+            	query += "AND publisher LIKE ? ";
             	validAreas[3] = currentIndex++;
             } 
             
             if(genre != null && !genre.equals(""))
             {
-            	query += "AND genre=? ";
+            	//query += "AND genre=? ";
+            	query += "AND genre LIKE ? ";
             	validAreas[4] = currentIndex++;
             } 
             
             if(keywords != null && !keywords.equals(""))
             {
-            	query += "AND keywords=? ";
+            	//query += "AND keywords=? ";
+            	query += "AND keywords LIKE ? ";
             	validAreas[5] = currentIndex++;
             }
             
             statement = MySQL.getInstance().getConnection().prepareStatement(query);
+                        
+            if(validAreas[0] != -1)
+            {
+            	statement.setString(validAreas[0], columnNames[0]);
+            }
             
-            for(int i=0; i < 6; i++)
+            for(int i=1; i < 6; i++)
             {
             	if(validAreas[i] != -1)
             	{
-            		statement.setString(validAreas[i], columnNames[i]);
+            		statement.setString(validAreas[i], "%" + columnNames[i] + "%");
             	}
             }
             

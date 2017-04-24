@@ -1,5 +1,6 @@
 package com.groupone.lbls.controller;
 
+import com.groupone.lbls.db.BookDAO;
 import com.groupone.lbls.db.Query;
 import com.groupone.lbls.model.Book;
 
@@ -58,5 +59,14 @@ public class BookController {
         genreField.setText("");
         keywordsField.setText("");
         quantityField.setText("");
+    }
+    
+    public static Object[][] searchBook(String ISBN, String title, String author, String publisher,
+    							  String genre, String keywords)
+    {
+    	BookDAO bookSearcher = new BookDAO();
+    	bookSearcher.getListOfBooks(ISBN, title, author, publisher, genre, keywords);
+    	
+    	return bookSearcher.getRowData(); 
     }
 }

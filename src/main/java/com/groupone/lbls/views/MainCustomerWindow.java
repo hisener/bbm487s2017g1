@@ -22,7 +22,9 @@ public class MainCustomerWindow extends MainWindow {
      * Initialize the contents of the frame.
      */
     private void initialize() {
-        frame = new JFrame("Library Book Loan System - User: " + getUser().getUsername());
+    	  final String username = this.getUser().getUsername();
+
+        frame = new JFrame("Library Book Loan System - User: " + username);
         frame.setBounds(100, 100, 550, 276);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         
@@ -36,7 +38,8 @@ public class MainCustomerWindow extends MainWindow {
         label.setBounds(165, 11, 202, 25);
         panel.add(label);
         
-        JLabel lblWelcomeusername = new JLabel("Welcome, " + getUser().getUsername());
+        JLabel lblWelcomeusername = new JLabel("Welcome, " + username);
+
         lblWelcomeusername.setHorizontalAlignment(SwingConstants.CENTER);
         lblWelcomeusername.setFont(new Font("Segoe UI Light", Font.PLAIN, 14));
         lblWelcomeusername.setBounds(10, 40, 514, 22);
