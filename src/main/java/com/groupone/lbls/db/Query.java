@@ -7,12 +7,15 @@ import com.groupone.lbls.model.Book;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Query {
 
     private static final String userTable = "user";
     private static final String bookTable = "book";
+    private static final String loanTable = "loan";
 
     public static User getUser(String username) {
         PreparedStatement statement;
@@ -282,6 +285,102 @@ public class Query {
         } catch (Exception e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    public static boolean selfCheckout(int userId, Book book) {
+        PreparedStatement statement;
+        String query = String.format("INSERT INTO %s " +
+                "(borrower_id, book_id, taken_date) " +
+                "values (?, ?, ?)", loanTable);
+
+        try {
+            statement = MySQL.getInstance().getConnection().prepareStatement(query);
+            statement.setInt(1, userId);
+            statement.setInt(2, book.getId());
+            statement.setObject(3, new Timestamp(new Date().getTime()));
+
+            statement.execute();
+            return true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static boolean selfReturn(int userId, Book book) {
+        PreparedStatement statement;
+        String query = String.format("UPDATE %s SET " +
+                "return_date = ? " +
+                "WHERE borrower_id = ? AND book_id = ? " +
+                "AND return_date IS NULL", loanTable);
+
+        try {
+            statement = MySQL.getInstance().getConnection().prepareStatement(query);
+            statement.setObject(1, new Timestamp(new Date().getTime()));
+            statement.setInt(2, userId);
+            statement.setInt(3, book.getId());
+
+            statement.execute();
+            return true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static boolean isUserTookBook(int userId, int bookId) {
+        PreparedStatement statement;
+        String query = String.format("SELECT COUNT(*) FROM %s " +
+                "WHERE borrower_id = ? AND book_id = ? AND return_date IS NULL " +
+                "GROUP BY borrower_id", loanTable);
+
+        try {
+            statement = MySQL.getInstance().getConnection().prepareStatement(query);
+            statement.setInt(1, userId);
+            statement.setInt(2, bookId);
+
+            statement.execute();
+            ResultSet resultSet = statement.executeQuery();
+
+            // check isEmpty
+            if (!resultSet.next()) {
+                return false;
+            }
+
+            return resultSet.getInt("COUNT(*)") > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static int getTakenBookCount(int bookId) {
+        PreparedStatement statement;
+        String query = String.format("SELECT COUNT(*) FROM %s " +
+                "WHERE book_id = ? AND return_date IS NULL " +
+                "GROUP BY borrower_id", loanTable);
+
+        try {
+            statement = MySQL.getInstance().getConnection().prepareStatement(query);
+            statement.setInt(1, bookId);
+
+            statement.execute();
+            ResultSet resultSet = statement.executeQuery();
+
+            // check isEmpty
+            if (!resultSet.next()) {
+                return 0;
+            }
+
+            return resultSet.getInt("COUNT(*)");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
         }
     }
 }

@@ -22,7 +22,7 @@ public class MainCustomerWindow extends MainWindow {
      * Initialize the contents of the frame.
      */
     private void initialize() {
-    	final String username = this.getUser().getUsername();
+    	  final String username = this.getUser().getUsername();
 
         frame = new JFrame("Library Book Loan System - User: " + username);
         frame.setBounds(100, 100, 550, 276);
@@ -39,13 +39,15 @@ public class MainCustomerWindow extends MainWindow {
         panel.add(label);
         
         JLabel lblWelcomeusername = new JLabel("Welcome, " + username);
+
         lblWelcomeusername.setHorizontalAlignment(SwingConstants.CENTER);
         lblWelcomeusername.setFont(new Font("Segoe UI Light", Font.PLAIN, 14));
         lblWelcomeusername.setBounds(10, 40, 514, 22);
         panel.add(lblWelcomeusername);
         
         JPanel panel_1 = new JPanel();
-        panel_1.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Operations", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+        panel_1.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"),
+                "Operations", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
         panel_1.setBounds(10, 73, 334, 153);
         panel.add(panel_1);
         panel_1.setLayout(null);
@@ -69,6 +71,12 @@ public class MainCustomerWindow extends MainWindow {
         panel_1.add(btnViewMyFines);
         
         JButton btnSelfCheckoutOr = new JButton("Self Check-out or Return");
+        btnSelfCheckoutOr.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                new CustomerSelfCheckOutOrReturnWindow(getUser().getId());
+            }
+        });
         btnSelfCheckoutOr.setBounds(158, 58, 165, 23);
         panel_1.add(btnSelfCheckoutOr);
         
