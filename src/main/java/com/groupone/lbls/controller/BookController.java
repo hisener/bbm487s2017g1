@@ -6,7 +6,6 @@ import com.groupone.lbls.model.Book;
 import javax.swing.*;
 import java.util.ArrayList;
 
-
 public class BookController {
 
     public static boolean addBook(String ISBN, String title, String author,
@@ -21,7 +20,7 @@ public class BookController {
         return Query.updateBook(id, ISBN, title, author, publisher, genre, keywords, quantity,publisherYear);
     }
 
-    public static  boolean deleteBook(String id){
+    public static boolean deleteBook(String id){
         return Query.deleteBook(id);
     }
 

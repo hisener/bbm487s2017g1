@@ -1,6 +1,7 @@
 package com.groupone.lbls.controller;
 
 import com.groupone.lbls.db.Query;
+import com.groupone.lbls.model.Book;
 import com.groupone.lbls.model.User;
 import com.groupone.lbls.model.UserRole;
 
@@ -72,6 +73,36 @@ public class UserController {
 
     public boolean deleteUser(String id) {
         return Query.deleteUser(id);
+    }
+
+    public boolean selfCheckout(int userId, String ISBN) throws Exception {
+        Book book = BookController.getBook(ISBN);
+        if (book == null) {
+            throw new Exception("The book could not find.");
+        }
+
+        if (Query.isUserTookBook(userId, book.getId())) {
+            throw new Exception("You have already taken the book.");
+        }
+
+        if (!book.isBookAvailable()) {
+            throw new Exception("The book is not available at the moment.");
+        }
+
+        return Query.selfCheckout(userId, book);
+    }
+
+    public boolean selfReturn(int userId, String ISBN) throws Exception {
+        Book book = BookController.getBook(ISBN);
+        if (book == null) {
+            throw new Exception("The book could not find.");
+        }
+
+        if (!Query.isUserTookBook(userId, book.getId())) {
+            throw new Exception("You have not taken the book.");
+        }
+
+        return Query.selfReturn(userId, book);
     }
 
     private String encryptPassword(String password) throws Exception {

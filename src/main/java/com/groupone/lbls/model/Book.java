@@ -1,7 +1,9 @@
 package com.groupone.lbls.model;
 
+import com.groupone.lbls.db.Query;
+
 public class Book {
-	private int id;
+    private int id;
     private String ISBN;
     private String title;
     private String author;
@@ -11,72 +13,77 @@ public class Book {
     private int quantity;
     private String keywords;
 
-	public Book(int id, String ISBN, String title, String author, int quantity, String publisher, String genre, String keywords,String publisherYear){
-		this.id=id;
-		this.ISBN=ISBN;
-		this.title=title;
-		this.author=author;
-		this.quantity=quantity;
-		this.publisher=publisher;
-		this.genre=genre;
-		this.keywords=keywords;
-		this.publisherYear=publisherYear;
-	}
+    public Book(int id, String ISBN, String title, String author, int quantity,
+                String publisher, String genre, String keywords, String publisherYear){
+        this.id=id;
+        this.ISBN=ISBN;
+        this.title=title;
+        this.author=author;
+        this.quantity=quantity;
+        this.publisher=publisher;
+        this.genre=genre;
+        this.keywords=keywords;
+        this.publisherYear=publisherYear;
+    }
+    
+    public boolean isBookAvailable() {
+        return this.getQuantity() > Query.getTakenBookCount(this.getId());
+    }
 
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
-	public String getISBN() {
-		return ISBN;
-	}
-	public void setISBN(String ISBN) {
-		this.ISBN = ISBN;
-	}
-	public String getTitle() {
-		return title;
-	}
-	public void setTitle(String title) {
-		this.title = title;
-	}
-	public String getAuthor() {
-		return author;
-	}
-	public void setAuthor(String author) {
-		this.author = author;
-	}
-	public String getGenre() {
-		return genre;
-	}
-	public void setGenre(String genre) {
-		this.genre = genre;
-	}
-	public String getPublisher() {
-		return publisher;
-	}
-	public void setPublisher(String publisher) {
-		this.publisher = publisher;
-	}
-	public String getPublisherYear() {
-		return publisherYear;
-	}
-	public void setPublisherYear(String publisherYear) {
-		this.publisherYear = publisherYear;
-	}
-	public int getQuantity() {
-		return quantity;
-	}
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
-	}
-	public String getKeywords() {
-		return keywords;
-	}
-	public void setKeywords(String keywords) {
-		this.keywords = keywords;
-	}
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
+    public String getISBN() {
+        return ISBN;
+    }
+    public void setISBN(String ISBN) {
+        this.ISBN = ISBN;
+    }
+    public String getTitle() {
+        return title;
+    }
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    public String getAuthor() {
+        return author;
+    }
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+    public String getGenre() {
+        return genre;
+    }
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+    public String getPublisher() {
+        return publisher;
+    }
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
+    }
+    public String getPublisherYear() {
+        return publisherYear;
+    }
+    public void setPublisherYear(String publisherYear) {
+        this.publisherYear = publisherYear;
+    }
+    public int getQuantity() {
+        return quantity;
+    }
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+    public String getKeywords() {
+        return keywords;
+    }
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
+    }
 
 
 }
