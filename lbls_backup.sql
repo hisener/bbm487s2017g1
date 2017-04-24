@@ -1,8 +1,10 @@
+CREATE DATABASE  IF NOT EXISTS `lbls` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `lbls`;
 -- MySQL dump 10.13  Distrib 5.7.17, for Linux (x86_64)
 --
 -- Host: localhost    Database: lbls
 -- ------------------------------------------------------
--- Server version	5.7.17-0ubuntu0.16.04.1
+-- Server version	5.7.17-0ubuntu0.16.04.2
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -14,6 +16,66 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `book`
+--
+
+DROP TABLE IF EXISTS `book`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `book` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `ISBN` varchar(100) NOT NULL,
+  `title` varchar(200) NOT NULL,
+  `author` varchar(200) NOT NULL,
+  `genre` varchar(100) NOT NULL,
+  `publisher` varchar(200) NOT NULL,
+  `publish_year` varchar(20) NOT NULL,
+  `quantity` int(10) NOT NULL,
+  `keywords` varchar(200) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  UNIQUE KEY `ISBN_UNIQUE` (`ISBN`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `book`
+--
+
+LOCK TABLES `book` WRITE;
+/*!40000 ALTER TABLE `book` DISABLE KEYS */;
+INSERT INTO `book` VALUES (1,'9750802942','Harry Potter and the Philosopher\'s Stone','J. K. Rowling','Fantasy Fiction','Bloomsbury','2014',1,'Harry Potter');
+/*!40000 ALTER TABLE `book` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `loan`
+--
+
+DROP TABLE IF EXISTS `loan`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `loan` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `borrower_id` int(11) NOT NULL,
+  `book_id` int(11) NOT NULL,
+  `taken_date` datetime DEFAULT NULL,
+  `return_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `loan`
+--
+
+LOCK TABLES `loan` WRITE;
+/*!40000 ALTER TABLE `loan` DISABLE KEYS */;
+/*!40000 ALTER TABLE `loan` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `user`
@@ -54,54 +116,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-03-31 12:00:00
-
-
---
--- Table structure for table `book`
---
-DROP TABLE IF EXISTS `book`;
-
-CREATE TABLE `book` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
-  `ISBN` varchar(100) NOT NULL,
-  `title` varchar(200) NOT NULL,
-  `author` varchar(200) NOT NULL,
-  `genre` varchar(100) NOT NULL,
-  `publisher` varchar(200) NOT NULL,
-  `publish_year` varchar(20) NOT NULL,
-  `quantity` int(10) NOT NULL,
-  `keywords` varchar(200) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`),
-  UNIQUE KEY `ISBN_UNIQUE` (`ISBN`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `book`
---
-
-LOCK TABLES `book` WRITE;
-
-INSERT INTO `lbls`.`book`
-(`id`,
-`ISBN`,
-`title`,
-`author`,
-`genre`,
-`publisher`,
-`publish_year`,
-`quantity`,
-`keywords`)
-VALUES
-(1,
-'9750802942',
-'Harry Potter and the Philosopher\'s Stone',
-'J. K. Rowling',
-'Fantasy Fiction',
-'Bloomsbury',
-'2014',
-1,
-'Harry Potter');
-
-UNLOCK TABLES;
+-- Dump completed on 2017-04-24 20:13:10
