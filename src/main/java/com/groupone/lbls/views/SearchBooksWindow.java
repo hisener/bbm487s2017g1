@@ -24,7 +24,8 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.text.TableView.TableRow;
 
-import com.groupone.lbls.db.BookDOA;
+import com.groupone.lbls.controller.BookController;
+import com.groupone.lbls.db.BookDAO;
 import com.groupone.lbls.model.UserRole;
 
 import javax.swing.JTable;
@@ -36,6 +37,9 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 public class SearchBooksWindow {
 	
@@ -51,7 +55,9 @@ public class SearchBooksWindow {
 	
 	private JScrollPane scrollPane;
 	
-	private Object columnNames[] = { "ISBN", "Title", "Author", "Publisher", "Genre", "Keywords"};
+	private JButton btnSearch;
+	
+	private Object columnNames[] = { "ISBN", "Title", "Author", "Genre", "Publisher", "Keywords"};
 	private Object rowData[][]; // = { {"", "", "", "", "", ""} };
 
 	/**
@@ -86,17 +92,20 @@ public class SearchBooksWindow {
 		scrollPane.setBounds(39, 238, 499, 145);
 		frame.getContentPane().add(scrollPane);
 			
-		JButton btnSearch = new JButton("Search");
+		btnSearch = new JButton("Search");
 		btnSearch.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent arg0) {
 				
-				BookDOA bookSearcher = new BookDOA();
+				//BookDAO bookSearcher = new BookDAO();
 				
-				bookSearcher.getListOfBooks(textField_ISBN.getText(), textField_Title.getText(), textField_Author.getText(),
-						textField_Publisher.getText(), textField_Genre.getText(), textField_Keywords.getText());
+				//bookSearcher.getListOfBooks(textField_ISBN.getText(), textField_Title.getText(), textField_Author.getText(),
+				//		textField_Publisher.getText(), textField_Genre.getText(), textField_Keywords.getText());
 						
-				rowData = bookSearcher.getRowData();
+				//rowData = bookSearcher.getRowData();
+				
+				rowData = BookController.searchBook(textField_ISBN.getText(), textField_Title.getText(), textField_Author.getText(),
+						textField_Publisher.getText(), textField_Genre.getText(), textField_Keywords.getText());
 				
 				if(rowData == null)
 				{		
@@ -123,7 +132,8 @@ public class SearchBooksWindow {
 				sorter.setSortKeys(sortKeys);
 				scrollPane.setViewportView(table);
 				
-				table.repaint();				
+				table.repaint();
+				resetFields();
 			}
 			
 		});
@@ -155,31 +165,37 @@ public class SearchBooksWindow {
 		frame.getContentPane().add(label_6);
 		
 		textField_ISBN = new JTextField();
+		textField_ISBN.addKeyListener(enterKeyListener);		// New Key Listener		
 		textField_ISBN.setColumns(10);
 		textField_ISBN.setBounds(113, 92, 150, 20);
 		frame.getContentPane().add(textField_ISBN);
 		
 		textField_Title = new JTextField();
+		textField_Title.addKeyListener(enterKeyListener);
 		textField_Title.setColumns(10);
 		textField_Title.setBounds(113, 122, 150, 20);
 		frame.getContentPane().add(textField_Title);
 		
 		textField_Author = new JTextField();
+		textField_Author.addKeyListener(enterKeyListener);
 		textField_Author.setColumns(10);
 		textField_Author.setBounds(113, 153, 150, 20);
 		frame.getContentPane().add(textField_Author);
 		
 		textField_Publisher = new JTextField();
+		textField_Publisher.addKeyListener(enterKeyListener);
 		textField_Publisher.setColumns(10);
 		textField_Publisher.setBounds(356, 92, 158, 20);
 		frame.getContentPane().add(textField_Publisher);
 		
 		textField_Genre = new JTextField();
+		textField_Genre.addKeyListener(enterKeyListener);
 		textField_Genre.setColumns(10);
 		textField_Genre.setBounds(356, 122, 158, 20);
 		frame.getContentPane().add(textField_Genre);
 		
 		textField_Keywords = new JTextField();
+		textField_Keywords.addKeyListener(enterKeyListener);
 		textField_Keywords.setColumns(10);
 		textField_Keywords.setBounds(356, 153, 158, 20);
 		frame.getContentPane().add(textField_Keywords);
@@ -232,6 +248,39 @@ public class SearchBooksWindow {
 
 	public void setOwner(int owner) {
 		this.owner = owner;
+	}
+	
+	private KeyListener enterKeyListener = new KeyListener() {
+		@Override
+		public void keyReleased(KeyEvent e) {
+			
+		}
+
+		@Override
+		public void keyPressed(KeyEvent e) {
+			if(e.getKeyCode() == KeyEvent.VK_ENTER)
+			{
+				btnSearch.doClick();
+			}
+		}
+
+		@Override
+		public void keyTyped(KeyEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+	};
+	
+	private void resetFields()
+	{
+		textField_Author.setText("");
+		textField_Genre.setText("");
+		textField_ISBN.setText("");
+		textField_Keywords.setText("");
+		textField_Publisher.setText("");
+		textField_Title.setText("");
+		
+		textField_ISBN.requestFocus();
 	}
 
 }

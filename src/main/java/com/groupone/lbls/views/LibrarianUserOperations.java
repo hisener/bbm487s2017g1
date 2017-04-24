@@ -311,7 +311,7 @@ public class LibrarianUserOperations {
         tabbedPane.addTab("Delete", null, deleteTabPanel, null);
 
         JLabel usernameLabel = new JLabel("Username:");
-        usernameLabel.setBounds(10, 14, 33, 14);
+        usernameLabel.setBounds(10, 14, 100, 14);
         deleteTabPanel.add(usernameLabel);
 
         usernameField = new JTextField();
