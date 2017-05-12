@@ -16,6 +16,7 @@ public class Query {
     private static final String userTable = "user";
     private static final String bookTable = "book";
     private static final String loanTable = "loan";
+    private static final String fineTable = "fine";
 
     public static User getUser(String username) {
         PreparedStatement statement;
@@ -331,11 +332,11 @@ public class Query {
         }
     }
 
-    public static boolean isUserTookBook(int userId, int bookId) {
+    public static Date getTakenDate(int userId, int bookId) {
         PreparedStatement statement;
-        String query = String.format("SELECT COUNT(*) FROM %s " +
-                "WHERE borrower_id = ? AND book_id = ? AND return_date IS NULL " +
-                "GROUP BY borrower_id", loanTable);
+        String query = String.format("SELECT taken_date FROM %s " +
+                "WHERE borrower_id = ? AND book_id = ? AND return_date IS NULL",
+                loanTable);
 
         try {
             statement = MySQL.getInstance().getConnection().prepareStatement(query);
@@ -347,14 +348,14 @@ public class Query {
 
             // check isEmpty
             if (!resultSet.next()) {
-                return false;
+                return null;
             }
 
-            return resultSet.getInt("COUNT(*)") > 0;
+            return resultSet.getDate("taken_date");
 
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            return null;
         }
     }
 
@@ -381,6 +382,70 @@ public class Query {
         } catch (Exception e) {
             e.printStackTrace();
             return 0;
+        }
+    }
+
+    public static int getUsersFine(int userId) {
+        PreparedStatement statement;
+        String query = String.format("SELECT SUM(amount) FROM %s " +
+                "WHERE user_id = ? AND amount > 0", fineTable);
+
+        try {
+            statement = MySQL.getInstance().getConnection().prepareStatement(query);
+            statement.setInt(1, userId);
+
+            statement.execute();
+            ResultSet resultSet = statement.executeQuery();
+
+            // check isEmpty
+            if (!resultSet.next()) {
+                return 0;
+            }
+
+            return resultSet.getInt("SUM(amount)");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    public static boolean payFine(int userId) {
+        PreparedStatement statement;
+        String query = String.format("UPDATE %s SET " +
+                "amount = 0 " +
+                "WHERE user_id = ?", fineTable);
+
+        try {
+            statement = MySQL.getInstance().getConnection().prepareStatement(query);
+            statement.setInt(1, userId);
+
+            statement.execute();
+            return true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static boolean issueLateFine(int userId, int amount) {
+        PreparedStatement statement;
+        String query = String.format("INSERT INTO %s " +
+                "(user_id, amount) " +
+                "values (?, ?)", fineTable);
+
+        try {
+            statement = MySQL.getInstance().getConnection().prepareStatement(query);
+            statement.setInt(1, userId);
+            statement.setInt(2, amount);
+
+            statement.execute();
+            return true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
     }
 }
