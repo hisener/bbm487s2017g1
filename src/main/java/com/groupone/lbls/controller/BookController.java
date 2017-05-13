@@ -69,4 +69,18 @@ public class BookController {
     	
     	return bookSearcher.getRowData(); 
     }
+
+    public static boolean addWaitList(int user_id, int book_id){
+
+        return Query.addWaitList(user_id, book_id);
+    }
+
+    public static int getTakenBookCount(int book_id){
+
+        return Query.getTakenBookCount(book_id);
+    }
+
+    public static boolean getWaitListBook(int user_id, int book_id){
+        return Query.getWaitListBook(user_id, book_id);
+    }
 }

@@ -17,6 +17,7 @@ public class Query {
     private static final String bookTable = "book";
     private static final String loanTable = "loan";
     private static final String fineTable = "fine";
+    private static final String waitListTable = "waitlist";
 
     public static User getUser(String username) {
         PreparedStatement statement;
@@ -448,4 +449,52 @@ public class Query {
             return false;
         }
     }
+
+    public static boolean addWaitList(int user_id, int book_id){
+
+        PreparedStatement statement;
+        String query = String.format("INSERT INTO %s " +
+                "(user_id, book_id, added_date) "+
+                "values(?, ?, ?)", waitListTable);
+
+        try {
+            statement = MySQL.getInstance().getConnection().prepareStatement(query);
+            statement.setInt(1,user_id);
+            statement.setInt(2,book_id);
+            statement.setObject(3,new Timestamp(new Date().getTime()));
+
+            statement.execute();
+            return true;
+
+        }catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
+    public static boolean getWaitListBook(int user_id, int book_id){
+
+        PreparedStatement statement;
+        String query = String.format("SELECT * FROM %s WHERE user_id=? AND book_id=?", waitListTable);
+
+        try {
+            statement = MySQL.getInstance().getConnection().prepareStatement(query);
+            statement.setInt(1,user_id);
+            statement.setInt(2,book_id);
+            ResultSet resultSet= statement.executeQuery();
+
+            // check isEmpty
+            if (!resultSet.next()) {
+                return false;
+            }
+
+            return true;
+
+        }catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }
