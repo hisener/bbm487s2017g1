@@ -101,10 +101,18 @@ public class MainLibrarianWindow extends MainWindow {
                 new LibrarianBookOperations(username).getFrame().setVisible(true);
             }
         });
+
         btnViewAllBooks.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new LibrarianAllBooks().getFrame().setVisible(true);
+            }
+        });
+
+        btnViewAllUsers.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new LibrarianAllUsers().getFrame().setVisible(true);
             }
         });
     }

@@ -2,57 +2,23 @@ package com.groupone.lbls.views;
 import com.groupone.lbls.controller.BookController;
 import com.groupone.lbls.model.Book;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 
 import java.awt.Font;
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.SwingConstants;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.RowSorter;
-import javax.swing.SortOrder;
 
 public class LibrarianAllBooks {
 
 	private JFrame frame;
 	private JTable table;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		}catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-          java.util.logging.Logger.getLogger(LoginWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-          JOptionPane.showMessageDialog(null, ex.getMessage());
-		}
-		
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					LibrarianAllBooks window = new LibrarianAllBooks();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the application.
@@ -91,11 +57,10 @@ public class LibrarianAllBooks {
 		panel.add(scrollPane);
 
 		String[] columnNames= { "Title", "ISBN", "Author", "Genre"};
-		DefaultTableModel model = new DefaultTableModel(1, columnNames.length) ;
+		DefaultTableModel model = new DefaultTableModel(1, columnNames.length);
 		model.setColumnIdentifiers(columnNames);
 
-		table = new JTable(model)
-		{
+		table = new JTable(model) {
 			@Override
 		    public boolean isCellEditable(int row, int column) {
 		        return false;
@@ -108,10 +73,9 @@ public class LibrarianAllBooks {
 
 		((DefaultTableModel) table.getModel()).removeRow(0);
 
-		for (int i = 0; i < books.size(); i++) {
-			Book book = books.get(i);
+		for (Book book : books) {
 			((DefaultTableModel) table.getModel()).addRow(
-					new Object[]{book.getTitle(), book.getISBN(), book.getAuthor(),book.getGenre()});
+					new Object[]{book.getTitle(), book.getISBN(), book.getAuthor(), book.getGenre()});
 		}
 
 

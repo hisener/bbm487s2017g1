@@ -21,7 +21,8 @@ public class Query {
 
     public static User getUser(String username) {
         PreparedStatement statement;
-        String query = String.format("SELECT * FROM %s WHERE username = ?", userTable);
+        String query = String.format("SELECT * FROM %s WHERE BINARY " +
+                "username = ?", userTable);
 
         try {
             statement = MySQL.getInstance().getConnection().prepareStatement(query);
@@ -46,7 +47,7 @@ public class Query {
 
     public static User getUser(String username, String password) {
         PreparedStatement statement;
-        String query = String.format("SELECT * FROM %s WHERE " +
+        String query = String.format("SELECT * FROM %s WHERE BINARY " +
                 "username = ? AND password = ?", userTable);
 
         try {
