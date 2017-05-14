@@ -34,6 +34,7 @@ public class MainLibrarianWindow extends MainWindow {
         frame = new JFrame("Library Book Loan System - Librarian: " + username);
         frame.setBounds(100, 100, 441, 224);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setResizable(false);
         
         JPanel panel = new JPanel();
         frame.getContentPane().add(panel, BorderLayout.CENTER);

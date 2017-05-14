@@ -65,7 +65,8 @@ public class CustomerNotifications {
 	 */
 	private void initialize() {
 		frame = new JFrame("Library Book Loan System - Notifications");
-		frame.setBounds(100, 100, 450, 300);
+		frame.setResizable(false);
+		frame.setBounds(100, 100, 438, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JPanel panel = new JPanel();

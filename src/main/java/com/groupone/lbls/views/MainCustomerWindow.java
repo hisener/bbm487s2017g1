@@ -4,6 +4,8 @@ import com.groupone.lbls.model.User;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.*;
 
@@ -27,6 +29,7 @@ public class MainCustomerWindow extends MainWindow {
         frame = new JFrame("Library Book Loan System - User: " + username);
         frame.setBounds(100, 100, 550, 276);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setResizable(false);
         
         JPanel panel = new JPanel();
         frame.getContentPane().add(panel, BorderLayout.CENTER);
@@ -63,6 +66,11 @@ public class MainCustomerWindow extends MainWindow {
         panel_1.add(btnSearchBooks);
         
         JButton btnRBook = new JButton("My Books and Reservations");
+        btnRBook.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent arg0) {
+        		new CustomerMyBooksAndReservationsWindow(getUser());
+        	}
+        });
         btnRBook.setBounds(158, 24, 165, 23);
         panel_1.add(btnRBook);
         
@@ -146,13 +154,14 @@ public class MainCustomerWindow extends MainWindow {
         panel_2.setBounds(354, 73, 170, 153);
         panel.add(panel_2);
         
-        JLabel lblMmddyyyy = new JLabel("mm.dd.yyyy");
+        //JLabel lblMmddyyyy = new JLabel("mm.dd.yyyy");
+        JLabel lblMmddyyyy = new JLabel(new SimpleDateFormat("MM.dd.yyyy").format(new Date()).toString());
         lblMmddyyyy.setHorizontalAlignment(SwingConstants.CENTER);
         lblMmddyyyy.setFont(new Font("Tahoma", Font.ITALIC, 11));
         lblMmddyyyy.setBounds(10, 23, 150, 14);
         panel_2.add(lblMmddyyyy);
         
-        JLabel lblUsername = new JLabel("%username%");
+        JLabel lblUsername = new JLabel(username);
         lblUsername.setBounds(55, 48, 105, 14);
         panel_2.add(lblUsername);
         
@@ -160,7 +169,7 @@ public class MainCustomerWindow extends MainWindow {
         label_4.setBounds(13, 47, 35, 14);
         panel_2.add(label_4);
         
-        JLabel label_5 = new JLabel("5\u20BA");
+        JLabel label_5 = new JLabel("NA");		//5\u20BA
         label_5.setBounds(55, 73, 105, 14);
         panel_2.add(label_5);
         
@@ -172,7 +181,7 @@ public class MainCustomerWindow extends MainWindow {
         label_7.setBounds(13, 98, 37, 14);
         panel_2.add(label_7);
         
-        JLabel label_8 = new JLabel("5");
+        JLabel label_8 = new JLabel("NA");
         label_8.setBounds(55, 98, 105, 14);
         panel_2.add(label_8);
     }

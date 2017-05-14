@@ -62,7 +62,8 @@ public class LibrarianAllUsers {
 	 */
 	private void initialize() {
 		frame = new JFrame("Library Book Loan System - All Users");
-		frame.setBounds(100, 100, 600, 400);
+		frame.setResizable(false);
+		frame.setBounds(100, 100, 588, 400);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JPanel panel = new JPanel();

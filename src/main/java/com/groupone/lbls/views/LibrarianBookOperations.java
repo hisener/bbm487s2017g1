@@ -44,7 +44,8 @@ public class LibrarianBookOperations {
 	private void initialize(String username) {
 
 		frame = new JFrame("Library Book Loan System - Librarian: " + username);
-		frame.setBounds(100, 100, 600, 418);
+		frame.setResizable(false);
+		frame.setBounds(100, 100, 586, 418);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
 		JPanel panel = new JPanel();
@@ -516,7 +517,8 @@ public class LibrarianBookOperations {
 		scrollPane_1.setBounds(10, 21, 519, 113);
 		panel_7.add(scrollPane_1);
 
-		String[] columnNames_1 = { "Title", "Author", "Genre", "Owner Name", "Owner Email"};
+		//String[] columnNames_1 = { "Title", "Author", "Genre", "Owner Name", "Owner Email"};
+		String[] columnNames_1 = { "ISBN", "Author", "Quantity", "Publisher", "Genre"};
 		DefaultTableModel model2 = new DefaultTableModel(1, columnNames_1.length) ;
 		model2.setColumnIdentifiers(columnNames_1);
 
