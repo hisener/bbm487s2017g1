@@ -129,55 +129,6 @@ public class SearchBooksWindow {
 				scrollPane.setViewportView(table);
 				
 				table.repaint();
-
-				//if a user logins
-				if(userId!=-1){
-					/*This block is used to add chosen book to the waiting list of the user.*/
-					table.addMouseListener(new MouseAdapter() {
-						public void mouseClicked(MouseEvent e) {
-							if (e.getClickCount() == 2) {
-								JTable target = (JTable)e.getSource();
-								int row = target.getSelectedRow();
-								String ISBN=(String)table.getValueAt(row, 0);
-
-								Book book=BookController.getBook(ISBN);
-
-								int borrowed_book_count=BookController.getTakenBookCount(book.getId());
-								int book_count=book.getQuantity();
-
-								//check not available of book
-								if(borrowed_book_count==book_count&&
-										//check that user has borrowed.
-										UserController.getTakenDate(userId, book.getId())&&
-										//check that user added the wait list before
-										!(BookController.getWaitListBook(userId,book.getId()))){
-
-									JFrame frame = new JFrame();
-									String[] options = new String[2];
-									options[0] = new String("Agree");
-									options[1] = new String("Disagree");
-
-									int res = JOptionPane.showOptionDialog(frame.getContentPane(),
-											"Do you want to add the book to the waiting list!",
-											"", 0,JOptionPane.INFORMATION_MESSAGE,
-											null,options,null);
-
-									switch (res) {
-										case JOptionPane.YES_OPTION:
-											BookController.addWaitList(userId, book.getId());
-											JOptionPane.showMessageDialog(null, "Process Successfully");
-											break;
-										case JOptionPane.NO_OPTION:
-											JOptionPane.showMessageDialog(null, "Process is Canceled");
-											break;
-									}
-								}
-
-							}
-						}
-					});
-				}
-
 				resetFields();
 			}
 			

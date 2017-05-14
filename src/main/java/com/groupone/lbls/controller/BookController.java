@@ -83,4 +83,9 @@ public class BookController {
     public static boolean getWaitListBook(int user_id, int book_id){
         return Query.getWaitListBook(user_id, book_id);
     }
+
+    public static int getWaitListBookCount(int book_id){
+
+        return Query.getWaitListBookCount(book_id);
+    }
 }
