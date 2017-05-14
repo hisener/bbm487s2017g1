@@ -2,12 +2,15 @@ package com.groupone.lbls.controller;
 
 import com.groupone.lbls.api.Payment;
 import com.groupone.lbls.db.Query;
+import com.groupone.lbls.db.UserDAO;
+import com.groupone.lbls.db.impl.UserDAOImpl;
 import com.groupone.lbls.model.Book;
 import com.groupone.lbls.model.User;
 import com.groupone.lbls.model.UserRole;
 
 import java.security.MessageDigest;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class UserController {
@@ -37,6 +40,11 @@ public class UserController {
         }
 
         return user;
+    }
+
+    public List<User> getAllUsers() {
+        UserDAO userDAO = new UserDAOImpl();
+        return userDAO.getAllUsers();
     }
 
     public User getUser(String username) {
