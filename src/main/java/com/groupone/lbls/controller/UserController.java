@@ -114,12 +114,24 @@ public class UserController {
         }
         //or whether there are books in waiting list
         //and whether user has got book in waiting list.
-        if ((waitList_book_count>=book_count&&!(BookController.getWaitListBook(userId,book.getId())))) {
+        if (waitList_book_count>=book_count&&!(BookController.getWaitListBook(userId,book.getId()))) {
             return 2;
         }
 
         if (UserController.getInstance().getUsersBookCount(userId) >= 5) {
             throw new Exception("You cannot take more books before return.");
+        }
+
+        //if book is waiting list
+        if(BookController.getWaitListBook(userId,book.getId())){
+            //if book is deleted from waiting list
+            if(Query.deleteWaitListBook(userId, book.getId())){
+                return Query.selfCheckout(userId, book);
+            }
+            else{
+                throw new Exception("The self-checkout operation" +
+                        "could not be performed.");
+            }
         }
 
         return Query.selfCheckout(userId, book);
