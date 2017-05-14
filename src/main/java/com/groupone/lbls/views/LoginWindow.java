@@ -86,12 +86,8 @@ public class LoginWindow {
         panel_1.add(label_1);
         
         final JButton btnLoginButton = new JButton("Login");
-        btnLoginButton.setBounds(269, 86, 100, 24);
+        btnLoginButton.setBounds(145, 87, 114, 23);
         panel_1.add(btnLoginButton);
-        
-        JButton btnForgotPassword = new JButton("Forgot Password");
-        btnForgotPassword.setBounds(145, 87, 114, 23);
-        panel_1.add(btnForgotPassword);
         
         usernameField = new JTextField();
         usernameField.addKeyListener(new KeyAdapter() {
