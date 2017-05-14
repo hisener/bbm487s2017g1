@@ -14,6 +14,10 @@ import java.util.GregorianCalendar;
 import com.groupone.lbls.model.Book;
 import com.groupone.lbls.model.Loan;
 
+/*
+ * Loan Database Access Object
+ * Enables application to create a connection with 'loan' table of database
+ */
 public class LoanDAO {
 	private ArrayList<Loan> loans = new ArrayList<>();
 
@@ -22,6 +26,9 @@ public class LoanDAO {
 	private final String table = "loan";
 	private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
+	/*
+	 * Saves every book that user currently owns to "loans" list.
+	 */
 	public void getUserBooks(int userId)
 	{
 		PreparedStatement statement;
@@ -59,6 +66,9 @@ public class LoanDAO {
 		}
 	}
 	
+	/*
+	 * Gets previously owned book by user with userId and saves them to "loans" list
+	 */
 	public void getUserHistory(int userId)
 	{
 		PreparedStatement statement;
@@ -97,6 +107,9 @@ public class LoanDAO {
 		}
 	}
 	
+	/*
+	 * Converts loaned books to string to display them in tables.
+	 */
 	private Object[][] GetLoanedBooks()
 	{
 		Object[][] tempRowData = new Object[loans.size()][6];
@@ -129,6 +142,9 @@ public class LoanDAO {
 		return tempRowData;
 	}
 
+	/*
+	 * Converts previously owned books to string to display them in tables.
+	 */
 	private Object[][] GetHistoryBooks()
 	{
 		Object[][] tempRowData = new Object[loans.size()][6];

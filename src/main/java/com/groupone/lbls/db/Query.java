@@ -19,6 +19,9 @@ public class Query {
     private static final String fineTable = "fine";
     private static final String waitListTable = "waitlist";
 
+    /*
+     * Gets user with given username
+     */
     public static User getUser(String username) {
         PreparedStatement statement;
         String query = String.format("SELECT * FROM %s WHERE BINARY " +
@@ -45,6 +48,9 @@ public class Query {
         }
     }
 
+    /*
+     * Gets user with given username and password. 
+     */
     public static User getUser(String username, String password) {
         PreparedStatement statement;
         String query = String.format("SELECT * FROM %s WHERE BINARY " +
@@ -72,6 +78,9 @@ public class Query {
         }
     }
 
+    /*
+     * Creates book with given information
+     */
     public static boolean addBook(String ISBN, String title, String author,
                                String publisher, String genre, String keywords, String quantity,String publisherYear){
 
@@ -101,6 +110,10 @@ public class Query {
 
     }
 
+    /*
+     * Changes book information with given fields. ID cannot be changed. ID is used
+     * to update fields.
+     */
     public static boolean updateBook(String id, String ISBN, String title, String author,
                                   String publisher, String genre, String keywords, String quantity,String publisherYear){
 
@@ -136,6 +149,9 @@ public class Query {
 
     }
 
+    /*
+     * Deletes book with given ID
+     */
     public static boolean deleteBook(String id){
         PreparedStatement statement;
         String query = String.format("DELETE FROM %s WHERE id = ?", bookTable);
@@ -153,6 +169,9 @@ public class Query {
         }
     }
 
+    /*
+     * Gets all books in the library and returns a list.
+     */
     public static ArrayList<Book> getAllBooks(){
 
         PreparedStatement statement;
@@ -191,6 +210,9 @@ public class Query {
         }
     }
 
+    /*
+     * Returns book with given ISBN
+     */
     public static Book getBook(String ISBN){
 
         PreparedStatement statement;
@@ -224,6 +246,9 @@ public class Query {
         }
     }
 
+    /*
+     * Creates user with given information.
+     */
     public static boolean addUser(String email, String username,
                                   String password, String userRole) {
         PreparedStatement statement;
@@ -247,6 +272,9 @@ public class Query {
         }
     }
 
+    /*
+     * Updates user fields with given id. ID cannot be changed.
+     */
     public static boolean updateUser(String id, String email, String username,
                                      String password, String userRole) {
         PreparedStatement statement;
@@ -274,23 +302,35 @@ public class Query {
         }
     }
 
+    /*
+     * Deletes user with given id. Returns true if deletion is completed successfully.
+     */
     public static boolean deleteUser(String id) {
-        PreparedStatement statement;
+        PreparedStatement statement, statement_deleteBook;
         String query = String.format("DELETE FROM %s WHERE id = ?", userTable);
+        String query_deleteBook = String.format("DELETE FROM %s WHERE borrower_id = ? AND return_date IS NULL", loanTable);
 
         try {
             statement = MySQL.getInstance().getConnection().prepareStatement(query);
             statement.setString(1, id);
-
+            
+            statement_deleteBook = MySQL.getInstance().getConnection().prepareStatement(query_deleteBook);
+            statement_deleteBook.setString(1, id);
+            
             statement.execute();
+            statement_deleteBook.execute();
             return true;
 
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
+        
     }
 
+    /*
+     * Adds book to user with userId.
+     */
     public static int selfCheckout(int userId, Book book) {
         PreparedStatement statement;
         String query = String.format("INSERT INTO %s " +
@@ -312,6 +352,9 @@ public class Query {
         }
     }
 
+    /*
+     * Returns book to library from user with userId.
+     */
     public static boolean selfReturn(int userId, Book book) {
         PreparedStatement statement;
         String query = String.format("UPDATE %s SET " +
@@ -334,6 +377,9 @@ public class Query {
         }
     }
 
+    /*
+     * Returns the taken date of book by user with userId
+     */
     public static Date getTakenDate(int userId, int bookId) {
         PreparedStatement statement;
         String query = String.format("SELECT taken_date FROM %s " +
@@ -361,6 +407,9 @@ public class Query {
         }
     }
 
+    /*
+     * Returns how many copies of the book is taken
+     */
     public static int getTakenBookCount(int bookId) {
         PreparedStatement statement;
         String query = String.format("SELECT COUNT(*) FROM %s " +
@@ -386,7 +435,10 @@ public class Query {
             return 0;
         }
     }
-
+    
+    /*
+     * Allows user with userId to pay fine.
+     */
     public static boolean payFine(int userId) {
         PreparedStatement statement;
         String query = String.format("UPDATE %s SET " +
@@ -406,6 +458,9 @@ public class Query {
         }
     }
 
+    /*
+     * Issues user fine with given amount
+     */
     public static boolean issueLateFine(int userId, int amount) {
         PreparedStatement statement;
         String query = String.format("INSERT INTO %s " +
@@ -426,6 +481,9 @@ public class Query {
         }
     }
 
+    /*
+     * Adds user to book's waitlist
+     */
     public static boolean addWaitList(int user_id, int book_id){
 
         PreparedStatement statement;
@@ -449,6 +507,9 @@ public class Query {
 
     }
 
+    /*
+     * Removes user with userID from waitlist of book with book_id 
+     */
     public static boolean deleteWaitListBook(int userId, int book_id){
         PreparedStatement statement;
         String query = String.format("DELETE FROM %s WHERE user_id=? AND book_id=?", waitListTable);
@@ -467,6 +528,7 @@ public class Query {
         }
     }
 
+    
     public static boolean getWaitListBook(int user_id, int book_id){
 
         PreparedStatement statement;

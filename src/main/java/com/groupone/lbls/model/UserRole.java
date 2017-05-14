@@ -1,5 +1,9 @@
 package com.groupone.lbls.model;
 
+/*
+ * Contains type of users. There are 2 types of users
+ * Librarian and Customers
+ */
 public enum UserRole {
     NULL, LIBRARIAN, CUSTOMER;
 
