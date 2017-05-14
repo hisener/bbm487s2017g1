@@ -91,8 +91,13 @@ public class UserController {
         int book_count=book.getQuantity();
         int waitList_book_count=BookController.getWaitListBookCount(book.getId());
 
-        //check not available of book or whether there are books in wait list
-        if (!book.isBookAvailable()||waitList_book_count>=book_count) {
+        //check not available of book
+        if (!book.isBookAvailable()) {
+            return 2;
+        }
+        //or whether there are books in waiting list
+        //and whether user has got book in waiting list.
+        if ((waitList_book_count>=book_count&&!(BookController.getWaitListBook(userId,book.getId())))) {
             return 2;
         }
 
