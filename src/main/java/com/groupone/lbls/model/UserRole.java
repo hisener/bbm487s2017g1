@@ -12,4 +12,15 @@ public enum UserRole {
         }
         return NULL;
     }
+
+    @Override
+    public String toString() {
+        switch (this) {
+            case LIBRARIAN:
+                return "Librarian";
+            case CUSTOMER:
+                return "Customer";
+        }
+        return "Null";
+    }
 }
