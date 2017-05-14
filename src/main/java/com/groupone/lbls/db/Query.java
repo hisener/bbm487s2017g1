@@ -72,6 +72,54 @@ public class Query {
         }
     }
 
+    public static User getUser(int id) {
+        PreparedStatement statement;
+        String query = String.format("SELECT * FROM %s WHERE id = ?", userTable);
+
+        try {
+            statement = MySQL.getInstance().getConnection().prepareStatement(query);
+            statement.setString(1, Integer.toString(id));
+            ResultSet resultSet = statement.executeQuery();
+
+            // check isEmpty
+            if (!resultSet.next()) {
+                return null;
+            }
+
+            String username= resultSet.getString("username");
+            String email = resultSet.getString("email");
+            UserRole userRole = UserRole.fromInt(resultSet.getInt("role"));
+            return new User(id, email, username, userRole);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static int getBorrowerId(int book_id) {
+        PreparedStatement statement;
+        String query = String.format("SELECT * FROM %s WHERE book_id = ?", loanTable);
+
+        try {
+            statement = MySQL.getInstance().getConnection().prepareStatement(query);
+            statement.setString(1, Integer.toString(book_id));
+            ResultSet resultSet = statement.executeQuery();
+
+            // check isEmpty
+            if (!resultSet.next()) {
+                return 0;
+            }
+
+            int borrower_id= resultSet.getInt("borrower_id");
+            return borrower_id;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
     public static boolean addBook(String ISBN, String title, String author,
                                String publisher, String genre, String keywords, String quantity,String publisherYear){
 

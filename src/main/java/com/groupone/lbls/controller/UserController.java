@@ -60,6 +60,15 @@ public class UserController {
         return Query.getUser(username);
     }
 
+    public static User getUser(int book_id) {
+        int id=getBorrowerId(book_id);
+        return Query.getUser(id);
+    }
+
+    public static int getBorrowerId(int book_id) {
+        return Query.getBorrowerId(book_id);
+    }
+
     public boolean addUser(String email, String username, String password,
                            UserRole userRole) {
         String encryptedPassword;
