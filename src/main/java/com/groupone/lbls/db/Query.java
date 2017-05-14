@@ -387,10 +387,6 @@ public class Query {
         }
     }
 
-    public static int getUsersFine(int userId) {
-        return 0;
-    }
-
     public static boolean payFine(int userId) {
         PreparedStatement statement;
         String query = String.format("UPDATE %s SET " +
