@@ -1,17 +1,27 @@
 package com.groupone.lbls.views;
 
+import com.groupone.lbls.db.WaitlistDAO;
 import com.groupone.lbls.model.User;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.*;
 
 import javax.swing.border.TitledBorder;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class MainCustomerWindow extends MainWindow {
+	
+	private ArrayList<Integer> bookIDs = new ArrayList<>();
+	private JLabel notificationIcon = new JLabel("New label");
+	private JLabel lblNotifications = new JLabel("Notifications: 0");
+	
     /**
      * Create the application.
      */
@@ -24,7 +34,8 @@ public class MainCustomerWindow extends MainWindow {
      * Initialize the contents of the frame.
      */
     private void initialize() {
-    	  final String username = this.getUser().getUsername();
+    	
+    	final String username = this.getUser().getUsername();
 
         frame = new JFrame("Library Book Loan System - User: " + username);
         frame.setBounds(100, 100, 550, 276);
@@ -61,9 +72,39 @@ public class MainCustomerWindow extends MainWindow {
         		SearchBooksWindow searchWindow = new SearchBooksWindow(getUser().getId());
         		searchWindow.getFrame().setVisible(true);
         	}
-        });
+        });      
+        
         btnSearchBooks.setBounds(10, 24, 138, 23);
         panel_1.add(btnSearchBooks);
+        
+        /*****************/
+        /* NOTIFICATIONS */
+        /*****************/
+        
+        /* Get user's book on waitlist.
+         * Check user's books availability.
+         * If available then put a list of them.
+         */
+               
+       
+        notificationIcon.setIcon(new ImageIcon(getClass().getClassLoader().getResource("notification.png")) );
+        notificationIcon.setBounds(150, 118, 20, 20);
+        panel_1.add(notificationIcon);
+        
+        lblNotifications.setBounds(10, 92, 72, 14);
+        panel_1.add(lblNotifications);
+        
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+        	  @Override
+        	  public void run() {
+        		  bookIDs = checkAvailabilityOfWaitlistBooks(lblNotifications, notificationIcon);
+        	  }
+        	}, 1000, 2000);
+        
+        
+        
+        /**************/
         
         JButton btnRBook = new JButton("My Books and Reservations");
         btnRBook.addActionListener(new ActionListener() {
@@ -127,14 +168,16 @@ public class MainCustomerWindow extends MainWindow {
         });
         btnSelfCheckoutOr.setBounds(158, 58, 165, 23);
         panel_1.add(btnSelfCheckoutOr);
-        
+               
         JButton btnNotifications = new JButton("Notifications");
+        btnNotifications.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent arg0) {
+        		CustomerNotifications notificationWindow = new CustomerNotifications(getUser().getId());
+        		notificationWindow.getFrame().setVisible(true);
+        	}
+        });
         btnNotifications.setBounds(10, 117, 138, 23);
         panel_1.add(btnNotifications);
-        
-        JLabel lblNotifications = new JLabel("Notifications: 0");
-        lblNotifications.setBounds(10, 92, 72, 14);
-        panel_1.add(lblNotifications);
         
         JLabel gearLabel = new JLabel("New label");
         gearLabel.setIcon(new ImageIcon(getClass().getClassLoader().getResource("settings.png")));
@@ -184,5 +227,34 @@ public class MainCustomerWindow extends MainWindow {
         JLabel label_8 = new JLabel("NA");
         label_8.setBounds(55, 98, 105, 14);
         panel_2.add(label_8);
+        
+        
+    }
+    
+    private ArrayList<Integer> checkAvailabilityOfWaitlistBooks(JLabel lblNotifications, JLabel notificationIcon)
+    {
+    	ArrayList<Integer> bookIDs = new ArrayList<Integer>(); 
+    	WaitlistDAO waitlistOfUser = new WaitlistDAO();
+        waitlistOfUser.getUserBookOnWaitlist(getUser().getId());
+        
+        
+        for(int i = 0; i < waitlistOfUser.getBooksOnWaitlist().size(); i++)
+        {
+        	if(waitlistOfUser.getBooksOnWaitlist().get(i).isBookAvailable())
+        	{
+        		bookIDs.add(waitlistOfUser.getBooksOnWaitlist().get(i).getId());
+        	}
+        }
+        
+        lblNotifications.setText("Notifications: "+bookIDs.size());
+        
+        if(bookIDs.size() > 0) {
+        	notificationIcon.setVisible(true);
+        }else{
+        	notificationIcon.setVisible(false);
+        }
+        
+        return bookIDs;
+        
     }
 }
