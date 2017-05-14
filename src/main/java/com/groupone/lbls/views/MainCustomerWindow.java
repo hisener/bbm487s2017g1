@@ -58,7 +58,7 @@ public class MainCustomerWindow extends MainWindow {
         JButton btnSearchBooks = new JButton("Search Books");
         btnSearchBooks.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent actionEvent) {
-        		SearchBooksWindow searchWindow = new SearchBooksWindow();
+        		SearchBooksWindow searchWindow = new SearchBooksWindow(getUser().getId());
         		searchWindow.getFrame().setVisible(true);
         	}
         });
@@ -74,15 +74,55 @@ public class MainCustomerWindow extends MainWindow {
         btnRBook.setBounds(158, 24, 165, 23);
         panel_1.add(btnRBook);
         
-        JButton btnViewMyFines = new JButton("View My Fines");
+        final JButton btnViewMyFines = new JButton("View My Fines");
+        btnViewMyFines.putClientProperty("active", false);
+
+        btnViewMyFines.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                if ((Boolean) btnViewMyFines.getClientProperty("active")) {
+                    // do not open new window
+                    return;
+                }
+
+                CustomerViewFines customerViewFines = new CustomerViewFines(getUser().getId());
+                btnViewMyFines.putClientProperty("active", true);
+
+                customerViewFines.getFrame().addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosed(WindowEvent windowEvent) {
+                        super.windowClosed(windowEvent);
+                        btnViewMyFines.putClientProperty("active", false);
+                        // TODO: Re-render summary part
+                    }
+                });
+            }
+        });
         btnViewMyFines.setBounds(10, 58, 138, 23);
         panel_1.add(btnViewMyFines);
         
-        JButton btnSelfCheckoutOr = new JButton("Self Check-out or Return");
+        final JButton btnSelfCheckoutOr = new JButton("Self Check-out or Return");
+        btnSelfCheckoutOr.putClientProperty("active", false);
+
         btnSelfCheckoutOr.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                new CustomerSelfCheckOutOrReturnWindow(getUser().getId());
+                if ((Boolean) btnSelfCheckoutOr.getClientProperty("active")) {
+                    // do not open new window
+                    return;
+                }
+
+                CustomerSelfCheckOutOrReturnWindow selfCheckOutOrReturnWindow =
+                        new CustomerSelfCheckOutOrReturnWindow(getUser().getId());
+                btnSelfCheckoutOr.putClientProperty("active", true);
+
+                selfCheckOutOrReturnWindow.getFrame().addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosed(WindowEvent windowEvent) {
+                        super.windowClosed(windowEvent);
+                        btnSelfCheckoutOr.putClientProperty("active", false);
+                    }
+                });
             }
         });
         btnSelfCheckoutOr.setBounds(158, 58, 165, 23);

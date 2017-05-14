@@ -1,10 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS `lbls` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `lbls`;
--- MySQL dump 10.13  Distrib 5.7.17, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.18, for Linux (x86_64)
 --
 -- Host: localhost    Database: lbls
 -- ------------------------------------------------------
--- Server version	5.7.17-0ubuntu0.16.04.2
+-- Server version	5.7.18-0ubuntu0.16.04.1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -51,6 +49,31 @@ INSERT INTO `book` VALUES (1,'9750802942','Harry Potter and the Philosopher\'s S
 UNLOCK TABLES;
 
 --
+-- Table structure for table `fine`
+--
+
+DROP TABLE IF EXISTS `fine`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `fine` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `amount` int(11) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idfine_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `fine`
+--
+
+LOCK TABLES `fine` WRITE;
+/*!40000 ALTER TABLE `fine` DISABLE KEYS */;
+/*!40000 ALTER TABLE `fine` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `loan`
 --
 
@@ -65,7 +88,7 @@ CREATE TABLE `loan` (
   `return_date` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -74,6 +97,7 @@ CREATE TABLE `loan` (
 
 LOCK TABLES `loan` WRITE;
 /*!40000 ALTER TABLE `loan` DISABLE KEYS */;
+INSERT INTO `loan` VALUES (1,2,1,'2017-03-12 09:41:18','2017-05-12 09:59:06');
 /*!40000 ALTER TABLE `loan` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -116,4 +140,14 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-04-24 20:13:10
+-- Dump completed on 2017-05-12 10:06:43
+
+CREATE TABLE `waitlist` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `book_id` int(11) NOT NULL,
+  `added_date` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8
+

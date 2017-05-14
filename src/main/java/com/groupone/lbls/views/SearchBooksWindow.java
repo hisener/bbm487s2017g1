@@ -9,8 +9,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
 import java.awt.Font;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +24,9 @@ import javax.swing.table.TableRowSorter;
 import javax.swing.text.TableView.TableRow;
 
 import com.groupone.lbls.controller.BookController;
+import com.groupone.lbls.controller.UserController;
 import com.groupone.lbls.db.BookDAO;
+import com.groupone.lbls.model.Book;
 import com.groupone.lbls.model.UserRole;
 
 import javax.swing.JTable;
@@ -35,11 +36,6 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 public class SearchBooksWindow {
 	
@@ -63,14 +59,14 @@ public class SearchBooksWindow {
 	/**
 	 * Create the application.
 	 */
-	public SearchBooksWindow() {
-		initialize();
+	public SearchBooksWindow(int userId) {
+		initialize(userId);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	private void initialize(final int userId) {
 		frame = new JFrame("Library Book Loan System - Search Books");
 		frame.setBounds(100, 100, 592, 474);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -133,6 +129,55 @@ public class SearchBooksWindow {
 				scrollPane.setViewportView(table);
 				
 				table.repaint();
+
+				//if a user logins
+				if(userId!=-1){
+					/*This block is used to add chosen book to the waiting list of the user.*/
+					table.addMouseListener(new MouseAdapter() {
+						public void mouseClicked(MouseEvent e) {
+							if (e.getClickCount() == 2) {
+								JTable target = (JTable)e.getSource();
+								int row = target.getSelectedRow();
+								String ISBN=(String)table.getValueAt(row, 0);
+
+								Book book=BookController.getBook(ISBN);
+
+								int borrowed_book_count=BookController.getTakenBookCount(book.getId());
+								int book_count=book.getQuantity();
+
+								//check not available of book
+								if(borrowed_book_count==book_count&&
+										//check that user has borrowed.
+										UserController.getTakenDate(userId, book.getId())&&
+										//check that user added the wait list before
+										!(BookController.getWaitListBook(userId,book.getId()))){
+
+									JFrame frame = new JFrame();
+									String[] options = new String[2];
+									options[0] = new String("Agree");
+									options[1] = new String("Disagree");
+
+									int res = JOptionPane.showOptionDialog(frame.getContentPane(),
+											"Do you want to add the book to the waiting list!",
+											"", 0,JOptionPane.INFORMATION_MESSAGE,
+											null,options,null);
+
+									switch (res) {
+										case JOptionPane.YES_OPTION:
+											BookController.addWaitList(userId, book.getId());
+											JOptionPane.showMessageDialog(null, "Process Successfully");
+											break;
+										case JOptionPane.NO_OPTION:
+											JOptionPane.showMessageDialog(null, "Process is Canceled");
+											break;
+									}
+								}
+
+							}
+						}
+					});
+				}
+
 				resetFields();
 			}
 			
