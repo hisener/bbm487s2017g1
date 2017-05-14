@@ -22,6 +22,8 @@ public class MainCustomerWindow extends MainWindow {
 	private ArrayList<Integer> bookIDs = new ArrayList<>();
 	private JLabel notificationIcon = new JLabel("New label");
 	private JLabel lblNotifications = new JLabel("Notifications: 0");
+	private JLabel label_fine;
+	private JLabel label_bookCount;
 	
     /**
      * Create the application.
@@ -86,8 +88,7 @@ public class MainCustomerWindow extends MainWindow {
          * Check user's books availability.
          * If available then put a list of them.
          */
-               
-       
+              
         notificationIcon.setIcon(new ImageIcon(getClass().getClassLoader().getResource("notification.png")) );
         notificationIcon.setBounds(150, 118, 20, 20);
         panel_1.add(notificationIcon);
@@ -95,18 +96,8 @@ public class MainCustomerWindow extends MainWindow {
         lblNotifications.setBounds(10, 92, 72, 14);
         panel_1.add(lblNotifications);
         
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-        	  @Override
-        	  public void run() {
-        		  bookIDs = checkAvailabilityOfWaitlistBooks(lblNotifications, notificationIcon);
-        	  }
-        	}, 1000, 2000);
-        
-        
-        
         /**************/
-        
+                
         JButton btnRBook = new JButton("My Books and Reservations");
         btnRBook.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
@@ -214,13 +205,7 @@ public class MainCustomerWindow extends MainWindow {
         JLabel label_4 = new JLabel("Name:");
         label_4.setBounds(13, 47, 35, 14);
         panel_2.add(label_4);
-
-        int fine = UserController.getInstance().getUsersFine(this.getUser().getId());
-
-        JLabel label_5 = new JLabel(fine + " \u20BA");
-        label_5.setBounds(55, 73, 105, 14);
-        panel_2.add(label_5);
-        
+       
         JLabel label_6 = new JLabel("Fine:");
         label_6.setBounds(13, 73, 34, 14);
         panel_2.add(label_6);
@@ -228,14 +213,30 @@ public class MainCustomerWindow extends MainWindow {
         JLabel label_7 = new JLabel("Books:");
         label_7.setBounds(13, 98, 37, 14);
         panel_2.add(label_7);
-
+        
+        int fine = UserController.getInstance().getUsersFine(this.getUser().getId());
+        label_fine = new JLabel(fine + " \u20BA");
+        label_fine.setBounds(55, 73, 105, 14);
+        panel_2.add(label_fine);
+        
         int bookCount = UserController.getInstance().getUsersBookCount(this.getUser().getId());
 
-        JLabel label_8 = new JLabel(bookCount + "");
-        label_8.setBounds(55, 98, 105, 14);
-        panel_2.add(label_8);
+        label_bookCount = new JLabel(bookCount + "");
+        label_bookCount.setBounds(55, 98, 105, 14);
+        panel_2.add(label_bookCount);
         
-        
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+        	  @Override
+        	  public void run() {
+        		  bookIDs = checkAvailabilityOfWaitlistBooks(lblNotifications, notificationIcon);
+        		  int fine = UserController.getInstance().getUsersFine(getUser().getId());
+        		  int bookCount = UserController.getInstance().getUsersBookCount(getUser().getId());
+        		  label_fine.setText(fine + " \u20BA");
+        		  label_bookCount.setText(bookCount + "");
+        	  }
+        	}, 1000, 2000);
+
     }
     
     private ArrayList<Integer> checkAvailabilityOfWaitlistBooks(JLabel lblNotifications, JLabel notificationIcon)
