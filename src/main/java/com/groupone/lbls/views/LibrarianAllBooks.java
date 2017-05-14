@@ -66,7 +66,8 @@ public class LibrarianAllBooks {
 	 */
 	private void initialize() {
 		frame = new JFrame("Library Book Loan System - View All Books");
-		frame.setBounds(100, 100, 600, 400);
+		frame.setResizable(false);
+		frame.setBounds(100, 100, 588, 400);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
 		JPanel panel = new JPanel();

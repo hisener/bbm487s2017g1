@@ -2,6 +2,7 @@ package com.groupone.lbls.db;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.groupone.lbls.model.Book;
@@ -11,6 +12,41 @@ public class BookDAO {
 	private Object[][] rowData;
 
 	private final String table = "book";
+	
+	public Book getBookByID(int bookId)
+	{
+		 PreparedStatement statement;
+	     String query = String.format("SELECT * FROM %s WHERE id = ?", table);
+
+        try {
+            statement = MySQL.getInstance().getConnection().prepareStatement(query);
+            statement.setInt(1,bookId);
+            ResultSet resultSet= statement.executeQuery();
+
+            // check isEmpty
+            if (!resultSet.next()) {
+                return null;
+            }
+
+            int id=resultSet.getInt("id");
+            String ISBN = resultSet.getString("ISBN");
+            String title=resultSet.getString("title");
+            String author=resultSet.getString("author");
+            int quantity=resultSet.getInt("quantity");
+            String publisher=resultSet.getString("publisher");
+            String genre=resultSet.getString("genre");
+            String keywords=resultSet.getString("keywords");
+            String publisherYear=resultSet.getString("publish_year");
+            
+            
+
+            return new Book(id, ISBN, title, author, quantity, publisher, genre, keywords,publisherYear);
+
+        }catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }        
+	}
    
     public void getListOfBooks(String isbn, String title, String author, String publisher, 
     		String genre, String keywords)

@@ -25,7 +25,8 @@ public class CustomerSelfCheckOutOrReturnWindow {
      */
     private void initialize(final int userId) {
         frame = new JFrame("Library Book Loan System - Self Check-out or Return");
-        frame.setBounds(100, 100, 450, 300);
+        frame.setResizable(false);
+        frame.setBounds(100, 100, 440, 300);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         final JTextField textField;

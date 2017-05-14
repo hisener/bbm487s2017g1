@@ -63,7 +63,8 @@ public class CustomerViewFines {
 	 */
 	private void initialize() {
 		frame = new JFrame("Library Book Loan System - View My Fines");
-		frame.setBounds(100, 100, 550, 450);
+		frame.setResizable(false);
+		frame.setBounds(100, 100, 537, 450);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JPanel panel = new JPanel();
