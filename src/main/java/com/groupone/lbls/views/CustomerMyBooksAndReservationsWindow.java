@@ -31,6 +31,9 @@ import javax.swing.JTabbedPane;
 import java.awt.Color;
 import java.awt.SystemColor;
 import java.io.ObjectInputStream.GetField;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class CustomerMyBooksAndReservationsWindow {
 
@@ -109,7 +112,7 @@ public class CustomerMyBooksAndReservationsWindow {
 			
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBackground(SystemColor.text);
-		tabbedPane.setBounds(10, 75, 674, 180);
+		tabbedPane.setBounds(10, 75, 674, 228);
 		frame.getContentPane().add(tabbedPane);
 		
 		initializeCurrentBooks(tabbedPane);
@@ -135,7 +138,7 @@ public class CustomerMyBooksAndReservationsWindow {
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBackground(SystemColor.window);
-		scrollPane.setBounds(10, 11, 649, 130);
+		scrollPane.setBounds(10, 11, 649, 178);
 		panel.add(scrollPane);
 		
 		
@@ -185,7 +188,7 @@ public class CustomerMyBooksAndReservationsWindow {
 		tabbedPane.addTab("Wait List", null, panel_1, null);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(10, 11, 649, 130);
+		scrollPane_1.setBounds(10, 11, 649, 144);
 		panel_1.add(scrollPane_1);
 
 	
@@ -220,6 +223,30 @@ public class CustomerMyBooksAndReservationsWindow {
 		}
 		
 		scrollPane_1.setViewportView(table_1);
+		
+		JButton btnDeleteWish = new JButton("Delete Wish");
+		btnDeleteWish.setBounds(549, 166, 110, 23);
+		panel_1.add(btnDeleteWish);
+		btnDeleteWish.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(table_1.getSelectedRow() >= 0)
+				{
+					int row = table_1.getSelectedRow();
+					String tempISBN = table_1.getValueAt(row, 1).toString();
+					WaitlistDAO waitlist = new WaitlistDAO();
+					boolean result = waitlist.deleteWish(tempISBN);
+					
+					if(result){
+						JOptionPane.showMessageDialog(frame, "Book with ISBN: " + tempISBN + " is deleted from your wishlist.");
+					} else {
+						JOptionPane.showMessageDialog(frame, "Cannot delete book from wishlist.");
+					}
+					
+					frame.dispose();
+					
+				}
+			}
+		});
 	}
 	
 	private void initializeHistory(JTabbedPane tabbedPane)
@@ -235,7 +262,7 @@ public class CustomerMyBooksAndReservationsWindow {
 		tabbedPane.addTab("History", null, panel_2, null);
 		
 		JScrollPane scrollPane_2 = new JScrollPane();
-		scrollPane_2.setBounds(10, 11, 649, 130);
+		scrollPane_2.setBounds(10, 11, 649, 178);
 		panel_2.add(scrollPane_2);
 		
 		if(rowData == null)
@@ -270,5 +297,4 @@ public class CustomerMyBooksAndReservationsWindow {
 				
 		scrollPane_2.setViewportView(table_2);
 	}
-
 }

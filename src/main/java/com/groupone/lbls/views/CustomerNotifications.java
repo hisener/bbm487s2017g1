@@ -15,23 +15,31 @@ import java.util.List;
 
 import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+
+import com.groupone.lbls.db.WaitlistDAO;
+
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.RowSorter;
 import javax.swing.SortOrder;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.WindowConstants;
 
 public class CustomerNotifications {
 
 	private JFrame frame;
 	private JTable table;
+	private int userID;
 
 	/**
 	 * Launch the application.
 	 */
+	/*
 	public static void main(String[] args) {
 
 		try {
@@ -52,12 +60,15 @@ public class CustomerNotifications {
 			}
 		});
 	}
+	*/
 
 	/**
 	 * Create the application.
 	 */
-	public CustomerNotifications() {
+	public CustomerNotifications(int id) {
+		userID = id;
 		initialize();
+		frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 	}
 
 	/**
@@ -95,17 +106,17 @@ public class CustomerNotifications {
 		scrollPane.setBounds(10, 22, 394, 144);
 		panel_1.add(scrollPane);
 		
-		Object columnNames[] = { "Title", "ISBN", "Author", "Genre" };
-		Object rowData[][] = { {"Example Book One", "111", "Writer 1", "Sci-fi"},
-							   {"Example Book Two", "222", "Writer 2", "Action"}};
+		Object columnNames[] = { "No", "Message" };
+		Object rowData[][] = getNotifications();
 		
 		table = new JTable(rowData, columnNames)
 		{
 			@Override
 		    public boolean isCellEditable(int row, int column) {
-		        return false;//super.isCellEditable(row, column); //To change body of generated methods, choose Tools | Templates.
+		        return false;
 		    }
 		};
+		
 		table.setBackground(Color.white);
 		table.setOpaque(true);
 		
@@ -117,9 +128,52 @@ public class CustomerNotifications {
 		List<RowSorter.SortKey> sortKeys = new ArrayList<>(25);
 		sortKeys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
 		sorter.setSortKeys(sortKeys);
-
-
+		
+		table.getColumnModel().getColumn(0).setMaxWidth(40);
 		scrollPane.setViewportView(table);
+		
+	}
+	
+	private Object[][] getNotifications()
+    {
+    	ArrayList<String> bookInfos = new ArrayList<String>(); 
+    	WaitlistDAO waitlistOfUser = new WaitlistDAO();
+        waitlistOfUser.getUserBookOnWaitlist(userID);
+        
+        
+        for(int i = 0; i < waitlistOfUser.getBooksOnWaitlist().size(); i++)
+        {
+        	if(waitlistOfUser.getBooksOnWaitlist().get(i).isBookAvailable())
+        	{
+        		bookInfos.add("The book \"" + waitlistOfUser.getBooksOnWaitlist().get(i).getTitle()
+        				+"\" with ISBN: "+waitlistOfUser.getBooksOnWaitlist().get(i).getISBN()+" is available.");
+        	}
+        }
+        
+        Object[][] rowData = new Object[bookInfos.size()][2];
+        
+        for(int i = 0; i < bookInfos.size(); i++)
+        {
+        	rowData[i][0] = i+1;
+        	rowData[i][1] = bookInfos.get(i);
+        }
+                
+        return rowData;
+    }
+
+	public JFrame getFrame() {
+		return frame;
 	}
 
+	public void setFrame(JFrame frame) {
+		this.frame = frame;
+	}
+
+	public JTable getTable() {
+		return table;
+	}
+
+	public void setTable(JTable table) {
+		this.table = table;
+	}
 }
