@@ -78,7 +78,7 @@ public class UserController {
         return Query.deleteUser(id);
     }
 
-    public boolean selfCheckout(int userId, String ISBN) throws Exception {
+    public int selfCheckout(int userId, String ISBN) throws Exception {
         Book book = BookController.getBook(ISBN);
         if (book == null) {
             throw new Exception("The book could not find.");
@@ -88,12 +88,16 @@ public class UserController {
             throw new Exception("You have already taken the book.");
         }
 
+        int book_count=book.getQuantity();
+        int waitList_book_count=BookController.getWaitListBookCount(book.getId());
+
+        //check not available of book or whether there are books in wait list
+        if (!book.isBookAvailable()||waitList_book_count>=book_count) {
+            return 2;
+        }
+
         // TODO: If the actor tries to borrow more than 5 books at once,
         // the system will not allow the user to do that.
-
-        if (!book.isBookAvailable()) {
-            throw new Exception("The book is not available at the moment.");
-        }
 
         return Query.selfCheckout(userId, book);
     }

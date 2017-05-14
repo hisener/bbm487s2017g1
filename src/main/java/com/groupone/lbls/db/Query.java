@@ -290,7 +290,7 @@ public class Query {
         }
     }
 
-    public static boolean selfCheckout(int userId, Book book) {
+    public static int selfCheckout(int userId, Book book) {
         PreparedStatement statement;
         String query = String.format("INSERT INTO %s " +
                 "(borrower_id, book_id, taken_date) " +
@@ -303,11 +303,11 @@ public class Query {
             statement.setObject(3, new Timestamp(new Date().getTime()));
 
             statement.execute();
-            return true;
+            return 1;
 
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            return 0;
         }
     }
 
