@@ -1,5 +1,6 @@
 package com.groupone.lbls.views;
 
+import com.groupone.lbls.controller.UserController;
 import com.groupone.lbls.model.User;
 
 import java.awt.*;
@@ -121,6 +122,7 @@ public class MainCustomerWindow extends MainWindow {
                     public void windowClosed(WindowEvent windowEvent) {
                         super.windowClosed(windowEvent);
                         btnSelfCheckoutOr.putClientProperty("active", false);
+                        // TODO: Re-render summary part
                     }
                 });
             }
@@ -150,7 +152,8 @@ public class MainCustomerWindow extends MainWindow {
         
         JPanel panel_2 = new JPanel();
         panel_2.setLayout(null);
-        panel_2.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Summary", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+        panel_2.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"),
+                "Summary", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
         panel_2.setBounds(354, 73, 170, 153);
         panel.add(panel_2);
         
@@ -168,8 +171,10 @@ public class MainCustomerWindow extends MainWindow {
         JLabel label_4 = new JLabel("Name:");
         label_4.setBounds(13, 47, 35, 14);
         panel_2.add(label_4);
-        
-        JLabel label_5 = new JLabel("NA");		//5\u20BA
+
+        int fine = UserController.getInstance().getUsersFine(this.getUser().getId());
+
+        JLabel label_5 = new JLabel(fine + " \u20BA");
         label_5.setBounds(55, 73, 105, 14);
         panel_2.add(label_5);
         
@@ -180,8 +185,10 @@ public class MainCustomerWindow extends MainWindow {
         JLabel label_7 = new JLabel("Books:");
         label_7.setBounds(13, 98, 37, 14);
         panel_2.add(label_7);
-        
-        JLabel label_8 = new JLabel("NA");
+
+        int bookCount = UserController.getInstance().getUsersBookCount(this.getUser().getId());
+
+        JLabel label_8 = new JLabel(bookCount + "");
         label_8.setBounds(55, 98, 105, 14);
         panel_2.add(label_8);
     }

@@ -157,4 +157,8 @@ public class LoanDAO {
 		return booksInformation;
 	}
 
+	public int getUsersBookCount() {
+        return this.loans.size();
+    }
+
 }
