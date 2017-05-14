@@ -63,7 +63,7 @@ public class LibrarianUserOperations {
 
         initCreateTab(tabbedPane);
         initUpdateTab(tabbedPane);
-        initDeleteTab(tabbedPane);
+        initDeleteTab(tabbedPane, username);
         initViewTab(tabbedPane);
     }
 
@@ -302,7 +302,7 @@ public class LibrarianUserOperations {
         });
     }
 
-    private void initDeleteTab(JTabbedPane tabbedPane) {
+    private void initDeleteTab(JTabbedPane tabbedPane, final String username) {
         JPanel deleteTabPanel = new JPanel();
         final JTextField usernameField;
         final JTable table;
@@ -349,6 +349,12 @@ public class LibrarianUserOperations {
             public void actionPerformed(ActionEvent actionEvent) {
                 if (usernameField.getText().isEmpty()) {
                     JOptionPane.showMessageDialog(getFrame(), "You should fill the username.",
+                            "Error", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+
+                if (usernameField.getText().equals(username)) {
+                    JOptionPane.showMessageDialog(getFrame(), "You cannot delete yourself.",
                             "Error", JOptionPane.WARNING_MESSAGE);
                     return;
                 }

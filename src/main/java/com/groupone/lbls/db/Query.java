@@ -21,7 +21,8 @@ public class Query {
 
     public static User getUser(String username) {
         PreparedStatement statement;
-        String query = String.format("SELECT * FROM %s WHERE username = ?", userTable);
+        String query = String.format("SELECT * FROM %s WHERE BINARY " +
+                "username = ?", userTable);
 
         try {
             statement = MySQL.getInstance().getConnection().prepareStatement(query);
@@ -46,7 +47,7 @@ public class Query {
 
     public static User getUser(String username, String password) {
         PreparedStatement statement;
-        String query = String.format("SELECT * FROM %s WHERE " +
+        String query = String.format("SELECT * FROM %s WHERE BINARY " +
                 "username = ? AND password = ?", userTable);
 
         try {
@@ -290,7 +291,7 @@ public class Query {
         }
     }
 
-    public static boolean selfCheckout(int userId, Book book) {
+    public static int selfCheckout(int userId, Book book) {
         PreparedStatement statement;
         String query = String.format("INSERT INTO %s " +
                 "(borrower_id, book_id, taken_date) " +
@@ -303,11 +304,11 @@ public class Query {
             statement.setObject(3, new Timestamp(new Date().getTime()));
 
             statement.execute();
-            return true;
+            return 1;
 
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            return 0;
         }
     }
 
@@ -379,31 +380,6 @@ public class Query {
             }
 
             return resultSet.getInt("COUNT(*)");
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return 0;
-        }
-    }
-
-    public static int getUsersFine(int userId) {
-        PreparedStatement statement;
-        String query = String.format("SELECT SUM(amount) FROM %s " +
-                "WHERE user_id = ? AND amount > 0", fineTable);
-
-        try {
-            statement = MySQL.getInstance().getConnection().prepareStatement(query);
-            statement.setInt(1, userId);
-
-            statement.execute();
-            ResultSet resultSet = statement.executeQuery();
-
-            // check isEmpty
-            if (!resultSet.next()) {
-                return 0;
-            }
-
-            return resultSet.getInt("SUM(amount)");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -494,6 +470,32 @@ public class Query {
         }catch (Exception e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    public static int getWaitListBookCount(int bookId) {
+        PreparedStatement statement;
+        String query = String.format("SELECT COUNT(*) FROM %s " +
+                "WHERE book_id = ? " +
+                "GROUP BY user_id", waitListTable);
+
+        try {
+            statement = MySQL.getInstance().getConnection().prepareStatement(query);
+            statement.setInt(1, bookId);
+
+            statement.execute();
+            ResultSet resultSet = statement.executeQuery();
+
+            // check isEmpty
+            if (!resultSet.next()) {
+                return 0;
+            }
+
+            return resultSet.getInt("COUNT(*)");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
         }
     }
 

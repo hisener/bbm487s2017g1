@@ -148,7 +148,7 @@ public class SearchBooksWindow {
 								//check not available of book
 								if(borrowed_book_count==book_count&&
 										//check that user has borrowed.
-										UserController.getTakenDate(userId, book.getId())&&
+										UserController.getInstance().getTakenDate(userId, book.getId())&&
 										//check that user added the wait list before
 										!(BookController.getWaitListBook(userId,book.getId()))){
 
