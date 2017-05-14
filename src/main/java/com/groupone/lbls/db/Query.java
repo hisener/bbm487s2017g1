@@ -497,4 +497,30 @@ public class Query {
         }
     }
 
+    public static int getWaitListBookCount(int bookId) {
+        PreparedStatement statement;
+        String query = String.format("SELECT COUNT(*) FROM %s " +
+                "WHERE book_id = ? " +
+                "GROUP BY user_id", waitListTable);
+
+        try {
+            statement = MySQL.getInstance().getConnection().prepareStatement(query);
+            statement.setInt(1, bookId);
+
+            statement.execute();
+            ResultSet resultSet = statement.executeQuery();
+
+            // check isEmpty
+            if (!resultSet.next()) {
+                return 0;
+            }
+
+            return resultSet.getInt("COUNT(*)");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
 }
