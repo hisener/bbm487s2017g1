@@ -55,7 +55,7 @@ public class MainCustomerWindow extends MainWindow {
         JButton btnSearchBooks = new JButton("Search Books");
         btnSearchBooks.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent actionEvent) {
-        		SearchBooksWindow searchWindow = new SearchBooksWindow();
+        		SearchBooksWindow searchWindow = new SearchBooksWindow(getUser().getId());
         		searchWindow.getFrame().setVisible(true);
         	}
         });

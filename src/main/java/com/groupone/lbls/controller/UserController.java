@@ -98,6 +98,12 @@ public class UserController {
         return Query.selfCheckout(userId, book);
     }
 
+    public static boolean getTakenDate(int userId, int book_id){
+        if (Query.getTakenDate(userId, book_id) != null){
+            return false;
+        }
+        return true;
+    }
     public boolean selfReturn(int userId, String ISBN) throws Exception {
         Book book = BookController.getBook(ISBN);
         if (book == null) {

@@ -131,7 +131,7 @@ public class LoginWindow {
         JButton button = new JButton("Search Books");
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
-                SearchBooksWindow searchWindow = new SearchBooksWindow();
+                SearchBooksWindow searchWindow = new SearchBooksWindow(-1);
                 searchWindow.getFrame().setVisible(true);
             }
         });
