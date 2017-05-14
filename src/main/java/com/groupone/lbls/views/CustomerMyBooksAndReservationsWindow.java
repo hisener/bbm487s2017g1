@@ -21,6 +21,7 @@ import javax.swing.table.TableRowSorter;
 
 import com.groupone.lbls.controller.UserController;
 import com.groupone.lbls.db.LoanDAO;
+import com.groupone.lbls.db.WaitlistDAO;
 import com.groupone.lbls.model.User;
 
 import javax.swing.JTable;
@@ -173,6 +174,12 @@ public class CustomerMyBooksAndReservationsWindow {
 	
 	private void initializeWaitlist(JTabbedPane tabbedPane)
 	{
+		Object columnNames[] = { "Title", "ISBN", "Date Added"};
+		
+		WaitlistDAO waitlistOfUser = new WaitlistDAO();
+		waitlistOfUser.getUserBookOnWaitlist(user.getId());
+		Object rowData[][] = waitlistOfUser.getRowData();
+		
 		JPanel panel_1 = new JPanel();
 		panel_1.setLayout(null);
 		tabbedPane.addTab("Wait List", null, panel_1, null);
@@ -181,31 +188,36 @@ public class CustomerMyBooksAndReservationsWindow {
 		scrollPane_1.setBounds(10, 11, 649, 130);
 		panel_1.add(scrollPane_1);
 
-		
-		Object columnNames_1[] = { "Title", "ISBN", "Author", "Genre"};
-		Object rowData_1[][] = { {"Example Book One", "111", "Writer 1", "Sci-fi"},
-				   {"Example Book Two", "222", "Writer 2", "Action"} };
-		Object rowData_2[][] = { {"Example Returned Book 1", "999", "Writer 9", "Crime"},
-				   {"Example Returned Book 2", "888", "Writer 8", "History"} };
-		
-		table_1 = new JTable(rowData_1, columnNames_1)
+	
+		if(rowData == null)
 		{
-			@Override
-		    public boolean isCellEditable(int row, int column) {
-		        return false;//super.isCellEditable(row, column); //To change body of generated methods, choose Tools | Templates.
-		    }
-		};
-		table_1.setBackground(Color.white);
-		table_1.setOpaque(true);
-		
-		
-		table_1.getTableHeader().setReorderingAllowed(false);
-		TableRowSorter<TableModel> sorter_1 = new TableRowSorter<TableModel>(table_1.getModel());
-		table_1.setRowSorter(sorter_1);
+			DefaultTableModel dm = new DefaultTableModel(columnNames, 0);					
+			table_1 = new JTable(dm);
+		}
+		else
+		{
+			table_1 = new JTable(rowData, columnNames)
+			{
+				@Override
+			    public boolean isCellEditable(int row, int column) {
+			        return false;
+			    }
+			};
+			table_1.setBackground(Color.white);
+			table_1.setOpaque(true);
+			
+			if(rowData != null)
+			{
+				table_1.getTableHeader().setReorderingAllowed(false);
+				TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(table_1.getModel());
+				table_1.setRowSorter(sorter);
 
-		List<RowSorter.SortKey> sortKeys_1 = new ArrayList<>(25);
-		sortKeys_1.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
-		sorter_1.setSortKeys(sortKeys_1);
+				List<RowSorter.SortKey> sortKeys = new ArrayList<>(25);
+				sortKeys.add(new RowSorter.SortKey(1, SortOrder.ASCENDING));
+				sorter.setSortKeys(sortKeys);
+			}
+			
+		}
 		
 		scrollPane_1.setViewportView(table_1);
 	}
