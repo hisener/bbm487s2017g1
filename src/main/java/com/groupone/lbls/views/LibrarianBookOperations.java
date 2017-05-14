@@ -456,6 +456,12 @@ public class LibrarianBookOperations {
 			public void actionPerformed(ActionEvent actionEvent) {
 
 				try{
+					String ISBN=ISBNfield.getText().trim();
+					Book book=BookController.getBook(ISBN);
+
+					if(BookController.getTakenBookCount(book.getId())>0){
+						throw new Exception("A user has got this book.");
+					}
 					if(!(BookController.deleteBook(String.valueOf(deleteBookButton.getClientProperty("id")))))
 						throw new Exception("The book could not be deleted.");
 
@@ -472,6 +478,8 @@ public class LibrarianBookOperations {
 							JOptionPane.WARNING_MESSAGE);
 
 					ISBNfield.setText("");
+					((DefaultTableModel) table.getModel()).removeRow(0);
+					deleteBookButton.setEnabled(false);
 					return;
 				}
 

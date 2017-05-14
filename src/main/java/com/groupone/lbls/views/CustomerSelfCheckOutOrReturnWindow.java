@@ -1,6 +1,8 @@
 package com.groupone.lbls.views;
 
+import com.groupone.lbls.controller.BookController;
 import com.groupone.lbls.controller.UserController;
+import com.groupone.lbls.model.Book;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
@@ -76,13 +78,57 @@ public class CustomerSelfCheckOutOrReturnWindow {
                             "Error", JOptionPane.WARNING_MESSAGE);
                     return;
                 }
-
                 try {
-                    boolean result = UserController.getInstance().selfCheckout(
+                    int result = UserController.getInstance().selfCheckout(
                             userId, textField.getText());
-                    if (!result) {
+                    if (result==0) {
                         throw new Exception("The self-checkout operation" +
                                 "could not be performed.");
+                    }
+                    else if(result==1){
+                        JOptionPane.showMessageDialog(getFrame(), "Done.",
+                                "Success", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    else if(result==2){
+
+                        String ISBN=textField.getText();
+                        Book book=BookController.getBook(ISBN);
+
+                        JFrame frame = new JFrame();
+                        String[] options = new String[2];
+                        options[0] = new String("Agree");
+                        options[1] = new String("Disagree");
+
+                        int res = JOptionPane.showOptionDialog(getFrame(),
+                                "The book is not available at the moment.\n" +
+                                        "Do you want to add the book to the waiting list!",
+                                "", 0,JOptionPane.INFORMATION_MESSAGE,
+                                null,options,null);
+
+                        switch (res) {
+                            case JOptionPane.YES_OPTION:
+
+                                //check that user added the wait list before
+                                if(BookController.getWaitListBook(userId,book.getId())){
+                                    JOptionPane.showMessageDialog(getFrame(),
+                                           "You have already taken in waiting list",
+                                            "Error",
+                                            JOptionPane.WARNING_MESSAGE);
+                                }
+                                else{
+                                    BookController.addWaitList(userId, book.getId());
+                                    JOptionPane.showMessageDialog(getFrame(),
+                                            "Done.",
+                                            "", JOptionPane.INFORMATION_MESSAGE);
+                                }
+
+                                break;
+                            case JOptionPane.NO_OPTION:
+
+                                JOptionPane.showMessageDialog(getFrame(), "Process is Canceled.",
+                                        "", JOptionPane.INFORMATION_MESSAGE);
+                                break;
+                        }
                     }
 
                 } catch (Exception e) {
@@ -93,8 +139,6 @@ public class CustomerSelfCheckOutOrReturnWindow {
                     return;
                 }
 
-                JOptionPane.showMessageDialog(getFrame(), "Done.",
-                        "Success", JOptionPane.INFORMATION_MESSAGE);
             }
         });
 
