@@ -1,8 +1,11 @@
 package com.groupone.lbls.controller;
 
 import com.groupone.lbls.api.Payment;
+import com.groupone.lbls.db.FineDAO;
+import com.groupone.lbls.db.LoanDAO;
 import com.groupone.lbls.db.Query;
 import com.groupone.lbls.db.UserDAO;
+import com.groupone.lbls.db.impl.FineDAOImpl;
 import com.groupone.lbls.db.impl.UserDAOImpl;
 import com.groupone.lbls.model.Book;
 import com.groupone.lbls.model.User;
@@ -16,6 +19,13 @@ import java.util.concurrent.TimeUnit;
 public class UserController {
 
     private static UserController instance;
+    private UserDAO userDAO;
+    private FineDAO fineDAO;
+
+    public UserController() {
+        this.userDAO = new UserDAOImpl();
+        this.fineDAO = new FineDAOImpl();
+    }
 
     public static UserController getInstance() {
         if (instance == null) {
@@ -43,7 +53,6 @@ public class UserController {
     }
 
     public List<User> getAllUsers() {
-        UserDAO userDAO = new UserDAOImpl();
         return userDAO.getAllUsers();
     }
 
@@ -96,8 +105,9 @@ public class UserController {
             throw new Exception("You have already taken the book.");
         }
 
-        // TODO: If the actor tries to borrow more than 5 books at once,
-        // the system will not allow the user to do that.
+        if (UserController.getInstance().getUsersBookCount(userId) >= 5) {
+            throw new Exception("You cannot take more books before return.");
+        }
 
         if (!book.isBookAvailable()) {
             throw new Exception("The book is not available at the moment.");
@@ -106,12 +116,16 @@ public class UserController {
         return Query.selfCheckout(userId, book);
     }
 
-    public static boolean getTakenDate(int userId, int book_id){
-        if (Query.getTakenDate(userId, book_id) != null){
-            return false;
-        }
-        return true;
+    public boolean getTakenDate(int userId, int book_id){
+        return Query.getTakenDate(userId, book_id) == null;
     }
+
+    public int getUsersBookCount(int userId) {
+        LoanDAO loans = new LoanDAO();
+        loans.getUserBooks(userId);
+        return loans.getUsersBookCount();
+    }
+
     public boolean selfReturn(int userId, String ISBN) throws Exception {
         Book book = BookController.getBook(ISBN);
         if (book == null) {
@@ -131,6 +145,10 @@ public class UserController {
         }
 
         return Query.selfReturn(userId, book);
+    }
+
+    public int getUsersFine(int userId) {
+        return fineDAO.getUsersFine(userId);
     }
 
     public boolean payFine(int userId, String cardNumber) throws Exception {

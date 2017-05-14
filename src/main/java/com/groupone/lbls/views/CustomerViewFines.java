@@ -2,6 +2,8 @@ package com.groupone.lbls.views;
 
 import com.groupone.lbls.controller.UserController;
 import com.groupone.lbls.db.Query;
+import com.groupone.lbls.db.UserDAO;
+import com.groupone.lbls.db.impl.UserDAOImpl;
 
 import javax.swing.*;
 import java.awt.*;
@@ -59,7 +61,7 @@ public class CustomerViewFines {
         panel_1.add(labels, BorderLayout.WEST);
         panel_1.add(controls, BorderLayout.CENTER);
 
-        int fine = Query.getUsersFine(userId);
+        int fine = UserController.getInstance().getUsersFine(userId);
 
         if (fine == 0) {
             JLabel infoLabel = new JLabel("You do not have any fine.");
