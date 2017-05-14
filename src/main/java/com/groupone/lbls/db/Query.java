@@ -449,6 +449,24 @@ public class Query {
 
     }
 
+    public static boolean deleteWaitListBook(int userId, int book_id){
+        PreparedStatement statement;
+        String query = String.format("DELETE FROM %s WHERE user_id=? AND book_id=?", waitListTable);
+
+        try {
+            statement = MySQL.getInstance().getConnection().prepareStatement(query);
+            statement.setInt(1,userId);
+            statement.setInt(2,book_id);
+
+            statement.execute();
+            return true;
+
+        }catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public static boolean getWaitListBook(int user_id, int book_id){
 
         PreparedStatement statement;
