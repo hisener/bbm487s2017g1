@@ -1,6 +1,7 @@
 package com.groupone.lbls.views;
 import com.groupone.lbls.controller.BookController;
 import com.groupone.lbls.model.Book;
+import com.groupone.lbls.utils.Validation;
 
 import java.awt.EventQueue;
 
@@ -170,6 +171,9 @@ public class LibrarianBookOperations {
                             genre, keywords, quantity)))
                         throw new Exception("You should fill the field(s).");
 
+                    if(!Validation.isISBNValid(ISBN))
+                        throw new Exception("ISBN is wrong format.");
+
                     if(!(BookController.getInstance().checkQuantityFormat(quantity)))
                         throw new Exception("Quantity is wrong format.");
 
@@ -300,6 +304,9 @@ public class LibrarianBookOperations {
                     if(ISBN.isEmpty())
                         throw new Exception("You should fill the ISBN field.");
 
+                    if(!Validation.isISBNValid(ISBN))
+                        throw new Exception("ISBN is wrong format.");
+
                     Book book=BookController.getInstance().getBook(ISBN);
                     if(book==null)
                         throw new Exception("The book could not find.");
@@ -343,6 +350,9 @@ public class LibrarianBookOperations {
                     if(!(BookController.getInstance().checkFields(ISBN, title, author, publisher,
                             genre, keywords, quantity)))
                         throw new Exception("You should fill the field(s).");
+
+                    if(!Validation.isISBNValid(ISBN))
+                        throw new Exception("ISBN is wrong format.");
 
                     if(!(BookController.getInstance().checkQuantityFormat(quantity)))
                         throw new Exception("Quantity is wrong format.");
@@ -426,6 +436,9 @@ public class LibrarianBookOperations {
 
                     if(ISBN.isEmpty())
                         throw new Exception("You should fill the ISBN.");
+
+                    if(!Validation.isISBNValid(ISBN))
+                        throw new Exception("ISBN is wrong format.");
 
                     Book book=BookController.getInstance().getBook(ISBN);
                     if(book==null)
@@ -550,6 +563,9 @@ public class LibrarianBookOperations {
 
                     if(ISBN.isEmpty())
                         throw new Exception("You should fill the ISBN.");
+
+                    if(!Validation.isISBNValid(ISBN))
+                        throw new Exception("ISBN is wrong format.");
 
                     Book book=BookController.getInstance().getBook(ISBN);
                     if(book==null)
