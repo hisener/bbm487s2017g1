@@ -101,7 +101,8 @@ public class SearchBooksWindow {
                         
                 //rowData = bookSearcher.getRowData();
 
-                if(!Validation.isISBNValid(textField_ISBN.getText())) {
+                if(!textField_ISBN.getText().isEmpty() &&
+                        !Validation.isISBNValid(textField_ISBN.getText())) {
                     JOptionPane.showMessageDialog(getFrame(),
                             "ISBN is not valid.",
                             "Error", JOptionPane.WARNING_MESSAGE);
