@@ -3,6 +3,7 @@ package com.groupone.lbls.views;
 import com.groupone.lbls.controller.BookController;
 import com.groupone.lbls.controller.UserController;
 import com.groupone.lbls.model.Book;
+import com.groupone.lbls.utils.Validation;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
@@ -78,6 +79,14 @@ public class CustomerSelfCheckOutOrReturnWindow {
                             "Error", JOptionPane.WARNING_MESSAGE);
                     return;
                 }
+
+                if(!Validation.isISBNValid(textField.getText())) {
+                    JOptionPane.showMessageDialog(getFrame(),
+                            "ISBN is not valid.",
+                            "Error", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+
                 try {
                     int result = UserController.getInstance().selfCheckout(
                             userId, textField.getText());
@@ -149,6 +158,13 @@ public class CustomerSelfCheckOutOrReturnWindow {
                 if (textField.getText().isEmpty()) {
                     JOptionPane.showMessageDialog(getFrame(),
                             "ISBN is mandatory.",
+                            "Error", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+
+                if(!Validation.isISBNValid(textField.getText())) {
+                    JOptionPane.showMessageDialog(getFrame(),
+                            "ISBN is not valid.",
                             "Error", JOptionPane.WARNING_MESSAGE);
                     return;
                 }
