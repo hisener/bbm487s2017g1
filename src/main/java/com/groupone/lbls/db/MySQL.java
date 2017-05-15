@@ -15,6 +15,10 @@ public class MySQL {
     private String dbname;
     private String port = "3306";
 
+    /**
+     * Get the single instance of the MySQL class.
+     * @return MySQL object
+     */
     public static MySQL getInstance() {
         if (instance == null) {
             instance = new MySQL();
@@ -22,6 +26,11 @@ public class MySQL {
         return instance;
     }
 
+    /**
+     * Get java.sql.Connection object
+     * @return Connection object
+     * @see java.sql.Connection
+     */
     public Connection getConnection() {
         if (connection == null) {
             this.connect();
@@ -29,6 +38,9 @@ public class MySQL {
         return connection;
     }
 
+    /**
+     * Close MySQL connection.
+     */
     public static void close() {
         if (connection == null) {
             return;
@@ -41,6 +53,10 @@ public class MySQL {
         }
     }
 
+    /**
+     * Connect MySQL database.
+     * @see this.loadProperties
+     */
     private void connect() {
         this.loadProperties();
         // verifyServerCertificate is set false for suppressing the warning.
@@ -54,6 +70,10 @@ public class MySQL {
         }
     }
 
+    /**
+     * Gets properties from config.properties under resources folder.
+     * Uses properties related with MySQL such as host, username etc.
+     */
     private void loadProperties() {
         try {
             Properties properties = new Properties();

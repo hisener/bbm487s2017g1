@@ -92,7 +92,7 @@ public class CustomerSelfCheckOutOrReturnWindow {
                     else if(result==2){
 
                         String ISBN=textField.getText();
-                        Book book=BookController.getBook(ISBN);
+                        Book book=BookController.getInstance().getBook(ISBN);
 
                         JFrame frame = new JFrame();
                         String[] options = new String[2];
@@ -109,14 +109,14 @@ public class CustomerSelfCheckOutOrReturnWindow {
                             case JOptionPane.YES_OPTION:
 
                                 //check that user added the wait list before
-                                if(BookController.getWaitListBook(userId,book.getId())){
+                                if(BookController.getInstance().getWaitListBook(userId,book.getId())){
                                     JOptionPane.showMessageDialog(getFrame(),
                                            "You have already taken in waiting list",
                                             "Error",
                                             JOptionPane.WARNING_MESSAGE);
                                 }
                                 else{
-                                    BookController.addWaitList(userId, book.getId());
+                                    BookController.getInstance().addWaitList(userId, book.getId());
                                     JOptionPane.showMessageDialog(getFrame(),
                                             "Done.",
                                             "", JOptionPane.INFORMATION_MESSAGE);
