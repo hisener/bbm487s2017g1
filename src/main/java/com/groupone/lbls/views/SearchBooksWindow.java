@@ -28,6 +28,7 @@ import com.groupone.lbls.controller.UserController;
 import com.groupone.lbls.db.BookDAO;
 import com.groupone.lbls.model.Book;
 import com.groupone.lbls.model.UserRole;
+import com.groupone.lbls.utils.Validation;
 
 import javax.swing.JTable;
 import javax.swing.RowSorter;
@@ -99,6 +100,13 @@ public class SearchBooksWindow {
                 //        textField_Publisher.getText(), textField_Genre.getText(), textField_Keywords.getText());
                         
                 //rowData = bookSearcher.getRowData();
+
+                if(!Validation.isISBNValid(textField_ISBN.getText())) {
+                    JOptionPane.showMessageDialog(getFrame(),
+                            "ISBN is not valid.",
+                            "Error", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
                 
                 rowData = BookController.getInstance().searchBook(textField_ISBN.getText(), textField_Title.getText(), textField_Author.getText(),
                         textField_Publisher.getText(), textField_Genre.getText(), textField_Keywords.getText());
@@ -107,6 +115,9 @@ public class SearchBooksWindow {
                 {        
                     DefaultTableModel dm = new DefaultTableModel(columnNames, 0);                    
                     table = new JTable(dm);
+                    JOptionPane.showMessageDialog(getFrame(),
+                            "No book found.",
+                            "Error", JOptionPane.WARNING_MESSAGE);
                 }
                 else
                 {
