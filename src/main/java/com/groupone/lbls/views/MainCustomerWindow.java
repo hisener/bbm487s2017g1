@@ -18,13 +18,13 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class MainCustomerWindow extends MainWindow {
-	
-	private ArrayList<Integer> bookIDs = new ArrayList<>();
-	private JLabel notificationIcon = new JLabel("New label");
-	private JLabel lblNotifications = new JLabel("Notifications: 0");
-	private JLabel label_fine;
-	private JLabel label_bookCount;
-	
+    
+    private ArrayList<Integer> bookIDs = new ArrayList<>();
+    private JLabel notificationIcon = new JLabel("New label");
+    private JLabel lblNotifications = new JLabel("Notifications: 0");
+    private JLabel label_fine;
+    private JLabel label_bookCount;
+    
     /**
      * Create the application.
      */
@@ -37,8 +37,8 @@ public class MainCustomerWindow extends MainWindow {
      * Initialize the contents of the frame.
      */
     private void initialize() {
-    	
-    	final String username = this.getUser().getUsername();
+        
+        final String username = this.getUser().getUsername();
 
         frame = new JFrame("Library Book Loan System - User: " + username);
         frame.setBounds(100, 100, 550, 276);
@@ -71,10 +71,10 @@ public class MainCustomerWindow extends MainWindow {
         
         JButton btnSearchBooks = new JButton("Search Books");
         btnSearchBooks.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent actionEvent) {
-        		SearchBooksWindow searchWindow = new SearchBooksWindow(getUser().getId());
-        		searchWindow.getFrame().setVisible(true);
-        	}
+            public void actionPerformed(ActionEvent actionEvent) {
+                SearchBooksWindow searchWindow = new SearchBooksWindow(getUser().getId());
+                searchWindow.getFrame().setVisible(true);
+            }
         });      
         
         btnSearchBooks.setBounds(10, 24, 138, 23);
@@ -100,9 +100,9 @@ public class MainCustomerWindow extends MainWindow {
                 
         JButton btnRBook = new JButton("My Books and Reservations");
         btnRBook.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent arg0) {
-        		new CustomerMyBooksAndReservationsWindow(getUser());
-        	}
+            public void actionPerformed(ActionEvent arg0) {
+                new CustomerMyBooksAndReservationsWindow(getUser());
+            }
         });
         btnRBook.setBounds(158, 24, 165, 23);
         panel_1.add(btnRBook);
@@ -126,7 +126,6 @@ public class MainCustomerWindow extends MainWindow {
                     public void windowClosed(WindowEvent windowEvent) {
                         super.windowClosed(windowEvent);
                         btnViewMyFines.putClientProperty("active", false);
-                        // TODO: Re-render summary part
                     }
                 });
             }
@@ -154,7 +153,6 @@ public class MainCustomerWindow extends MainWindow {
                     public void windowClosed(WindowEvent windowEvent) {
                         super.windowClosed(windowEvent);
                         btnSelfCheckoutOr.putClientProperty("active", false);
-                        // TODO: Re-render summary part
                     }
                 });
             }
@@ -164,10 +162,10 @@ public class MainCustomerWindow extends MainWindow {
                
         JButton btnNotifications = new JButton("Notifications");
         btnNotifications.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent arg0) {
-        		CustomerNotifications notificationWindow = new CustomerNotifications(getUser().getId());
-        		notificationWindow.getFrame().setVisible(true);
-        	}
+            public void actionPerformed(ActionEvent arg0) {
+                CustomerNotifications notificationWindow = new CustomerNotifications(getUser().getId());
+                notificationWindow.getFrame().setVisible(true);
+            }
         });
         btnNotifications.setBounds(10, 117, 138, 23);
         panel_1.add(btnNotifications);
@@ -227,39 +225,39 @@ public class MainCustomerWindow extends MainWindow {
         
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
-        	  @Override
-        	  public void run() {
-        		  bookIDs = checkAvailabilityOfWaitlistBooks(lblNotifications, notificationIcon);
-        		  int fine = UserController.getInstance().getUsersFine(getUser().getId());
-        		  int bookCount = UserController.getInstance().getUsersBookCount(getUser().getId());
-        		  label_fine.setText(fine + " \u20BA");
-        		  label_bookCount.setText(bookCount + "");
-        	  }
-        	}, 1000, 2000);
+              @Override
+              public void run() {
+                  bookIDs = checkAvailabilityOfWaitlistBooks(lblNotifications, notificationIcon);
+                  int fine = UserController.getInstance().getUsersFine(getUser().getId());
+                  int bookCount = UserController.getInstance().getUsersBookCount(getUser().getId());
+                  label_fine.setText(fine + " \u20BA");
+                  label_bookCount.setText(bookCount + "");
+              }
+            }, 1000, 2000);
 
     }
     
     private ArrayList<Integer> checkAvailabilityOfWaitlistBooks(JLabel lblNotifications, JLabel notificationIcon)
     {
-    	ArrayList<Integer> bookIDs = new ArrayList<Integer>(); 
-    	WaitlistDAO waitlistOfUser = new WaitlistDAO();
+        ArrayList<Integer> bookIDs = new ArrayList<Integer>(); 
+        WaitlistDAO waitlistOfUser = new WaitlistDAO();
         waitlistOfUser.getUserBookOnWaitlist(getUser().getId());
         
         
         for(int i = 0; i < waitlistOfUser.getBooksOnWaitlist().size(); i++)
         {
-        	if(waitlistOfUser.getBooksOnWaitlist().get(i).isBookAvailable())
-        	{
-        		bookIDs.add(waitlistOfUser.getBooksOnWaitlist().get(i).getId());
-        	}
+            if(waitlistOfUser.getBooksOnWaitlist().get(i).isBookAvailable())
+            {
+                bookIDs.add(waitlistOfUser.getBooksOnWaitlist().get(i).getId());
+            }
         }
         
         lblNotifications.setText("Notifications: "+bookIDs.size());
         
         if(bookIDs.size() > 0) {
-        	notificationIcon.setVisible(true);
+            notificationIcon.setVisible(true);
         }else{
-        	notificationIcon.setVisible(false);
+            notificationIcon.setVisible(false);
         }
         
         return bookIDs;

@@ -22,11 +22,19 @@ public class UserController {
     private UserDAO userDAO;
     private FineDAO fineDAO;
 
+    /**
+     * Constructor
+     * Creates instances of Data Access Objects
+     */
     public UserController() {
         this.userDAO = new UserDAOImpl();
         this.fineDAO = new FineDAOImpl();
     }
 
+    /**
+     * Get the single instance of the UserController class.
+     * @return UserController object
+     */
     public static UserController getInstance() {
         if (instance == null) {
             instance = new UserController();
@@ -34,8 +42,15 @@ public class UserController {
         return instance;
     }
 
+    /**
+     * Authenticate the user who wants to log in.
+     * @param username username field
+     * @param password password field
+     * @return User object
+     * @throws Exception Throws Exception if encryption failed or user fields
+     * are wrong.
+     */
     public User authenticate(String username, String password) throws Exception {
-
         String encryptedPassword;
         try {
             encryptedPassword = this.encryptPassword(password);
@@ -52,14 +67,35 @@ public class UserController {
         return user;
     }
 
+    /**
+     * Get all users as a List.
+     * @return List of User objects.
+     * @see java.util.List
+     * @see User
+     */
     public List<User> getAllUsers() {
         return userDAO.getAllUsers();
     }
 
+    /**
+     * Get a User object with username.
+     * @param username username field
+     * @return User object.
+     * @see Query#getUser(String)
+     */
     public User getUser(String username) {
         return Query.getUser(username);
     }
 
+    /**
+     * Add a new user
+     * @param email email field
+     * @param username username field
+     * @param password password field
+     * @param userRole UserRole object
+     * @return Returns true if the user is created correctly, otherwise false.
+     * @see Query#addUser(String, String, String, String)
+     */
     public boolean addUser(String email, String username, String password,
                            UserRole userRole) {
         String encryptedPassword;
@@ -96,7 +132,7 @@ public class UserController {
     }
 
     public int selfCheckout(int userId, String ISBN) throws Exception {
-        Book book = BookController.getBook(ISBN);
+        Book book = BookController.getInstance().getBook(ISBN);
         if (book == null) {
             throw new Exception("The book could not find.");
         }
@@ -106,7 +142,7 @@ public class UserController {
         }
 
         int book_count=book.getQuantity();
-        int waitList_book_count=BookController.getWaitListBookCount(book.getId());
+        int waitList_book_count=BookController.getInstance().getWaitListBookCount(book.getId());
 
         //check not available of book
         if (!book.isBookAvailable()) {
@@ -114,7 +150,7 @@ public class UserController {
         }
         //or whether there are books in waiting list
         //and whether user has got book in waiting list.
-        if (waitList_book_count>=book_count&&!(BookController.getWaitListBook(userId,book.getId()))) {
+        if (waitList_book_count>=book_count&&!(BookController.getInstance().getWaitListBook(userId,book.getId()))) {
             return 2;
         }
 
@@ -123,7 +159,7 @@ public class UserController {
         }
 
         //if book is waiting list
-        if(BookController.getWaitListBook(userId,book.getId())){
+        if(BookController.getInstance().getWaitListBook(userId,book.getId())){
             //if book is deleted from waiting list
             if(Query.deleteWaitListBook(userId, book.getId())){
                 return Query.selfCheckout(userId, book);
@@ -148,7 +184,7 @@ public class UserController {
     }
 
     public boolean selfReturn(int userId, String ISBN) throws Exception {
-        Book book = BookController.getBook(ISBN);
+        Book book = BookController.getInstance().getBook(ISBN);
         if (book == null) {
             throw new Exception("The book could not find.");
         }
