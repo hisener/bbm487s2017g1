@@ -458,8 +458,14 @@ public class LibrarianUserOperations {
         scrollPane.setViewportView(booksTable);
 
         final JLabel bookCountLabel = new JLabel("0 Book(s)");
-        bookCountLabel.setBounds(433, 165, 46, 14);
+        bookCountLabel.setBounds(433, 165, 50, 14);
         booksPanel.add(bookCountLabel);
+        
+        
+        final JLabel fineLabel = new JLabel("Fine: ");
+        fineLabel.setBounds(10, 165, 50, 14);
+        booksPanel.add(fineLabel);
+        
 
         /** Gets user and prints currently owned books by user **/
         getUserButton.addActionListener(new ActionListener() {
@@ -523,6 +529,9 @@ public class LibrarianUserOperations {
                 	bookCountLabel.setText(rowData.length + " Book(s)");
                 else
                 	bookCountLabel.setText("0 Books");
+                
+                fineLabel.setText("Fine: " + UserController.getInstance()
+                		.getUsersFine(user.getId()) + "\u20BA");
                 // TODO: get books of the user
             }
         });
