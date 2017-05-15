@@ -425,7 +425,7 @@ public class LibrarianUserOperations {
         JPanel booksPanel = new JPanel();
         booksPanel.setLayout(null);
         booksPanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"),
-                "Books (Under Construction!) ", TitledBorder.LEADING, TitledBorder.TOP,
+                "Books", TitledBorder.LEADING, TitledBorder.TOP,
                 null, new Color(0, 0, 0)));
         booksPanel.setBounds(10, 148, 489, 190);
         viewTabPanel.add(booksPanel);
