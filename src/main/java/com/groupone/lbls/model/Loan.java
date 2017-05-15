@@ -2,7 +2,10 @@ package com.groupone.lbls.model;
 
 import java.util.Date;
 import java.sql.Timestamp;
-
+/*
+ * Load model
+ * Contains every field of a loan
+ */
 public class Loan {
     private int id;
     private int borrower_id;

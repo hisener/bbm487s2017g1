@@ -15,6 +15,10 @@ import javax.swing.JOptionPane;
 import com.groupone.lbls.model.Book;
 import com.groupone.lbls.model.Loan;
 
+/*
+ * Waitlist Database Access Object
+ * Enables application to create a connection with 'waitlist' table of database
+ */
 public class WaitlistDAO {
 	
 	private class WaitlistEntry
@@ -36,6 +40,9 @@ public class WaitlistDAO {
 	private final String table = "waitlist";
 	private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
+	/*
+	 * Removes user from waitlist of book with given ISBN
+	 */
 	public boolean deleteWish(String ISBN)
 	{
 		Book tempBook = Query.getBook(ISBN);
@@ -62,6 +69,9 @@ public class WaitlistDAO {
 		}        
 	}
 	
+	/*
+	 * Traverses waitlist and returns user's book wishes.
+	 */
 	public void getUserBookOnWaitlist(int userId)
 	{
 		PreparedStatement statement;
@@ -97,6 +107,9 @@ public class WaitlistDAO {
 
 	}
 	
+	/*
+	 * Converts books to strings to display them on tables.
+	 */
 	private Object[][] GetBooksOnWaitlist()
 	{
 		Object[][] tempRowData = new Object[bookEntriesOnWaitlist.size()][3];

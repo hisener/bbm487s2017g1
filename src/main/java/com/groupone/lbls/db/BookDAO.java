@@ -7,12 +7,19 @@ import java.util.ArrayList;
 
 import com.groupone.lbls.model.Book;
 
+/*
+ * Book Database Access Object
+ * Enables application to create a connection with 'book' table of database
+ */
 public class BookDAO {
 	private ArrayList<Book> books = new ArrayList<>();
 	private Object[][] rowData;
 
 	private final String table = "book";
 	
+	/*
+	 * Returns book with given bookId
+	 */
 	public Book getBookByID(int bookId)
 	{
 		 PreparedStatement statement;
@@ -38,8 +45,6 @@ public class BookDAO {
             String keywords=resultSet.getString("keywords");
             String publisherYear=resultSet.getString("publish_year");
             
-            
-
             return new Book(id, ISBN, title, author, quantity, publisher, genre, keywords,publisherYear);
 
         }catch (Exception e) {
@@ -48,6 +53,12 @@ public class BookDAO {
         }        
 	}
    
+	/*
+	 * Takes empty or non-empty fields for books. Creates appropriate search query by
+	 * neglecting empty fields. Optimizes query by adding likeliness to fields.
+	 * Returns list of books created fields. 
+	 * Used in search for books
+	 */
     public void getListOfBooks(String isbn, String title, String author, String publisher, 
     		String genre, String keywords)
     {
@@ -140,6 +151,9 @@ public class BookDAO {
         }
     }
     
+    /*
+     * After taking books, converts them to string to display them in tables.
+     */
     private Object[][] ConvertBooksToString()
     {
     	Object[][] tempRowData = new Object[books.size()][6];

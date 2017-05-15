@@ -1,7 +1,10 @@
 package com.groupone.lbls.model;
 
 import com.groupone.lbls.db.Query;
-
+/*
+ * Book model
+ * Contains every field in a book
+ */
 public class Book {
     private int id;
     private String ISBN;

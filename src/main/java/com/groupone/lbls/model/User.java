@@ -1,5 +1,9 @@
 package com.groupone.lbls.model;
 
+/*
+ * User model
+ * Contains every field for user
+ */
 public class User {
 
     private int id;
