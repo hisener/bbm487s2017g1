@@ -33,6 +33,8 @@ public class LibrarianUserOperations {
      */
     public LibrarianUserOperations(String username) {
         initialize(username);
+        frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+        frame.setResizable(false);
     }
 
     /**

@@ -62,6 +62,7 @@ public class SearchBooksWindow {
      */
     public SearchBooksWindow(int userId) {
         initialize(userId);
+        frame.setResizable(false);
     }
 
     /**
@@ -76,17 +77,17 @@ public class SearchBooksWindow {
         JLabel label = new JLabel("Library Book Loan System");
         label.setHorizontalAlignment(SwingConstants.CENTER);
         label.setFont(new Font("Segoe UI Light", Font.PLAIN, 18));
-        label.setBounds(10, 11, 556, 30);
+        label.setBounds(10, 11, 566, 30);
         frame.getContentPane().add(label);
         
         JLabel lblSearchBooks = new JLabel("Search Books");
         lblSearchBooks.setHorizontalAlignment(SwingConstants.CENTER);
         lblSearchBooks.setFont(new Font("Segoe UI Light", Font.PLAIN, 14));
-        lblSearchBooks.setBounds(10, 42, 556, 22);
+        lblSearchBooks.setBounds(10, 42, 566, 22);
         frame.getContentPane().add(lblSearchBooks);
         
         scrollPane = new JScrollPane();
-        scrollPane.setBounds(39, 238, 499, 145);
+        scrollPane.setBounds(39, 238, 503, 145);
         frame.getContentPane().add(scrollPane);
             
         btnSearch = new JButton("Search");
