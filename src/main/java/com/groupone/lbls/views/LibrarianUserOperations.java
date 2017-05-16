@@ -1,6 +1,7 @@
 package com.groupone.lbls.views;
 
 import com.groupone.lbls.controller.UserController;
+import com.groupone.lbls.db.LoanDAO;
 import com.groupone.lbls.model.User;
 import com.groupone.lbls.model.UserRole;
 import com.groupone.lbls.utils.Validation;
@@ -24,6 +25,8 @@ import java.util.List;
 public class LibrarianUserOperations {
 
     private JFrame frame;
+    private JScrollPane scrollPane;
+    private JTable booksTable;
 
     /**
      * Create the application.
@@ -397,7 +400,6 @@ public class LibrarianUserOperations {
 
     private void initViewTab(JTabbedPane tabbedPane) {
         JPanel viewTabPanel = new JPanel();
-        final JTable booksTable;
         final JTextField usernameField;
 
         tabbedPane.addTab("View", null, viewTabPanel, null);
@@ -430,11 +432,11 @@ public class LibrarianUserOperations {
         booksPanel.setBounds(10, 148, 489, 190);
         viewTabPanel.add(booksPanel);
 
-        JScrollPane scrollPane = new JScrollPane();
+        scrollPane = new JScrollPane();
         scrollPane.setBounds(10, 25, 469, 134);
         booksPanel.add(scrollPane);
 
-        String[] columnNames = { "Title", "ISBN", "Author", "Genre" };
+        Object columnNames[] = { "Title", "ISBN", "Author", "Genre", "Reservation Date", "Return Date"};
         DefaultTableModel model = new DefaultTableModel(0, columnNames.length) ;
         model.setColumnIdentifiers(columnNames);
 
@@ -456,9 +458,16 @@ public class LibrarianUserOperations {
         scrollPane.setViewportView(booksTable);
 
         final JLabel bookCountLabel = new JLabel("0 Book(s)");
-        bookCountLabel.setBounds(433, 165, 46, 14);
+        bookCountLabel.setBounds(433, 165, 50, 14);
         booksPanel.add(bookCountLabel);
+        
+        
+        final JLabel fineLabel = new JLabel("Fine: ");
+        fineLabel.setBounds(10, 165, 50, 14);
+        booksPanel.add(fineLabel);
+        
 
+        /** Gets user and prints currently owned books by user **/
         getUserButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -474,17 +483,55 @@ public class LibrarianUserOperations {
                             "Error", JOptionPane.WARNING_MESSAGE);
                     return;
                 }
+                
+                LoanDAO loans = new LoanDAO();
+                loans.getUserBooks(user.getId());
+                Object rowData[][] = loans.getRowData();
+                
+                Object columnNames[] = { "Title", "ISBN", "Author", "Genre",
+                		"Reservation Date", "Return Date"};
 
-                // just for update something
-                DefaultTableModel tableModel = (DefaultTableModel) booksTable.getModel();
-                for (int i = 0; i < tableModel.getRowCount(); ++i) {
-                    tableModel.removeRow(i);
+                if(rowData == null)
+                {
+                    DefaultTableModel dm = new DefaultTableModel(columnNames, 0);                    
+                    booksTable = new JTable(dm);
                 }
+                else
+                {
+                	booksTable = new JTable(rowData, columnNames)
+                    {
+                        @Override
+                        public boolean isCellEditable(int row, int column) {
+                            return false;
+                        }
+                    };
+                    booksTable.setBackground(Color.white);
+                    booksTable.setOpaque(true);
+                    
+                    if(rowData != null)
+                    {
+                    	booksTable.getTableHeader().setReorderingAllowed(false);
+                    	
+                        TableRowSorter<TableModel> sorter = 
+                        		new TableRowSorter<TableModel>(booksTable.getModel());
+                        
+                        booksTable.setRowSorter(sorter);
 
-                ((DefaultTableModel) booksTable.getModel()).addRow(
-                        new Object[]{ "Harry Potter", "123456", "JKR", "Fantasy Fiction" });
-                bookCountLabel.setText("1 Book(s)");
-
+                        List<RowSorter.SortKey> sortKeys = new ArrayList<>(25);
+                        sortKeys.add(new RowSorter.SortKey(4, SortOrder.ASCENDING));
+                        sorter.setSortKeys(sortKeys);
+                    }
+                    
+                }
+                
+                scrollPane.setViewportView(booksTable);
+                if(rowData!=null)
+                	bookCountLabel.setText(rowData.length + " Book(s)");
+                else
+                	bookCountLabel.setText("0 Books");
+                
+                fineLabel.setText("Fine: " + UserController.getInstance()
+                		.getUsersFine(user.getId()) + "\u20BA");
                 // TODO: get books of the user
             }
         });
